@@ -1,0 +1,130 @@
+###############################################
+#
+# Constraints
+#
+
+###############################################
+
+cons001.txt        -> SUCCESS
+cons002.txt        -> SUCCESS
+cons003.txt        -> SUCCESS
+cons004.txt        -> SUCCESS
+cons005.txt        -> SUCCESS
+cons006.txt        -> SUCCESS
+cons007.txt        -> SUCCESS
+cons008.txt        -> SUCCESS
+cons009.txt        -> SUCCESS
+cons100.txt        -> SUCCESS
+cons101.txt        -> SUCCESS
+
+cons102.txt        -> SUCCESS [NO_SEEDING]
+cons103.txt        -> SUCCESS [NO_SEEDING]
+cons104.txt        -> SUCCESS [NO_SEEDING]
+cons105.txt        -> SUCCESS [NO_SEEDING]
+cons110.txt        -> SUCCESS [NO_SEEDING]
+
+cons102.txt -c     -> SUCCESS
+
+cons106.txt        -> SUCCESS
+cons109.txt        -> SUCCESS
+cons042.txt        -> SUCCESS
+cons049.txt        -> SUCCESS
+cons062.txt        -> SUCCESS
+cons070.txt        -> SUCCESS
+cons072.txt        -> SUCCESS
+cons206.txt        -> SUCCESS
+cons206.txt -c     -> SUCCESS
+cons220.txt        -> SUCCESS
+cons221.txt        -> SUCCESS
+cons222.txt        -> SUCCESS
+
+cons037.txt        -> SUCCESS
+cons038.txt        -> SUCCESS
+cons070.txt -c     -> SUCCESS
+cons072.txt /C     -> SUCCESS
+cons103.txt -C     -> SUCCESS
+cons104.txt /c     -> SUCCESS
+cons105.txt /C     -> SUCCESS
+cons109.txt -c     -> SUCCESS
+cons110.txt /c     -> SUCCESS
+
+cons010.txt        -> BAD_CONSTRAINTS
+cons011.txt        -> BAD_CONSTRAINTS
+cons012.txt        -> BAD_CONSTRAINTS
+cons013.txt        -> BAD_CONSTRAINTS
+cons014.txt        -> BAD_CONSTRAINTS
+cons020.txt        -> BAD_CONSTRAINTS
+cons021.txt        -> BAD_CONSTRAINTS
+cons030.txt        -> BAD_CONSTRAINTS
+cons031.txt        -> BAD_CONSTRAINTS
+cons200.txt        -> BAD_CONSTRAINTS
+cons201.txt        -> BAD_CONSTRAINTS
+cons203.txt        -> BAD_MODEL
+cons204.txt        -> BAD_CONSTRAINTS
+cons205.txt        -> BAD_CONSTRAINTS
+cons032.txt        -> BAD_CONSTRAINTS
+cons033.txt        -> BAD_CONSTRAINTS
+cons034.txt        -> BAD_CONSTRAINTS
+cons035.txt        -> BAD_CONSTRAINTS
+cons036.txt        -> BAD_CONSTRAINTS
+cons039.txt        -> BAD_CONSTRAINTS
+cons040.txt        -> BAD_CONSTRAINTS
+cons041.txt        -> BAD_CONSTRAINTS
+cons043.txt        -> BAD_CONSTRAINTS
+cons044.txt        -> BAD_CONSTRAINTS
+cons045.txt        -> BAD_CONSTRAINTS
+cons046.txt        -> BAD_CONSTRAINTS
+cons047.txt        -> BAD_CONSTRAINTS
+cons048.txt        -> BAD_CONSTRAINTS
+cons050.txt        -> BAD_CONSTRAINTS
+cons051.txt        -> BAD_CONSTRAINTS
+cons052.txt        -> BAD_CONSTRAINTS
+cons053.txt        -> BAD_CONSTRAINTS
+cons054.txt        -> BAD_CONSTRAINTS
+cons055.txt        -> BAD_CONSTRAINTS
+cons056.txt        -> BAD_CONSTRAINTS
+cons057.txt        -> BAD_CONSTRAINTS
+cons058.txt        -> BAD_CONSTRAINTS
+cons059.txt        -> BAD_CONSTRAINTS
+cons060.txt        -> BAD_CONSTRAINTS
+cons061.txt        -> BAD_CONSTRAINTS
+cons063.txt        -> BAD_CONSTRAINTS
+cons064.txt        -> BAD_CONSTRAINTS
+cons065.txt        -> BAD_CONSTRAINTS
+cons066.txt        -> BAD_CONSTRAINTS
+cons067.txt        -> BAD_CONSTRAINTS
+cons068.txt        -> BAD_CONSTRAINTS
+cons069.txt        -> BAD_CONSTRAINTS
+cons071.txt        -> BAD_CONSTRAINTS
+cons071.txt /c     -> BAD_CONSTRAINTS
+cons073.txt        -> BAD_CONSTRAINTS
+cons074.txt        -> BAD_CONSTRAINTS
+cons075.txt        -> BAD_CONSTRAINTS
+cons076.txt        -> BAD_CONSTRAINTS
+cons077.txt        -> BAD_CONSTRAINTS
+
+cons300.txt        -> SUCCESS
+cons301.txt        -> SUCCESS
+cons302.txt        -> SUCCESS
+cons303.txt        -> SUCCESS
+cons304.txt        -> SUCCESS
+
+#
+# testing of ELSE keyword
+#
+cons350.txt        -> SUCCESS
+cons351.txt        -> SUCCESS
+cons352.txt        -> SUCCESS
+
+cons355.txt        -> BAD_CONSTRAINTS
+cons356.txt        -> BAD_CONSTRAINTS
+cons357.txt        -> BAD_CONSTRAINTS
+cons358.txt        -> BAD_CONSTRAINTS
+cons359.txt        -> BAD_CONSTRAINTS
+
+#
+# constraints too restrictive
+#
+
+cons400.txt        -> BAD_CONSTRAINTS
+cons401.txt        -> BAD_CONSTRAINTS

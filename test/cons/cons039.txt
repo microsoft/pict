@@ -1,0 +1,8 @@
+#
+# not a number
+#
+G1,a,b,c,d
+G2,1,2,3
+
+if [G1] = "A" then [G2] = 1;
+if [G1] > "A" then [G2] > 1q;

@@ -1,0 +1,8 @@
+#
+# Simple model for SumSquareRoots
+#
+
+a: ~-1, 0, 1, 2
+b: ~-1, 0, 1, 2
+
+if [A] = -1 then [B] = 0;

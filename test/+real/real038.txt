@@ -1,0 +1,84 @@
+# This file is used to generate test cases for testing the DDL for XML Index
+# It is fed into MICS, which generates the test combinations
+# The goal here is to generate mostly positive cases, negative cases can 
+# be written by hand since they are more targetted
+
+# These describe the table that the primary xml index will be constructed on
+NUM_PRIMARY_KEYS: 1,2,4,8,15
+NUM_PRIMARY_XML_INDEXES: 1,2,8,32,64,128
+NUM_XML_COLS: 1,2,4,8,16,32
+
+# The path which gives the partial shredding for the primary xml index
+PATH_EXPRESSION: EMPTY_EXPRESSION,/,/.,/foo,/foo/bar,/foo/text(),/foo/comment(),/foo/processing-instruction("pi"),/child::foo,/child::foo/child::bar
+
+# Index Options
+IO_INDEX_SUBTREE: ON,OFF,DEFAULT
+IO_IGNORE_DUP_KEY: DEFAULT
+IO_PAD_INDEX: ON,OFF,DEFAULT
+IO_FILLFACTOR: DEFAULT,1,20,50,80,100
+IO_STATISTICS_NORECOMPUTE: DEFAULT,ON,OFF
+IO_SORT_IN_TEMPDB: DEFAULT,ON,OFF
+IO_ALLOW_ROW_LOCKS: DEFAULT,ON,OFF
+IO_ALLOW_PAGE_LOCKS: DEFAULT,ON,OFF
+IO_MAXDOP: DEFAULT,0,1,2,4,8,16,32,64
+IO_DROP_EXISTING: DEFAULT,ON,OFF
+
+# Miscellaneous
+MULTIPLE_INDEXES_ON_COLUMN: TRUE,FALSE
+THREE_PART_NAMES: TRUE,FALSE
+EXECUTE_IN_TEMPDB: TRUE,FALSE
+EXCERCISE_DROP_EXISTING: TRUE,FALSE
+
+# Alternate Index Options -- These are used when creating multiple primary xml indexes
+USE_ALTERNATE_OPTIONS: TRUE, FALSE
+ALT_IO_INDEX_SUBTREE: ON,OFF,DEFAULT
+ALT_IO_IGNORE_DUP_KEY: DEFAULT
+ALT_IO_PAD_INDEX: ON,OFF,DEFAULT
+ALT_IO_FILLFACTOR: DEFAULT,1,20,50,80,100
+ALT_IO_STATISTICS_NORECOMPUTE: DEFAULT,ON,OFF
+ALT_IO_SORT_IN_TEMPDB: DEFAULT,ON,OFF
+ALT_IO_ALLOW_ROW_LOCKS: DEFAULT,ON,OFF
+ALT_IO_ALLOW_PAGE_LOCKS: DEFAULT,ON,OFF
+ALT_IO_MAXDOP: DEFAULT,0,1,2,4,8,16,32,64
+ALT_IO_DROP_EXISTING: DEFAULT,ON,OFF
+
+# We want to group the index options we care less about, this will make it so we don't
+# generate so many combinations for these less-important options
+{ IO_IGNORE_DUP_KEY, IO_PAD_INDEX, IO_FILLFACTOR, IO_STATISTICS_NORECOMPUTE, IO_SORT_IN_TEMPDB, IO_ALLOW_ROW_LOCKS, IO_ALLOW_PAGE_LOCKS, IO_MAXDOP } @ 2
+{ ALT_IO_IGNORE_DUP_KEY, ALT_IO_PAD_INDEX, ALT_IO_FILLFACTOR, ALT_IO_STATISTICS_NORECOMPUTE, ALT_IO_SORT_IN_TEMPDB, ALT_IO_ALLOW_ROW_LOCKS, ALT_IO_ALLOW_PAGE_LOCKS, ALT_IO_MAXDOP, ALT_IO_DROP_EXISTING } @ 2
+
+# if we are excercising drop existing... then both the primary and alt configurations must have DROP_EXISTING enabled
+if [EXCERCISE_DROP_EXISTING] = "TRUE" then [IO_DROP_EXISTING] = "ON";
+if [EXCERCISE_DROP_EXISTING] = "TRUE" then [ALT_IO_DROP_EXISTING] = "ON";
+
+# We only want drop existing on if we are 'EXCERCISE_DROP_EXISTING'
+if [EXCERCISE_DROP_EXISTING] = "FALSE" then [IO_DROP_EXISTING] in {"DEFAULT", "OFF"};
+if [EXCERCISE_DROP_EXISTING] = "FALSE" then [ALT_IO_DROP_EXISTING] in {"DEFAULT", "OFF"};
+
+# we need to use 3-part names if we are executing from tempdb
+if [EXECUTE_IN_TEMPDB] = "TRUE" then [THREE_PART_NAMES] = "TRUE";
+
+# We want to set all of the ALT options to default if we are not going to be
+# using them
+if [NUM_PRIMARY_XML_INDEXES] = 1 then [USE_ALTERNATE_OPTIONS] = "FALSE";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_INDEX_SUBTREE] = "DEFAULT";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_IGNORE_DUP_KEY] = "DEFAULT";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_PAD_INDEX] = "DEFAULT";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_FILLFACTOR] = "DEFAULT";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_STATISTICS_NORECOMPUTE] = "DEFAULT";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_SORT_IN_TEMPDB] = "DEFAULT";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_ALLOW_ROW_LOCKS] = "DEFAULT";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_ALLOW_PAGE_LOCKS] = "DEFAULT";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_MAXDOP] = "DEFAULT";
+if [USE_ALTERNATE_OPTIONS] = "FALSE" then [ALT_IO_DROP_EXISTING] = "DEFAULT";
+
+# The following are all limitations that we introduced late in the game, I won't
+# remove them from the model because we might need them later, and adding them back in
+# could be a pain... so right now I have just added constraints that should keep us safe
+
+# We can't have more than one primary xml index per xml column
+[NUM_PRIMARY_XML_INDEXES] <= [NUM_XML_COLS];
+[MULTIPLE_INDEXES_ON_COLUMN] = "FALSE";
+[ALT_IO_INDEX_SUBTREE] = "DEFAULT";
+[IO_INDEX_SUBTREE] = "DEFAULT";
+[PATH_EXPRESSION] = "EMPTY_EXPRESSION";

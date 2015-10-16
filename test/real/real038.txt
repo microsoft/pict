@@ -1,0 +1,27 @@
+#
+# Model with each parameter in many submodels
+# source: ErezAm and NirK
+#
+
+# xRay cycles model
+DC-OS:       W2K3, W2K
+FW-OS:       W2K3, W2K
+LangF:       Eng, Ger
+FW-DomE:     Domain, WG
+IP-RoutB:    Yes, No
+NLB:         Yes, No
+HardD:       Yes, No
+
+ 
+# clusters
+{ DC-OS, FW-OS } @ 2
+{ IP-RoutB, NLB } @ 2
+{ FW-OS, NLB } @ 2
+{ FW-OS, HardD } @ 2
+{ DC-OS, FW-DomE } @ 2
+{ LangF } @ 1
+
+
+# Constrains
+IF [FW-OS] = "W2K" THEN [HardD] = "No";
+IF [FW-OS] = "W2K" THEN [NLB] = "No";

@@ -1,0 +1,9 @@
+#
+# test Win2K SP setup and update and interoperation win WinXP
+#
+BLD S,SP,2195,->SP,WinXP
+SKU S,Svr,Ads,DTC,WP
+LNG S,EN,DE
+BLD C,SP,2195,->SP,WinXP
+SKU C,Pro,Svr,Ads,DTC,WP
+LNG C,EN,DE

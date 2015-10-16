@@ -1,0 +1,11 @@
+#
+# valid cases:
+# clause1 AND clause2 OR clause3 AND clause4
+#
+G1,A,B,C,D,E,F,G,H,I,J
+G2,a,b,c,d,e,f,g,h,i,j
+G3,1,2,3,4,5,6,7,8,9,10
+G4,!,@,#,$,%,^,&,*,(,)
+
+if [G1] > "B" aND [G3] <= 9 or
+   [G1] = "B" And [G3] =  10 THen [G4] = "#";

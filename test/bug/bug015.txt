@@ -1,0 +1,104 @@
+# SCCI
+# 
+#
+#
+#typedef [v1_enum] enum tagVAPI_ITEM_INFO
+#{
+#	kfVapiItemInfoExists =					0x00000001,
+#	kfVapiItemInfoCheckedOut =				0x00000002,
+#	kfVapiItemInfoCheckedOutExclusive =			0x00000004,
+#	kfVapiItemInfoCheckedOutToMe =				0x00000008,
+#	kfVapiItemInfoMultipleCheckouts	=			0x00000010,
+#	kfVapiItemInfoUnderSCC =				0x00000020,
+#	kfVapiItemInfoLocallyDeleted =				0x00000040,
+#	kfVapiItemInfoServerDeleted =				0x00000080,
+#	kfVapiItemInfoLocallyAdded =				0x00000100,
+#	kfVapiItemInfoServerAdded =				0x00000200,
+#	kfVapiItemInfoLocallyMoved =				0x00000400,
+#	kfVapiItemInfoServerMoved =				0x00000800,
+#	kfVapiItemInfoLocallyChanged =				0x00001000,
+#	kfVapiItemInfoServerChanged =				0x00002000,
+#	kfVapiItemInfoOutOfDate =				0x00004000,
+#	kfVapiItemInfoExcluded =				0x00010000,
+#	kfVapiItemInfoGhosted =					0x00020000,
+#	kfVapiItemInfoReadOnly =				0x00040000,
+#	kfVapiItemInfoIsFolder =				0x00080000,
+#	kfVapiItemInfoReadAccess =				0x00100000,
+#	kfVapiItemInfoWriteAccess =				0x00200000,
+#	kfVapiItemInfoAdminAccess =				0x00400000,
+#	kfVapiItemInfoCheckedOutExclusiveToMe =	0x00800000
+#} VAPI_ITEM_INFO;
+#
+
+
+FileExist: Yes, No
+FileControlled: Yes, No
+
+FileCOS: Yes, No
+FileCOE: Yes, No
+FileCOSMe: Yes, No
+FileCOEMe: Yes, No
+FileCO_Multiple: Yes, No
+FileDelLoc: Yes,No
+FileDelServer: Yes, No
+FileAddedLoc: Yes, No
+FileAddedServer: Yes, No
+FileMoveLoc: Yes, No
+FileMoveServer: Yes, No
+FileChangeLoc: Yes, No
+FileChangeServer: Yes, No
+FileOutOfDate: Yes, No
+FileExcluded: Yes, No
+FileRO: Yes, No
+FileIsFolder: Yes, No
+FileReadAccess: Yes, No
+FileWriteAccess: Yes, No
+FileAdminAccess: Yes, No
+
+{FileCOS,FileCOE,FileCOSMe, FileCOEMe, FileCO_Multiple,FileDelLoc,FileDelServer,FileAddedLoc,FileAddedServer,FileMoveLoc,FileMoveServer,FileChangeLoc,FileChangeServer,FileOutOfDate,FileExcluded,FileRO,FileIsFolder,FileReadAccess,FileWriteAccess,FileAdminAccess} @ 2
+
+#{FileExist, FileControlled} @ 2
+
+# Constraints
+#------------------------------------------------------------------------
+# File does not exist
+#------------------------------------------------------------------------
+if [FileExist]="No" then [FileControlled] = "No";
+if [FileExist]="No" then [FileRO] = "No";
+if [FileExist]="No" then [FileIsFolder] = "No";
+if [FileExist]="No" then [FileReadAccess] = "No";
+if [FileExist]="No" then [FileWriteAccess] = "No";
+if [FileExist]="No" then [FileAdminAccess] = "No";
+
+#------------------------------------------------------------------------
+# File is not controlled
+#------------------------------------------------------------------------
+if [FileControlled]="No" then [FileCOS] = "No";
+if [FileControlled]="No" then [FileCOE] = "No";
+if [FileControlled]="No" then [FileCOSMe] = "No";
+if [FileControlled]="No" then [FileCOEMe] = "No";
+if [FileControlled]="No" then [FileCO_Multiple] = "No";
+if [FileControlled]="No" then [FileAddedLoc] = "No";
+if [FileControlled]="No" then [FileAddedServer] = "No";
+if [FileControlled]="No" then [FileDelLoc] = "No";
+if [FileControlled]="No" then [FileDelServer] = "No";
+if [FileControlled]="No" then [FileMoveLoc] = "No";
+if [FileControlled]="No" then [FileMoveServer] = "No";
+if [FileControlled]="No" then [FileChangeLoc] = "No";
+if [FileControlled]="No" then [FileChangeServer] = "No";
+if [FileControlled]="No" then [FileOutOfDate] = "No";
+if [FileControlled]="No" then [FileExcluded] = "No";
+
+#------------------------------------------------------------------------
+# File is shared / exclusive
+#------------------------------------------------------------------------
+if [FileCOS]="Yes" or [FileCOSMe]="Yes" then [FileCOE] = "No";
+if [FileCOS]="Yes"or [FileCOSMe]="Yes" then [FileCOEMe] = "No";
+
+if [FileCOE]="Yes" then [FileCOEMe] = "No";
+if [FileCOE]="Yes" or [FileCOSMe]="Yes" then [FileCO_Multiple] = "No";
+
+#------------------------------------------------------------------------
+# File Multiple CO
+#------------------------------------------------------------------------
+if [FileCOS]="Yes" and [FileCOSMe]="Yes" then [FileCO_Multiple] = "Yes";

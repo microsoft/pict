@@ -1,0 +1,14 @@
+#
+# valid cases:
+# (clause1 AND clause2) OR  clause3
+# (clause1 OR  clause2) AND clause3
+#
+G1,A,B,C,D,E,F,G,H,I,J
+G2,a,b,c,d,e,f,g,h,i,j
+G3,1,2,3,4,5,6,7,8,9,10
+G4,!,@,#,$,%,^,&,*,(,)
+
+if (	[G1] = "h" and [G3] = 2) or [G4] = "!"
+				then [G2] = "j";
+if (	[G1] = "A" or  [G3] = 1) AND [G4] = "#"
+				then [G2] = "i";

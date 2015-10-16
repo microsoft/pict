@@ -1,0 +1,23 @@
+ServerType,SameMachineSameProc,SameMachineDiffProcs,Win2kAdvancedServer,XPPro,NetServer
+ClientType,Win2kServer,XPPro,NetServer
+TokenAvailability,None,UsernamePassword_Get,UsernamePassword_Set,WinAuth_Get,WinAuth_Set,X509_Get,X509_Set,All_Get,All_Set
+SignatureRequirements,None,UsernamePassword,WinAuth,X509,Any,All
+TestMethodName,Get,Set,GetNegative
+EncryptionOnServer,None,UsernamePassword,WinAuth,X509
+PermissionsTokenIssuance,True,False
+CommunicationsStyle,InProc,XProc,DirectTcp,RoutedTcp,RoutedInProc
+AccountType,ClientRegularUserServerAdministrator,BothAdministrator,ClientRegularUserServerLocalSystem
+
+if ( ([TokenAvailability] = "None") or ([SignatureRequirements] = "None") ) then [TestMethodName] = "GetNegative";
+if [TokenAvailability] in {"UsernamePassword_Get","WinAuth_Get","X509_Get","All_Get"} then [TestMethodName] in {"Get","GetNegative"};
+if [EncryptionOnServer] = "UsernamePassword" then [SignatureRequirements] in {"Any","UsernamePassword","All"};
+if [EncryptionOnServer] = "WinAuth" then [SignatureRequirements] in {"Any","WinAuth","All"};
+if ( ([SignatureRequirements] = "UsernamePassword") or ([EncryptionOnServer] = "UsernamePassword") ) then [TokenAvailability] in {"UsernamePassword_Set","UsernamePassword_Get","All_Get","All_Set"};
+if ( ([SignatureRequirements] = "WinAuth") or ([EncryptionOnServer] = "WinAuth") ) then [TokenAvailability] in {"WinAuth_Set","WinAuth_Get","All_Get","All_Set"};
+if [SignatureRequirements] = "X509" then [TokenAvailability] in {"X509_Set","X509_Get","All_Get","All_Set"};
+if [SignatureRequirements] = "Any" then [TokenAvailability] <> "None";
+if [SignatureRequirements] = "All" then [TokenAvailability] in {"All_Get","All_Set"};
+if [SignatureRequirements] in {"All","None"} then [PermissionsTokenIssuance] = "False";
+if [CommunicationsStyle] in {"XProc"} then [ServerType] in {"SameMachineDiffProcs","SameMachineSameProc"};
+if [CommunicationsStyle] in {"InProc","RoutedInProc"} then [ServerType] in {"SameMachineSameProc"};
+if ( ([ServerType] = "SameMachineSameProc") and ([TokenAvailability] in {"WinAuth_Get","WinAuth_Set","All_Get","All_Set"}) ) then [AccountType] = "BothAdministrator";

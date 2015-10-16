@@ -1,0 +1,272 @@
+###############################################
+#
+# Testing of /o
+#
+###############################################
+	
+arg001.txt /o:1             -> SUCCESS
+arg001.txt /o:1 -d:,	    -> SUCCESS
+arg001.txt /o:1 -d:","	    -> SUCCESS
+arg001.txt /o:1 /d:,	    -> SUCCESS
+arg001.txt /o:2             -> SUCCESS
+arg001.txt /O:2             -> SUCCESS
+arg001.txt /o:3             -> SUCCESS
+arg001.txt -o:3             -> SUCCESS
+arg001.txt -O:3             -> SUCCESS
+arg001.txt /O:2.5           -> SUCCESS
+
+arg001.txt /o:a             -> BAD_OPTION
+arg001.txt /o:" "           -> BAD_OPTION
+arg001.txt /o:/             -> BAD_OPTION
+arg001.txt /o:ab            -> BAD_OPTION
+arg001.txt /O:-1            -> BAD_OPTION
+arg001.txt /o1              -> BAD_OPTION
+arg001.txt /o:0             -> BAD_OPTION
+arg001.txt /o:4             -> BAD_MODEL
+arg001.txt o:1              -> BAD_OPTION
+arg001.txt --o:1            -> BAD_OPTION
+
+###############################################
+#
+# Testing of /d
+#
+###############################################
+
+arg001.txt                  -> SUCCESS
+arg002.txt /d:" "           -> SUCCESS [NO_SEEDING]
+arg002.txt -d:space         -> SUCCESS [NO_SEEDING]
+arg003.txt /d:","           -> SUCCESS [NO_SEEDING]
+arg002.txt /D:" "           -> SUCCESS [NO_SEEDING]
+arg002.txt -D:space         -> SUCCESS [NO_SEEDING]
+arg003.txt /D:","           -> SUCCESS [NO_SEEDING]
+arg002.txt -o:1 /d:" "      -> SUCCESS [NO_SEEDING]
+arg002.txt -d:space /o:2    -> SUCCESS [NO_SEEDING]
+arg003.txt -d:tab           -> SUCCESS
+arg003.txt -D:tab           -> SUCCESS
+
+arg001.txt /d:              -> BAD_OPTION
+arg001.txt /d,              -> BAD_OPTION
+arg002.txt /d:""            -> BAD_OPTION
+arg001.txt /D,              -> BAD_OPTION
+arg002.txt /D:""            -> BAD_OPTION
+arg002.txt /d:"  "          -> BAD_OPTION
+arg001.txt /d:",,"          -> BAD_OPTION
+arg001.txt //d:,            -> BAD_OPTION
+arg001.txt --d:,            -> BAD_OPTION
+arg003.txt /d:" "           -> BAD_MODEL
+
+###############################################
+#
+# Testing of /a
+#
+###############################################
+
+arg001.txt                        -> SUCCESS
+arg002.txt                        -> SUCCESS
+arg003.txt                        -> SUCCESS [NO_SEEDING]
+arg004.txt                        -> SUCCESS [NO_SEEDING]
+arg004.txt /a:@                   -> SUCCESS [NO_SEEDING]
+arg004.txt /a:"|"                 -> SUCCESS [NO_SEEDING]
+arg004.txt /A:@                   -> SUCCESS [NO_SEEDING]
+arg004.txt /A:"|"                 -> SUCCESS [NO_SEEDING]
+arg004.txt /a:@ -o:3              -> SUCCESS [NO_SEEDING]
+arg004.txt /a:"|" /o:1            -> SUCCESS [NO_SEEDING]
+arg004.txt /o:1 /a:@              -> SUCCESS [NO_SEEDING]
+arg004.txt -o:3 /A:"|" /d:,       -> SUCCESS [NO_SEEDING]
+arg004.txt -o:3 /a:"|" /d:","     -> SUCCESS [NO_SEEDING]
+arg004.txt -o:3 /d:, /a:"|"       -> SUCCESS [NO_SEEDING]
+arg004.txt -o:3 /d:"," /A:"|"     -> SUCCESS [NO_SEEDING]
+arg004.txt /d:, -o:3 /a:"|"       -> SUCCESS [NO_SEEDING]
+arg004.txt /d:","   -o:3 /a:"|"   -> SUCCESS [NO_SEEDING]
+arg004.txt /A:"|"                 -> SUCCESS [NO_SEEDING]
+arg004.txt /o:1 /a:@              -> SUCCESS [NO_SEEDING]
+arg004.txt /a:" "                 -> SUCCESS
+arg004.txt /a:space               -> SUCCESS
+arg004.txt /A:" "                 -> SUCCESS
+arg004.txt /A:space               -> SUCCESS
+arg004.txt /a:!                   -> SUCCESS
+arg004.txt /a:"!"                 -> SUCCESS
+
+arg004.txt /a:                    -> BAD_OPTION
+arg004.txt /a"|"                  -> BAD_OPTION
+arg004.txt /a:""                  -> BAD_OPTION
+arg004.txt /A:                    -> BAD_OPTION
+arg004.txt /A"|"                  -> BAD_OPTION
+arg004.txt /A:""                  -> BAD_OPTION
+arg004.txt /a:"  "                -> BAD_OPTION
+arg004.txt /a:"||"                -> BAD_OPTION
+arg004.txt //a:@                  -> BAD_OPTION
+arg004.txt --a:"|"                -> BAD_OPTION
+arg004.txt -o:3 /a:"|" /d:" "     -> BAD_MODEL
+arg004.txt -o:3 /d:" " /a:"|"     -> BAD_MODEL
+arg004.txt /d:" "   -o:3 /a:"|"   -> BAD_MODEL
+arg004.txt -o:3 /a:"|" -o:3       -> BAD_OPTION
+arg004.txt /a:@ /a:space          -> BAD_OPTION
+
+###############################################
+#
+# Testing of /n
+#
+###############################################
+
+arg001.txt                            -> SUCCESS
+arg002.txt                            -> SUCCESS
+arg003.txt                            -> SUCCESS [NO_SEEDING]
+arg004.txt                            -> SUCCESS [NO_SEEDING]
+arg005.txt /d:~                       -> SUCCESS [NO_SEEDING]
+arg005.txt /d:~ /n:~                  -> SUCCESS [NO_SEEDING]
+arg005.txt                            -> SUCCESS
+arg005.txt /n:~                       -> SUCCESS
+arg005.txt /N:~                       -> SUCCESS
+arg005.txt /n:1                       -> SUCCESS
+arg005.txt /n:"~"                     -> SUCCESS
+arg005.txt /N:"~"                     -> SUCCESS
+arg006.txt /n:@                       -> SUCCESS
+arg006.txt /n:"@"                     -> SUCCESS
+arg006.txt -n:@                       -> SUCCESS
+arg006.txt -N:@                       -> SUCCESS
+arg006.txt -n:"~"                     -> SUCCESS
+arg006.txt -o:3 /a:"|" /d:"," /n:@    -> SUCCESS
+arg006.txt -o:3 /d:"," /n:@ /a:"|"    -> SUCCESS
+
+arg005.txt /n:                        -> BAD_OPTION
+arg005.txt /n::~                      -> BAD_OPTION
+arg005.txt /n~                        -> BAD_OPTION
+arg005.txt /n:""                      -> BAD_OPTION
+arg005.txt /n:"  "                    -> BAD_OPTION
+arg005.txt /n:"~~"                    -> BAD_OPTION
+arg006.txt //N:@                      -> BAD_OPTION
+arg005.txt /N:"  "                    -> BAD_OPTION
+arg005.txt /N:"~~"                    -> BAD_OPTION
+arg006.txt //n:@                      -> BAD_OPTION
+arg006.txt --n:@                      -> BAD_OPTION
+arg006.txt -n:@ -o:3 /a:"|" /n:~      -> BAD_OPTION
+
+###############################################
+#
+# Testing of /r
+#
+###############################################
+
+
+arg004.txt /d:","   -o:3 /a:"|" -r        -> SUCCESS [NO_SEEDING]
+arg004.txt /d:","   -o:3 /r /a:"|"        -> SUCCESS [NO_SEEDING]
+arg004.txt  -r /d:","   -o:3 /a:"|"       -> SUCCESS [NO_SEEDING]
+arg004.txt  /r -d:","   -o:3 /a:"|"       -> SUCCESS [NO_SEEDING]
+arg004.txt  -r:123 /d:","   -o:3 /a:"|"   -> SUCCESS [NO_SEEDING]
+arg004.txt  /d:","   -o:3 /r:0000 /a:"|"  -> SUCCESS [NO_SEEDING]
+arg005.txt /r                             -> SUCCESS [NO_SEEDING]
+arg005.txt -r                             -> SUCCESS [NO_SEEDING]
+arg005.txt /r:123                         -> SUCCESS [NO_SEEDING]
+arg005.txt -r:123                         -> SUCCESS [NO_SEEDING]
+arg005.txt /R                             -> SUCCESS [NO_SEEDING]
+arg005.txt -R                             -> SUCCESS [NO_SEEDING]
+arg005.txt /R:123                         -> SUCCESS [NO_SEEDING]
+arg005.txt -R:123                         -> SUCCESS [NO_SEEDING]
+arg005.txt /r:99999                       -> SUCCESS [NO_SEEDING]
+arg005.txt /r:20000                       -> SUCCESS [NO_SEEDING]
+arg005.txt /r::                           -> SUCCESS [NO_SEEDING]
+arg005.txt /r:ala                         -> SUCCESS [NO_SEEDING]
+arg005.txt /r:space                       -> SUCCESS [NO_SEEDING]
+arg005.txt /r:"  "                        -> SUCCESS [NO_SEEDING]
+arg005.txt -r:"~~"                        -> SUCCESS [NO_SEEDING]
+arg008.txt /a:space                       -> SUCCESS
+arg009.txt /a:tab                         -> SUCCESS
+
+arg004.txt /d:","   -o:3  /a:"|"-r        -> BAD_OPTION
+arg005.txt -r:                            -> BAD_OPTION
+arg006.txt //R:12                         -> BAD_OPTION
+arg006.txt //r:12                         -> BAD_OPTION
+arg006.txt --r:33                         -> BAD_OPTION
+
+
+###############################################
+#
+# Testing of /c
+#
+###############################################
+
+arg007.txt -c                                          -> SUCCESS
+arg007.txt /c                                          -> SUCCESS
+arg007.txt -C                                          -> SUCCESS
+arg007.txt /C                                          -> SUCCESS
+arg007.txt /c /d:","   -o:3 /a:"|" -r                  -> SUCCESS [NO_SEEDING]
+arg007.txt  -r /d:","   -o:3 -c /a:"|"                 -> SUCCESS [NO_SEEDING]
+arg007.txt  -r:123 /d:","   -o:3 /C /a:"|"             -> SUCCESS [NO_SEEDING]
+
+# this one has NO_SEEDING because regenerating with full seeds
+# creates more compact result than the initial one and even
+# though both cover the same combinations they are slightly
+# different and the test driver would log a failure
+arg007.txt  /d:","   -o:3 /r:0000 /a:"|" 	-C     -> SUCCESS [NO_SEEDING]
+
+arg007.txt /d:","   /c -o:3 /r /a:"|"                  -> SUCCESS [NO_SEEDING]
+
+arg007.txt                                             -> BAD_MODEL
+arg007.txt /c:                                         -> BAD_OPTION
+arg007.txt /c::                                        -> BAD_OPTION
+arg007.txt /c~                                         -> BAD_OPTION
+arg007.txt /c:""                                       -> BAD_OPTION
+arg007.txt //C:@                                       -> BAD_OPTION
+arg007.txt //c                                         -> BAD_OPTION
+arg007.txt --C                                         -> BAD_OPTION
+arg007.txt  /r -d:","   -o:3 /a:"|"                    -> BAD_MODEL
+
+###############################################
+#
+# Testing of /o, mixed model
+#
+###############################################
+
+arg001.txt /o:1               -> SUCCESS
+arg001.txt /o:1 -d:,          -> SUCCESS
+arg001.txt /o:1 -d:","        -> SUCCESS
+arg001.txt /o:1 /d:,          -> SUCCESS
+arg001.txt /o:2               -> SUCCESS
+arg001.txt /O:2               -> SUCCESS
+arg001.txt /o:3               -> SUCCESS
+arg001.txt -o:3               -> SUCCESS
+arg001.txt -O:3               -> SUCCESS
+arg001.txt /O:2.5             -> SUCCESS
+
+arg001.txt /o:a               -> BAD_OPTION
+arg001.txt /o:" "             -> BAD_OPTION
+arg001.txt /o:/               -> BAD_OPTION
+arg001.txt /o:ab              -> BAD_OPTION
+arg001.txt /O:-1              -> BAD_OPTION
+arg001.txt /o1                -> BAD_OPTION
+arg001.txt /o:0               -> BAD_OPTION
+arg001.txt /o:4               -> BAD_MODEL
+arg001.txt o:1                -> BAD_OPTION
+arg001.txt --o:1              -> BAD_OPTION
+
+###############################################
+#
+# Testing of preview mode
+#
+###############################################
+
+#
+# no seeding because -p may use up all seeding rows and
+# add more 'good' cases therefore two results will not match
+#
+
+arg010.txt -p                  -> SUCCESS [NO_SEEDING]
+arg010.txt /o:1 -P             -> SUCCESS [NO_SEEDING]
+arg010.txt /o:4 /p             -> SUCCESS [NO_SEEDING]
+arg010.txt /o:3 /P             -> SUCCESS [NO_SEEDING]
+
+###############################################
+#
+# Testing of other options
+#
+###############################################
+
+#
+# no seeding because we're printing out statistics
+# and not the actual tests
+#
+arg001.txt -s                  -> SUCCESS [NO_SEEDING]
+arg001.txt -S                  -> SUCCESS [NO_SEEDING]
+arg001.txt /S                  -> SUCCESS [NO_SEEDING]
+arg001.txt /s                  -> SUCCESS [NO_SEEDING]

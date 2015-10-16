@@ -1,0 +1,3 @@
+A: a, b, c
+B: ~a, ~b, c
+if [a] > "a\a" then [b]="b";

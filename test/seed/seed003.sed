@@ -1,0 +1,12 @@
+A	B	C
+2	c	yy
+3	b	xx
+2	a	zz
+1	b	yy
+1	a	zz
+1	c	xx
+3	c	zz
+2	b	zz
+3	a	yy
+2	a	xx
+3	c	yy

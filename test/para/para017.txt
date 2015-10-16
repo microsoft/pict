@@ -1,0 +1,8 @@
+#
+# simplest with tab separator
+#
+G1	0	1	2	3	4
+G2	0	1	2	3	4	5
+G3	0
+G4	0	1	2	3	4	5	6
+G5	0	1	2	3	4	5

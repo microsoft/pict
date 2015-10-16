@@ -1,0 +1,16 @@
+#
+# comma first, name with white char
+#
+,a,b,c
+gr  oup,1,2,3,4,5,6,7
+gr	oup2,f,g,h,i,j
+
+if [] = "a" then [gr  oup] > 3;
+if ([gr  oup] = 1)   then [gr	oup2] >= "h";
+if (([gr  oup] = 2)) then [gr	oup2] <= "h";
+if [gr  oup] = 3     then [gr	oup2] >  "h";
+if [gr  oup] = 4     then [gr	oup2] <  "h";
+if [gr  oup] = 6     then [gr	oup2] =  "h";
+if [gr  oup] = 7     
+   then [gr	oup2] 
+<> "h";

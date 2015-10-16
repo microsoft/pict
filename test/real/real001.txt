@@ -1,0 +1,23 @@
+#
+# create/format volumes
+#
+TYPE,Primary,Logical,Single,Span,Stripe,Mirror,RAID-5
+SIZE,10,1000,5000,40000
+FORMAT,quick,slow
+FSYSTEM,FAT,FAT32,NTFS
+CLUSTER,512,1024,2048,4096,8192,16384,32768,65536
+COMPRESSION,on,off
+
+#
+# file systems has constraints on volume size
+#
+if [FSYSTEM] = "FAT"   then [SIZE] <= 4096;
+if [FSYSTEM] = "FAT32" then [SIZE] <= 32000;
+
+#
+# compression can be applied only for volumes
+# formatted as NTFS and with cluser size <= 4K
+#
+if [FSYSTEM] <> "NTFS"  or 
+ ( [FSYSTEM] =  "NTFS"  and
+   [CLUSTER] >   4096 ) then [COMPRESSION] = "off";

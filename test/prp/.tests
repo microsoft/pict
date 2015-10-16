@@ -1,0 +1,19 @@
+###############################################
+#
+# [P1] op [P2]
+#
+###############################################
+
+prp001.txt        -> SUCCESS
+prp002.txt        -> SUCCESS
+prp003.txt        -> SUCCESS
+prp004.txt        -> SUCCESS
+prp005.txt        -> SUCCESS
+prp006.txt        -> SUCCESS
+prp006.txt /o:1   -> SUCCESS
+prp007.txt        -> SUCCESS
+prp008.txt        -> SUCCESS
+
+prp020.txt        -> BAD_CONSTRAINTS
+prp021.txt        -> BAD_CONSTRAINTS
+

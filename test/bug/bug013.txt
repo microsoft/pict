@@ -1,0 +1,6 @@
+Src:  1 char, 10 chars, ~null
+Dst:  1 char, 10 chars, ~null
+Size: 1, 0, ~-1
+
+if [Src] = "100" then [Size] = -1;
+if [Src] = "1 char" then [Size] > 2;

@@ -1,0 +1,29 @@
+   A: a,b,c
+#
+
+#
+   B: b, c,  d
+
+  C: a, b, c
+
+    if ex: a,b,c
+#{A}
+  d: d,b
+#
+
+###if [a]="a" then [b]>"b";
+
+  {A}
+#
+#
+
+  {c,b}
+#
+
+#
+  if [a]="a" then [b]>"b";
+ 
+   if [a]="a" then [b]>"b";
+
+  if [a]="a" then [b]>"b";
+   if  [a]="a" then [b]>"b";

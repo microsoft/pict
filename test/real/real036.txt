@@ -1,0 +1,17 @@
+#
+# Machine 1
+#
+OS_1:   Win2000, WinXP
+SKU_1:  Professional, Server, Datacenter, WinPowered
+LANG_1: EN, DE
+
+#
+# Machine 2
+#
+OS_2:   Win2000, WinXP
+SKU_2:  Professional, Server, Datecenter
+LANG_2: EN, DE
+
+#IF [LANG_1] = [LANG_2] THEN [OS_1] <> [OS_2];
+#[OS_1] <> [OS_2] or [SKU_1] <> [SKU_2] or [LANG_1] <> [LANG_2];
+[OS_1] <> [OS_2] and [SKU_1] <> [SKU_2] and [LANG_1] <> [LANG_2];

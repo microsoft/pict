@@ -1,0 +1,8 @@
+A: a, b, c, d
+B: 1, 2, 3, 4
+C: a, b, c, d
+D: a, b, c
+E: a, b, c, d
+F: a, b, c
+
+( [B] = 1 OR [C] = [D] ) AND [E] <> [F];

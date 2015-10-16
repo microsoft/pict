@@ -1,0 +1,13 @@
+#
+# different names
+#
+G1,a,b,c
+#
+G2,d,e,f
+#
+G3,p,SzTzU,w
+#
+G4,j,KzLzM,o
+
+if [G1] = "a" then [G3] = "T";
+if [G4] = "M" then [G2] = "e";

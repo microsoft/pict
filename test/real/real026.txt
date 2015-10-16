@@ -1,0 +1,42 @@
+# Reconnect
+
+DisconnItem: Project, Solution
+
+# Apply following settings to
+COTarget: item, Project, Solution
+
+# Before Disconnect (BD)
+BDCOStatus: DNE, CI, JustAdded, COS, COE, COSMe, COEMe, COSMeCOS
+BDFileRO: RO, RW, DNE
+BDFileChange: None, ChangeLoc | ChUnicode, ChangeSer, ChangeBoth
+BDFileEditor: Loaded, Modified, Unloaded
+
+#While Disconnected (WD)
+WDCOStatus: Same, JustAdded, COS, COE, COSMe, COEMe, COSMeCOS  
+WDFileEditor: Loaded, Modified, Unloaded
+
+# LocalVersion
+LocalVersion: First, Middle, Last
+
+#Project connection
+PrjMultipleConnections: Yes, No
+
+#ReconnectUser
+SameUserReconnect: Yes, No
+
+# Connection procedure
+WDMoveSlnToNewLocation: Yes, No
+
+# Constraints
+#
+#------------------------------------------------------------------------
+# CO Status
+#------------------------------------------------------------------------
+if [BDCOStatus] = "COEMe" then [WDCOStatus] in {"Same", "COSMeCOS"};
+if [BDCOStatus] in {"COSMe", "COSMeCOS"} then [WDCOStatus] in {"Same", "COSMe", "COSMeCOS"};
+if [WDCOStatus] = "JustAdded" then [BDCOStatus] in {"JustAdded", "DNE", "COS", "COE"};
+
+#------------------------------------------------------------------------
+# CO Target
+#------------------------------------------------------------------------
+if [COTarget] = "Solution" then [WDCOStatus] = "Same";

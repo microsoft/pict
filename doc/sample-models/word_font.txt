@@ -1,0 +1,21 @@
+#
+# simplified 1st tab of MS Word's Font dialog
+#
+Font,Times,Arial
+Style,Regular,Italic,Bold,Bold Italic
+Size,10,12
+Color,Auto,Blue,Green
+Under,Yes,No
+UStyle,none,words,solid,dotted
+UColor,Auto,Blue
+Strike,Yes,No
+DblStr,Yes,No
+SupScr,Yes,No
+SubScr,Yes,No
+Shadow,Yes,No
+Outline,Yes,No
+Emboss,Yes,No
+Engrave,Yes,No
+Small,Yes,No
+Caps,Yes,No
+Hidden,Yes,No

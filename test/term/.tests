@@ -1,0 +1,19 @@
+###############################################
+#
+# Testing multiple terms with same condition
+#
+###############################################
+
+term001.txt         -> SUCCESS
+term004.txt         -> SUCCESS
+term010.txt         -> SUCCESS
+term011.txt         -> SUCCESS
+term012.txt         -> SUCCESS
+term013.txt         -> SUCCESS
+
+term002.txt         -> BAD_CONSTRAINTS
+term003.txt         -> BAD_CONSTRAINTS
+term021.txt         -> BAD_CONSTRAINTS
+term022.txt         -> BAD_CONSTRAINTS
+term023.txt         -> BAD_CONSTRAINTS
+term024.txt         -> BAD_CONSTRAINTS

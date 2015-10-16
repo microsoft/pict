@@ -1,0 +1,22 @@
+###############################################
+#
+# Performance cases
+#
+###############################################
+
+perf001.txt                    -> SUCCESS
+perf002.txt                    -> SUCCESS
+perf003.txt                    -> SUCCESS
+perf004.txt                    -> SUCCESS
+perf005.txt                    -> SUCCESS
+
+perf010.txt                    -> SUCCESS
+perf010.txt /o:2               -> SUCCESS
+perf010.txt /o:3               -> SUCCESS
+perf011.txt /o:2               -> SUCCESS
+
+perf020.txt /d:space /o:2      -> SUCCESS [NO_SEEDING]
+perf020.txt /d:space /o:3      -> SUCCESS [NO_SEEDING]
+perf020.txt /o:4 /d:space      -> SUCCESS [NO_SEEDING]
+
+

@@ -1,0 +1,357 @@
+
+#row params
+RowID:IsLabel,IsNotLabel
+RowLabel:Empty,NotEmpty
+RowType:Text,Detail,DetailAndSummary,Summary,Calc,SubTotal
+RowDimension:NewDimension,OldDimension,NAP
+RowMember:OneMember,MemberSet,NAP
+SubTotalOfText1:Yes,No
+SubtotalOfDetail1:Yes,No
+SubtotalOfDetailAndSummary1:Yes,No
+SubtotalOfSummary1:Yes,No
+SubtotalOfSubtotal1:Yes,No
+SubtotalOfCalc1:Yes,No
+CalcOperator1:Add,Sub,NAP
+CalcOperand1:Member,MemberSet,Row,Number,Expression,NAP
+RowDimensionProperties:Zero,One,Two,Multiple
+
+#column params
+ColumnHeader:Empty,NotEmpty
+Dimension Properties:Zero,One,Two,Multiple
+ColumnIncludeScenario:Yes,No
+ScenarioMember:Member,MemberSet,Calc,NAP
+ScenarioCalcOperator1:Add,Sub,NAP
+ScenarioCalcOperand1:Member,MemberSet,Number,Expression,NAP
+ColumnIncludeTime:Yes,No
+TimeMember:StaticTime,Calc,NAP
+TimeCalcOperator1:Add,Sub,NAP
+TimeCalcOperand1:StaticTime,DTCY,DTCM,DTCYlagM,DTCYMlead,DTCYleadCMlag,Number,Expression,NAP
+ColumnIncludeOneMoreDimension:Yes,No
+OneMoreDimensionMember:Member,MemberSet,Calc,NAP
+OneMoreDimensionCalcOperator1:Add,Sub,NAP
+OneMoreDimensionCalcOperand1:Member,MemberSet,Number,Expression,NAP
+ColumnIncludeTwoMoreDimensions:Yes,No
+TwoMoreDimensionMember:Member,MemberSet,Calc,NAP
+TwoMoreDimensionCalcOperator1:Add,Sub,NAP
+TwoMoreDimensionCalcOperand1:Member,MemberSet,Number,Expression,NAP
+
+#report option
+DefaultTime:Time
+
+
+#submodels
+
+{ SubTotalOfText1, SubtotalOfDetail1, SubtotalOfDetailAndSummary1, SubtotalOfSummary1, SubtotalOfSubtotal1, SubtotalOfCalc1, SubtotalOfSubtotal1 } @ 2
+
+{ ColumnIncludeScenario, ScenarioCalcOperator1, ScenarioCalcOperand1 } @ 2
+
+{ ColumnIncludeTime, TimeCalcOperator1, TimeCalcOperand1 } @ 2
+
+{ ColumnIncludeOneMoreDimension, OneMoreDimensionCalcOperator1, OneMoreDimensionCalcOperand1 } @ 2
+
+{ ColumnIncludeOneMoreDimension, ColumnIncludeTwoMoreDimensions, TwoMoreDimensionCalcOperator1,  TwoMoreDimensionCalcOperand1 } @ 2
+
+#Detail rows
+IF 
+	[RowType] = "Detail" 
+THEN 
+	[RowDimension] <> "NAP" 
+	AND [RowMember] <> "NAP" 
+	AND (
+		[SubTotalOfText1] = "NO" 
+		AND [SubtotalOfDetail1] = "NO" 
+		AND [SubtotalOfDetailAndSummary1] = "NO" 
+		AND [SubtotalOfSummary1] = "NO" 
+		AND [SubtotalOfSubtotal1] = "NO" 
+		AND [SubtotalOfCalc1] = "NO" 
+		) 
+	AND ( 
+		[CalcOperator1] = "NAP" 
+		); 
+
+#DetailAndSummary rows
+
+IF 
+	[RowType] = "DetailAndSummary" 
+THEN 
+	[RowDimension] <> "NAP" 
+	AND [RowMember] <> "NAP" 
+	AND ( 
+		[SubTotalOfText1] = "NO" 
+		AND [SubtotalOfDetail1] = "NO" 
+		AND [SubtotalOfDetailAndSummary1] = "NO" 
+		AND [SubtotalOfSummary1] = "NO" 
+		AND [SubtotalOfSubtotal1] = "NO" 
+		AND [SubtotalOfCalc1] = "NO" 
+		) 
+	AND ( 
+		[CalcOperator1] = "NAP" 
+		); 
+
+#Summary rows
+IF 
+	[RowType] = "Summary" 
+THEN 
+	[RowDimension] <> "NAP" 
+	AND [RowMember] <> "NAP" 
+	AND (
+		[SubTotalOfText1] = "NO" 
+		AND [SubtotalOfDetail1] = "NO" 
+		AND [SubtotalOfDetailAndSummary1] = "NO" 
+		AND [SubtotalOfSummary1] = "NO" 
+		AND [SubtotalOfSubtotal1] = "NO" 
+		AND [SubtotalOfCalc1] = "NO" 
+		) 
+	AND ( 
+		[CalcOperator1] = "NAP" 
+		); 
+
+#Text rows
+IF 
+	[RowType] = "Text" 
+THEN 
+	[RowDimension] = "NAP" 
+	AND [RowMember] = "NAP" 
+	AND ( 
+		[SubTotalOfText1] = "NO" 
+		AND [SubtotalOfDetail1] = "NO" 
+		AND [SubtotalOfDetailAndSummary1] = "NO" 
+		AND [SubtotalOfSummary1] = "NO" 
+		AND [SubtotalOfSubtotal1] = "NO" 
+		AND [SubtotalOfCalc1] = "NO" 
+		) 
+	AND ( 
+		[CalcOperator1] = "NAP" 
+		); 
+#SubTotal rows
+IF 
+	[RowType] = "SubTotal" 
+THEN 
+	[RowDimension] = "NAP" 
+	AND [RowMember] = "NAP" 
+	AND ( 
+		[SubTotalOfText1] = "Yes" 
+		OR [SubtotalOfDetail1] = "Yes" 
+		OR [SubtotalOfDetailAndSummary1] ="Yes" 
+		OR [SubtotalOfSummary1] ="Yes" 
+		OR [SubtotalOfSubtotal1] = "Yes" 
+		OR [SubtotalOfCalc1] = "Yes" 
+		) 
+	AND ( 
+		[CalcOperator1] = "NAP" 
+		); 
+
+
+#Calc rows
+IF 
+	[RowType] = "Calc" 
+THEN 
+	[RowDimension] = "NAP" 
+	AND [RowMember] = "NAP" 
+	AND ( 
+		[SubTotalOfText1] = "NO" 
+		AND [SubtotalOfDetail1] = "NO" 
+		AND [SubtotalOfDetailAndSummary1] = "NO" 
+		AND [SubtotalOfSummary1] = "NO" 
+		AND [SubtotalOfSubtotal1] = "NO" 
+		AND [SubtotalOfCalc1] = "NO" 
+		) 
+	AND ( 
+		[CalcOperator1] <> "NAP" 
+		); 
+
+
+IF 
+	[CalcOperator1] = "NAP" 
+THEN 
+	[CalcOperand1] = "NAP"; 
+IF 
+	[CalcOperator1] <> "NAP" 
+THEN 
+	[CalcOperand1] <> "NAP"; 
+
+
+
+
+
+
+
+#column include scenario dimension
+IF 
+	[ColumnIncludeScenario] = "Yes" 
+THEN 
+	[ScenarioMember] <> "NAP"; 
+
+IF 
+	[ColumnIncludeScenario] = "No" 
+THEN 
+	[ScenarioMember] = "NAP"; 
+
+if 
+	[ScenarioMember] = "Member" 
+	OR [ScenarioMember] = "MemberSet"
+	OR [ScenarioMember] = "NAP" 
+THEN 
+	[ScenarioCalcOperator1] = "NAP"; 
+
+IF 
+	[ScenarioMember] = "Calc" 
+THEN 
+	[ScenarioCalcOperator1] <> "NAP"; 
+
+
+
+IF 
+	[ScenarioCalcOperator1] = "NAP" 
+THEN 
+	[ScenarioCalcOperand1] = "NAP"; 
+IF 
+	[ScenarioCalcOperator1] <> "NAP" 
+THEN 
+	[ScenarioCalcOperand1] <> "NAP"; 
+
+
+
+	
+
+#column include Time dimension
+IF 
+	[ColumnIncludeTime] = "Yes" 
+THEN 
+	[TimeMember] <> "NAP"; 
+
+IF 
+	[ColumnIncludeTime] = "Yes" 
+THEN 
+	[TimeMember] <> "NAP"; 
+
+IF 
+	[ColumnIncludeTime] = "No" 
+THEN 
+	[TimeMember] = "NAP"; 
+
+if 
+	[TimeMember] = "StaticTime" 
+	OR [TimeMember] = "NAP" 
+THEN 
+	[TimeCalcOperator1] = "NAP"; 
+
+IF 
+	[TimeMember] = "Calc" 
+THEN 
+	[TimeCalcOperator1] <> "NAP"; 
+
+
+
+IF 
+	[TimeCalcOperator1] = "NAP" 
+THEN 
+	[TimeCalcOperand1] = "NAP"; 
+IF 
+	[TimeCalcOperator1] <> "NAP"  
+THEN 
+	[TimeCalcOperand1] <> "NAP"; 
+
+
+
+
+
+
+#column include one more dimension
+IF 
+	[ColumnIncludeOneMoreDimension] = "Yes" 
+THEN 
+	[OneMoreDimensionMember] <> "NAP"; 
+
+IF 
+	[ColumnIncludeOneMoreDimension] = "Yes" 
+THEN 
+	[OneMoreDimensionMember] <> "NAP";
+
+IF 
+	[ColumnIncludeOneMoreDimension] = "No" 
+THEN 
+	[OneMoreDimensionMember] = "NAP";
+
+if 
+	[OneMoreDimensionMember] = "Member" 
+	OR [OneMoreDimensionMember] = "MemberSet" 
+	OR [OneMoreDimensionMember] = "NAP" 
+THEN 
+	[OneMoreDimensionCalcOperator1] = "NAP"; 
+
+IF 
+	[OneMoreDimensionMember] = "Calc" 
+THEN 
+	[OneMoreDimensionCalcOperator1] <> "NAP"; 
+
+
+
+IF 
+	[OneMoreDimensionCalcOperator1] = "NAP" 
+THEN 
+	[OneMoreDimensionCalcOperand1] = "NAP";
+IF 
+	[OneMoreDimensionCalcOperator1] <> "NAP" 
+THEN 
+	[OneMoreDimensionCalcOperand1] <> "NAP"; 
+
+
+
+
+
+
+
+
+#column include two more dimensions
+IF 
+	[ColumnIncludeOneMoreDimension] = "No" 
+THEN 
+	[ColumnIncludeTwoMoreDimensions] = "No";
+
+IF 
+	[ColumnIncludeTwoMoreDimensions] = "Yes" 
+THEN 
+	[TwoMoreDimensionMember] <> "NAP"; 
+
+IF 
+	[ColumnIncludeTwoMoreDimensions] = "Yes" 
+THEN 
+	[TwoMoreDimensionMember] <> "NAP"; 
+
+IF 
+	[ColumnIncludeTwoMoreDimensions] = "No" 
+THEN 
+	[TwoMoreDimensionMember] = "NAP";
+
+IF
+	[TwoMoreDimensionMember] = "Member" 
+	OR [TwoMoreDimensionMember] = "MemberSet" 
+	OR [TwoMoreDimensionMember] = "NAP" 
+THEN 
+	[TwoMoreDimensionCalcOperator1] = "NAP"; 
+
+IF 
+	[TwoMoreDimensionMember] = "Calc" 
+THEN 
+	[TwoMoreDimensionCalcOperator1] <> "NAP"; 
+
+
+
+IF 
+	[TwoMoreDimensionCalcOperator1] = "NAP" 
+THEN 
+	[TwoMoreDimensionCalcOperand1] = "NAP"; 
+IF 
+	[TwoMoreDimensionCalcOperator1] <> "NAP" 
+THEN 
+	[TwoMoreDimensionCalcOperand1] <> "NAP"; 
+
+
+
+
+
+
+
+
+

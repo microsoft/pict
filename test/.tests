@@ -1,0 +1,23 @@
+--?                 -> BAD_MODEL
+-??                 -> BAD_MODEL
+"/??"               -> BAD_MODEL
+//?                 -> BAD_MODEL
+/                   -> BAD_MODEL
+//                  -> BAD_MODEL
+nonexisting.txt     -> BAD_MODEL
+-o:1                -> BAD_MODEL
+-d:.                -> BAD_MODEL
+/a:                 -> BAD_MODEL
+/i:"!"              -> BAD_MODEL
+/s:                 -> BAD_MODEL
+/ab:1               -> BAD_MODEL
+/ob:1               -> BAD_MODEL
+-00                 -> BAD_MODEL
+-DD:a               -> BAD_MODEL
+
+#
+# This should really return SUCCESS but in the code it is easier
+# to return BAD_OPTION and it doesn't matter that much after all
+#
+"/?"                -> BAD_OPTION
+-?                  -> BAD_OPTION

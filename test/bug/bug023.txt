@@ -1,0 +1,10 @@
+A: 0, 1
+B: 0, 1, 2
+C: 0, 1, 2, 3, 4
+D: 0, 1
+E: 0, 1
+
+if [B] =  0 and [A] =  0 then [D] = 1 and [E] = 0;
+if [B] =  0 and [A] <> 0 then [D] = 0 and [E] = 0;
+if [B] <> 0 and [A] =  0 then [D] = 1 and [E] = 0;
+if [B] <> 0 and [A] <> 0 then [D] = 1 and [E] = 1;

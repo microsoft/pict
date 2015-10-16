@@ -1,0 +1,6 @@
+#
+# duplicated value
+#
+G,a,b,c,B
+I,a,B,c,B
+H,1,2,3,4

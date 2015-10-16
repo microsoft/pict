@@ -1,0 +1,7 @@
+A: a1, a2, a3
+B: b1, b2
+C: c1, c2, c3, c4
+B2: b1, b2, b3
+[B] >= [B2];
+if [A] = "a" then [C] like "c?";
+

@@ -1,0 +1,16 @@
+*.sdf
+*.opensdf
+*.user
+/api-usage/Debug
+/api/Debug
+/api/Release
+/api-usage/Release
+/cli/Debug
+/cli/Release
+/Debug
+/Release
+/test/.stderr*
+/test/.stdout*
+*.suo
+/test/rel.log
+/test/dbg.log

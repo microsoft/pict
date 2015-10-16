@@ -1,0 +1,167 @@
+#
+# deriver is slow
+#
+NestedTypeKind,Interface,Class,Delegate,Struct,Enum, Primitive, Unmanaged
+NestedTypeFlag: abstract, sealed, None
+NestingModuleMixed: Mixed, PureManaged
+ClientInteraction: ImplementsNested, ImplementsBoth, ExtendsNested, ExtendsEnclImplementsNest, ImplementsEncl, ConstructedTypeNested, ConstructedTypeEncl, None, ExtendsEncl, ExtendsNestImplementsEncl
+NestDependsOnEncl: None, Implements, StaticField, InstanceField, MethodReturn, MethodParam, Extends
+EnclDependsOnNest: None, StaticField, MethodReturn, MethodParam, Implements, Extends, InstanceField
+EntrypointLocation: NestedType, EnclosingType, MainManagedType|GlobalManaged, GlobalUnmanaged
+NestingLocation: DLL, Netmodule, MainModule
+ClientModuleMixed: Mixed,PureManaged
+ClientLocation: DLL, Netmodule, MainModule
+ModuleConfig: Separate, Same
+EnclosingTypeGeneric: Generic, Nongeneric
+NestedTypeGeneric: Generic, Nongeneric
+EnclosingTypeVis: public, private
+NestTypeVis: public, family, assembly, famandassem, famorassem
+NestMemberVis: private, famandassem, assembly, family, famorassem, public
+EnclosingTypeKind: Interface, Class, Delegate, Struct, Enum, Primitive, Unmanaged
+EnclosingTypeFlag: abstract, sealed, None
+EnclMemberVis: private, famandassem, assembly, family, famorassem, public
+
+
+# Constraints
+
+
+if [NestedTypeKind] = "Interface" then [NestedTypeFlag] = "abstrac";
+
+if [EnclosingTypeKind] = "Interface" then [EnclosingTypeFlag] = "abstract";
+
+
+if [NestedTypeKind] in {"Enum","Struct","Primitive","Delegate"} then [NestedTypeFlag] = "sealed";
+if [EnclosingTypeKind] in {"Enum","Struct","Primitive","Delegate"} then [EnclosingTypeFlag] = "sealed";
+
+
+if [NestedTypeKind] = "Unmanaged" then [NestedTypeFlag] = "None";
+if [EnclosingTypeKind] = "Unmanaged" then [EnclosingTypeFlag] = "None";
+
+
+if [NestedTypeKind] = "Unmanaged" then [NestingModuleMixed] = "Mixed";
+if [EnclosingTypeKind] = "Unmanaged" then [NestingModuleMixed] = "Mixed";
+
+
+if [NestingLocation] = "MainModule" and [ClientLocation] = "MainModule" then [ModuleConfig] = "Same";
+
+
+if ([NestingLocation] = "MainModule" and [ClientLocation] <> "MainModule")
+or ([NestingLocation] <> "MainModule" and [ClientLocation] = "MainModule")
+ then [ModuleConfig] = "Separate";
+
+
+if ([NestingLocation] = "DLL" and [ClientLocation] = "Netmodule")
+or ([NestingLocation] = "Netmodule" and [ClientLocation] = "DLL")
+ then [ModuleConfig] = "Separate";
+
+
+if [ModuleConfig] = "Same" and [ClientModuleMixed] = "Mixed" then [NestingModuleMixed] = "Mixed";
+
+
+if [ModuleConfig] = "Same" and [NestingModuleMixed] = "PureManaged" then [ClientModuleMixed] = "PureManaged";
+
+
+if [NestedTypeGeneric] = "Generic" then [EntryPointLocation] <> "NestedType";
+
+
+if [EnclosingTypeGeneric] = "Generic" then [EntryPointLocation] <> "EnclosingType";
+
+
+if [EntrypointLocation] = "NestedType" then [NestingLocation] = "MainModule"; 
+
+
+if [EntrypointLocation] = "EnclosingType" then [NestingLocation] = "MainModule"; 
+
+
+if [NestDependsOnEncl] = "InstanceField" then [NestedTypeKind] IN {"Class", "Struct", "Unmanaged"};
+
+if [EnclDependsOnNest] = "InstanceField" then [EnclosingTypeKind] IN {"Class", "Struct", "Unmanaged"};
+
+
+if [NestDependsOnEncl] = "StaticField" then [NestedTypeKind] IN {"Interface", "Class", "Struct", "Unmanaged"};
+if [EnclDependsOnNest] = "StaticField" then [EnclosingTypeKind] IN {"Interface", "Class", "Struct", "Unmanaged"};
+
+
+if [NestDependsOnEncl] IN {"MethodReturn", "MethodParam"} then [NestedTypeKind] IN {"Interface", "Class", "Struct", "Unmanaged"};
+
+if [EnclDependsOnNest] IN {"MethodReturn", "MethodParam"} then [EnclosingTypeKind] IN {"Interface", "Class", "Struct", "Unmanaged"};
+
+# enclosing and nested types can't implement each other at the same time
+if [NestDependsOnEncl] = "Implements" then [EnclDependsOnNest] <> "Implements";
+if [NestDependsOnEncl] = "Extends" then [EnclDependsOnNest] <> "Extends";
+
+
+# doesn't make sense to have client in netmodule and nesting in MainModule since client # targets the nesting
+if [ClientLocation] = "Netmodule" then [NestingLocation] <> "MainModule";
+
+
+# we don't want to have negative test cases in the model
+# for example, if nesting is inside one assembly and enclosing type has private visibility,
+# the client cannot see the nested type. --> exception is thrown
+if [ClientLocation] = "MainModule" and [NestingLocation] = "DLL"  then [EnclosingTypeVis] <> "private";
+
+
+if [ClientLocation] = "DLL" and [NestingLocation] = "MainModule"  then [EnclosingTypeVis] <> "private";
+
+
+if [ClientLocation] = "Netmodule" and [NestingLocation] = "DLL"  then [EnclosingTypeVis] <> "private";
+
+
+if [ClientLocation] = "DLL" and [NestingLocation] = "DLL"  then [EnclosingTypeVis] <> "private";
+
+
+if [ClientInteraction] in {"ImplementsNested", "ExtendsNested","ConstructedTypeNested", "ConstructedTypeEncl", "None"} then [NestTypeVis] in {"public", "assembly", "famorassem"};
+
+
+if [EntrypointLocation] = "NestedType" then [NestedTypeKind] in {"Interface", "Class","Struct"};
+if [EntrypointLocation] = "EnclosingType" then [EnclosingTypeKind] in {"Interface", "Class","Struct"};
+
+
+if [ClientInteraction] = "ConstructedTypeNested" then [NestedTypeKind] <> "Delegate";
+
+if [ClientInteraction] = "ConstructedTypeEncl" then [EnclosingTypeKind] <> "Delegate";
+
+if [NestDependsOnEncl] = "Extends" then [NestedTypeKind] = "Class";
+if [NestDependsOnEncl] = "Extends" then [EnclosingTypeKind] = "Class";
+
+if [EnclDependsOnNest] = "Extends" then [NestedTypeKind] = "Class";
+if [EnclDependsOnNest] = "Extends" then [EnclosingTypeKind] = "Class";
+
+
+if [NestDependsOnEncl] = "Implements" then [NestedTypeKind] in {"Interface", "Class", "Struct"};
+if [NestDependsOnEncl] = "Implements" then [EnclosingTypeKind] = "Interface";
+
+
+if [EnclDependsOnNest] = "Implements" then [NestedTypeKind] = "Interface";
+if [EnclDependsOnNest] = "Implements" then [EnclosingTypeKind] in {"Interface", "Class", "Struct"};
+
+
+
+
+if [NestedTypeKind] = "Class" and [EnclDependsOnNest] = "Extends" then [NestedTypeFlag] <> "sealed";
+if [EnclosingTypeKind] = "Class" and [NestDependsOnEncl] = "Extends" then [EnclosingTypeFlag] <> "sealed";
+
+if [ClientInteraction] = "ExtendsEncl" then [EnclosingTypeKind] = "Class";
+if [ClientInteraction] = "ExtendsNested" then [NestedTypeKind] = "Class";
+
+if [ClientInteraction] = "ExtendsEncl" then [EnclosingTypeFlag] <> "sealed";
+if [ClientInteraction] = "ExtendsNested" then [NestedTypeFlag] <> "sealed";
+
+if [ClientInteraction] = "ExtendsEnclImplementsNest" then [EnclosingTypeKind] = "Class";
+if [ClientInteraction] = "ExtendsEnclImplementsNest" then [EnclosingTypeFlag] <> "sealed";
+if [ClientInteraction] = "ExtendsEnclImplementsNest" then [NestedTypeKind] = "Interface";
+
+
+if [ClientInteraction] = "ExtendsNestImplementsEncl" then [NestedTypeKind] = "Class";
+if [ClientInteraction] = "ExtendsNestImplementsEncl" then [NestedTypeFlag] <> "sealed";
+if [ClientInteraction] = "ExtendsNestImplementsEncl" then [EnclosingTypeKind] = "Interface";
+
+if [ClientInteraction] = "ImplementsBoth" then [NestedTypeKind] = "Interface";
+
+if [ClientInteraction] = "ImplementsBoth" then [EnclosingTypeKind] = "Interface";
+
+if [ClientInteraction] = "ImplementsNested" then [NestedTypeKind] = "Interface";
+
+
+if [ClientInteraction] = "ImplementsEncl" then [EnclosingTypeKind] = "Interface";
+

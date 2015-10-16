@@ -1,0 +1,6 @@
+#
+# duplicated param
+#
+G,a,b,c
+H,1,2,3,4
+G,r,ss,tt

@@ -1,0 +1,11 @@
+#
+# title is sel-explaining
+#
+G1,A,B,C,D,E,F,G,H,I,J
+G2,a,b,c,d,e,f,g,h,i,j
+G3,1,2,3,4,5,6,7,8,9,10
+G4,!,@,#,$,%,^,&,*,(,)
+
+if [g1] =  "a" then [g4] =  "!";
+if [g4] >  "@" then [g2] >  "b";
+if [g2] <> "b" then [g1] <= "J";

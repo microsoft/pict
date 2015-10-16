@@ -1,0 +1,9 @@
+A: 1, 2, 3, 4
+B: 1, 2, 3, 4
+C: 1, 2, 3, 4
+D: 1, 2, 3, 4
+E: ala, bela, cela, dela
+F: ala, bela, cela, dela
+
+if [e] not like "al*" then [a] > 1 else [c;
+if not [f] like "al*" then [b] > 1 else [b] <= 1;

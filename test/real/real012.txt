@@ -1,0 +1,15 @@
+#
+# different machine configurations
+# hw & sw as separate submodels
+#
+CPU,Pent,PentPro,PII,PIII,P4,IA-64
+CPUS,Single,Dual,Quad
+RAM,16MB,32MB,64MB,128MB,256MB,512MB
+OS,Win98,NT4,Win2K,WinXP
+IE,4.0,5.0,5.5,6.0
+SP,1,2,3,4
+DISK,SCSI,IDE
+DUALMON,yes,no
+
+{CPU, CPUs, RAM, DISK, DUALMON} @ 2
+{OS, IE, SP} @ 2

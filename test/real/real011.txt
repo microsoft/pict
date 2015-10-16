@@ -1,0 +1,23 @@
+SKU,Pro,Srv,ASrv,DTC,WP
+SKUTy,Pro,Srv
+MUI,yes,no
+OCM,yes,no
+SP,Gold,SP1,SP2
+AttEP,yes,no
+STK,yes,no
+SRP,yes,no
+IE,IE5.5,IE6,Def
+IISPch,yes,no
+RunSS,yes,no
+SP3,FC,FCWU,Pt,PtWU,msi
+NOCM,Yes,No
+VUninst,Yes,No
+
+if [SP] <> "SP2" then [SRP] = "no";
+if [SP] <> "SP1" then [AttEP] = "no";
+if [SKU] = "DTC" then [STK] = "no";
+if [SKU] = "DTC" and [SP] <> "SP2" then [MUI] = "no";
+if [SKUTy] = "Pro" then [SKU] = "Pro";
+if [SKUTy] <> "Pro" then [SKU] <> "Pro";
+if [RunSS] = "yes" then [NOCM] = "no";
+if [RunSS] = "yes" then [VUninst] = "yes";

@@ -1,0 +1,17 @@
+LIBRARY    pict
+EXPORTS
+    PictCreateTask
+    PictAddExclusion
+    PictAddSeed
+    PictGenerate
+    PictAttachChildModel
+    PictAllocateResultBuffer
+    PictFreeResultBuffer
+    PictResetResultFetching
+    PictGetNextResultRow
+    PictSetRootModel
+    PictGetTotalParameterCount
+    PictDeleteTask
+    PictCreateModel
+    PictAddParameter
+    PictDeleteModel

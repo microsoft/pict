@@ -1,0 +1,8 @@
+#
+# title is self-explaining
+#
+G1,a,b,c,d
+G2,f,g,h,
+
+if [G1] = "A" then [G2]  "g";
+if [G1] > "A" then [G2] > "f";

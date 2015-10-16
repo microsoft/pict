@@ -1,0 +1,15 @@
+# com
+# com
+
+A: a, b, c
+B,b,c,d
+C , c, d, e
+
+
+   {A ,           B} @1
+
+#
+if [a] = "a" then [b] = "c";
+   {C}
+#
+#

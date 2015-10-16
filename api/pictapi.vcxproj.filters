@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pictapi.cpp" />
+    <ClCompile Include="deriver.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="task.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="exclusion.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="combination.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="worklist.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="parameter.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pictapi.h" />
+    <ClInclude Include="generator.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="trie.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="deriver.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{1c2248af-4aff-4405-a494-dca176b3d474}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

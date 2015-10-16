@@ -1,0 +1,12 @@
+#
+# /o:3
+#
+A,a1,a2
+B,b1,b2
+C,c1,c2
+D,d1,d2
+E,e1,e2
+
+if [E] = "e2" then [D] = "d2";
+if [B] = "b1" then [A] = "a1";
+if [A] = "a1" and [D] = "d2" then [C] = "c1";

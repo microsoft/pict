@@ -1,0 +1,12 @@
+#
+# valid cases:
+# clause1 AND clause2
+# (((clause1 AND clause2)))
+#
+G1,A,B,C,D,E,F,G,H,I,J
+G2,a,b,c,d,e,f,g,h,i,j
+G3,1,2,3,4,5,6,7,8,9,10
+G4,!,@,#,$,%,^,&,*,(,)
+
+if [G1] < "E" and [G2] <> "B" then [G3] >=  5;
+if (( ( [G1] < "C" and [G1] <> "A")) ) then [G3] <= 5;

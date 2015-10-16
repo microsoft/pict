@@ -1,0 +1,31 @@
+###############################################
+#
+# Models with empty lines
+#
+###############################################
+
+modl001.txt      -> SUCCESS
+modl002.txt      -> SUCCESS
+modl003.txt      -> SUCCESS
+modl004.txt      -> SUCCESS
+modl005.txt      -> SUCCESS
+modl006.txt      -> SUCCESS
+modl007.txt      -> SUCCESS
+modl008.txt      -> SUCCESS
+modl009.txt      -> SUCCESS
+modl013.txt      -> SUCCESS
+modl014.txt      -> SUCCESS
+modl015.txt      -> SUCCESS
+modl019.txt      -> SUCCESS
+modl019.txt -c   -> SUCCESS
+modl020.txt      -> SUCCESS
+modl021.txt      -> SUCCESS
+modl022.txt      -> SUCCESS
+modl023.txt      -> SUCCESS
+
+modl010.txt      -> BAD_MODEL
+modl011.txt      -> BAD_MODEL
+modl012.txt      -> BAD_CONSTRAINTS
+modl016.txt      -> BAD_CONSTRAINTS
+modl017.txt      -> BAD_CONSTRAINTS
+modl018.txt      -> BAD_MODEL

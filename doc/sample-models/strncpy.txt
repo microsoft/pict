@@ -1,0 +1,8 @@
+#
+# Simplified strncpy, just to show how negative test generation works
+# ~ denotes negative (aka invalid) values of a parameter, there wille
+# be only one such value in any given test case
+#
+Src:  1B, 10B, ~nalloc, ~null
+Dst:  1B, 10B, ~nalloc, ~null
+Size: 1, 2, 0, ~-1

@@ -1,0 +1,8 @@
+Type:           10, 100, 500, 1000, 5000, 10000, 40000
+Size:           10, 100, 500, 1000, 5000, 10000, 40000
+$RESULT:        "TRUE", "FALSE"
+
+IF [Type] =  [Size] THEN [$RESULT] = "TRUE";
+IF [Type] <> [Size] THEN [$RESULT] = "FALSE";
+
+[Type] >= [Size];

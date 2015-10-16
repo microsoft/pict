@@ -1,0 +1,8 @@
+Strings: A`B`C`D
+NumberA: 0`1`2`3`4
+NumberB: 10`11`12`13`14
+FileShare: None`Read`Write`ReadWrite`Inheritable
+Object: obj_000000_Microsoft.Test.Pict.InMemoryObject`obj_000001_Microsoft.Test.Pict.InMemoryObject`obj_000002_Microsoft.Test.Pict.InMemoryObject
+
+{ NumberA` NumberB } @ 2
+{ FileShare, Object }

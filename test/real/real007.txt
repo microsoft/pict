@@ -1,0 +1,19 @@
+A,a1,a2
+B,b1,b2,b3,b4,b5
+C,c1,c2,c3,c4,c5
+D,d1,d2
+E,e1,e2
+F,f1,f2
+G,g1,g2
+
+if [C] = "c1" then [D] = "d2";
+if [C] = "c2" then [B] = "b2";
+if [C] = "c2" or [E] = "e2" then [B] = "b3";
+
+if [C] = "c3" then [B] = "b5";
+if [C] = "c4"  then [B] <> "b1";
+if [C] = "c5"  then [B] = "b4";
+
+if [F] = "f2" then [A] = "a1";
+
+if [A] = "a1" and [B] = "b3" then [G] = "g2";

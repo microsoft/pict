@@ -1,0 +1,7 @@
+#
+# empty line with white chars
+#
+G,a,b,c
+H,1,2,3,4
+		
+I,!,@

@@ -1,0 +1,39 @@
+real001.txt   -> SUCCESS
+real002.txt   -> SUCCESS
+real003.txt   -> SUCCESS
+real004.txt   -> SUCCESS
+real005.txt   -> SUCCESS
+real006.txt   -> SUCCESS
+real007.txt   -> SUCCESS
+real008.txt   -> SUCCESS
+real009.txt   -> SUCCESS
+real010.txt   -> SUCCESS
+real011.txt   -> SUCCESS
+real012.txt   -> SUCCESS
+real020.txt   -> SUCCESS
+real021.txt   -> SUCCESS
+real022.txt   -> SUCCESS
+real023.txt   -> SUCCESS
+real024.txt   -> SUCCESS
+real025.txt   -> SUCCESS
+real026.txt   -> SUCCESS
+real027.txt   -> SUCCESS
+real030.txt   -> SUCCESS
+real031.txt   -> SUCCESS
+real033.txt   -> SUCCESS
+real034.txt   -> SUCCESS
+real035.txt   -> SUCCESS
+real036.txt   -> SUCCESS
+real037.txt   -> SUCCESS
+
+real038.txt        -> SUCCESS
+real038.txt /o:1   -> SUCCESS
+real038.txt /o:2   -> SUCCESS
+real038.txt /o:3   -> SUCCESS
+real038.txt /o:4   -> SUCCESS
+real038.txt /o:5   -> SUCCESS
+real038.txt /o:6   -> SUCCESS
+
+real039.txt   -> SUCCESS
+
+real201.txt   -> BAD_CONSTRAINTS

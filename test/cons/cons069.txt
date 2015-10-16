@@ -1,0 +1,6 @@
+G1,a,b,c
+G2,A,B,C1|C2
+G3,1,2,3
+
+if [G1] in {"b"} then [g2] in {"c1"};
+if [G1] = "c"    then [g2] in {"c1" "C2"};

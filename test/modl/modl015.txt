@@ -1,0 +1,5 @@
+A: a, b, c
+B,b,c,d
+C , c, d, e
+{A,B}
+if [a] = "a" then [b] = "c";

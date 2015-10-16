@@ -1,0 +1,6 @@
+A: 1, 2, 3
+B: ala, be	la, cela | de	la, fela | gela | he	la
+C	C: bubu, gubu
+: empty, param
+D: one, two |, three | four |
+F: aba, buba | aba

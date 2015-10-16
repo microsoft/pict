@@ -1,0 +1,27 @@
+#
+# Create and format a volume
+# Focus on primary partition formatted with NTFS
+#
+ 
+TYPE:        Primary (10), Logical, Single, Span, Stripe, Mirror, RAID-5
+SIZE:        10, 1000, 5000, 40000
+FORMAT:      quick, slow
+FSYSTEM:     FAT, FAT32, NTFS (10)
+CLUSTER:     512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
+COMPRESSION: on, off
+ 
+#
+# File systems have constraints on volume size
+#
+ 
+IF [FSYSTEM] = "FAT"   THEN [SIZE] <= 4096;
+IF [FSYSTEM] = "FAT32" THEN [SIZE] <= 32000;
+ 
+#
+# Compression can be applied only for volumes
+# formatted as NTFS and with cluster size <= 4K
+#
+ 
+IF [FSYSTEM] in {"FAT", "FAT32"} or 
+  ([FSYSTEM] = "NTFS" and [CLUSTER] >4096) 
+THEN [COMPRESSION] = "off";

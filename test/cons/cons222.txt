@@ -1,0 +1,8 @@
+A: a, b, c
+B: t, u, v
+C: x, y, z
+D: 1, 2, 3
+
+{ A, B }
+
+if [C] = "x" then [D] = 1;

@@ -1,0 +1,77 @@
+Applications/Application/@Name:						~empty, MyWindowsProgram
+Applications/Application/@Filename:					~wrong, App1.exe
+Applications/Application/@Version:					~x.9.9.9, 1.0.0.0
+Applications/Application/@Type:						~OutScope, WindowsApp, WebApp
+Applications/Application/ReferencedServices/ReferencedService/@Name:	~empty, Service1, Service2
+Applications/Application/ReferencedServices/ReferencedService/@Version:	~x.9.9.9, 1.0.0.0
+#
+# Service (wrong means empty or a invalide name)
+#
+Services/Service/@Name:			~wrong, Service1, Service2
+Services/Service/@AgentAssemblyName:	~wrong, Service1.Agent.Assembly.dll, Service2.Agent.Assembly.dll
+Services/Service/@ServiceAssemblyName:	~wrong, Service1.Service.Assembly.dll, Service2.Service.Assembly.dll
+Services/Service/@MetadataAssemblyName:	~wrong, Service1.Metadata.Assembly.dll, Service2.Metadata.Assembly.dll
+Services/Service/@Version:		~wrong, 1.0.0.0
+Services/Service/@Remotable:		~wrong, true, false
+Services/Service/@Modified:		~wrong, true, false
+Services/Service/@Status:		~0, 1, 2
+#
+# Library (wrong means empty or a invalide name)
+#
+Services/Service/Libraries/Library/@Name:			~empty, Library1, Library2
+Services/Service/Libraries/Library/@AgentAssemblyName:		~wrong, Service1.Library1.Agent.Assembly.dll, Service2.Library2.Agent.Assembly.dll
+Services/Service/Libraries/Library/@ServiceAssemblyName:	~wrong, Service1.Library1.Service.Assembly.dll, Service2.Library2.Service.Assembly.dll
+Services/Service/Libraries/Library/@MetadataAssemblyName:	~wrong, Service1.Library1.Metadata.Assembly.dll, Service2.Library2.Metadata.Assembly.dll
+Services/Service/Libraries/Library/@Version:			~x.9.9.9, 1.1.0.0
+Services/Service/Libraries/Library/@Modified:			~wrong, true, false
+#
+# Service1 Settings (only when cannotmodify be used the "Value" attribute will be used.)
+#
+Services/Service/Settings/Setting/App/@Name:			ApplicationDatabase
+Services/Service/Settings/Setting/App/@Access:			~OutScope, CannotModify, CanModify, MustModify
+Services/Service/Settings/Setting/App/@Value:			empty
+Services/Service/Settings/Setting/Meta/@Name:			MetadataDatabase
+Services/Service/Settings/Setting/Meta/@Access:			~OutScope, CannotModify, CanModify, MustModify
+Services/Service/Settings/Setting/Meta/@Value:			empty
+Services/Service/Settings/SettingEntity@Name:			EntityCubeDatabase
+Services/Service/Settings/SettingEntity@Access:			~OutScope, CannotModify, CanModify, MustModify
+Services/Service/Settings/SettingEntity@Value:			empty
+#
+# If is Service1.
+#
+if ([Services/Service/@Name] = "Service1") then [Services/Service/@AgentAssemblyName] in {"wrong", "Service1.Agent.Assembly.dll"};
+if ([Services/Service/@Name] = "Service1") then [Services/Service/@ServiceAssemblyName] in {"wrong", "Service1.Service.Assembly.dll"};
+if ([Services/Service/@Name] = "Service1") then [Services/Service/@MetadataAssemblyName] in {"wrong", "Service1.Metadata.Assembly.dll"};
+if ([Services/Service/@Name] = "Service1") then [Services/Service/Libraries/Library/@Name] in {"empty", "Library1"};
+#
+# Service1 library.
+#
+if ([Services/Service/Libraries/Library/@Name] = "Library1") then [Services/Service/Libraries/Library/@AgentAssemblyName] in {"wrong", "Service1.Library1.Agent.Assembly.dll"};
+if ([Services/Service/Libraries/Library/@Name] = "Library1") then [Services/Service/Libraries/Library/@ServiceAssemblyName] in {"wrong", "Service1.Library1.Service.Assembly.dll"};
+if ([Services/Service/Libraries/Library/@Name] = "Library1") then [Services/Service/Libraries/Library/@MetadataAssemblyName] in {"wrong", "Service1.Library1.Metadata.Assembly.dll"};
+#
+# Service1 Setting.
+#
+if ([Services/Service/@Name] = "Service1") then [Services/Service/Settings/Setting/App/@Access] in {"OutScope", "MustModify"};
+if ([Services/Service/@Name] = "Service1") then [Services/Service/Settings/Setting/Meta/@Access] in {"OutScope", "MustModify"};
+if ([Services/Service/@Name] = "Service1") then [Services/Service/Settings/SettingEntity@Access] in {"OutScope", "MustModify"};
+#
+# If is Service2.
+#
+if ([Services/Service/@Name] = "Service2") then [Services/Service/@AgentAssemblyName] in {"wrong", "Service2.Agent.Assembly.dll"};
+if ([Services/Service/@Name] = "Service2") then [Services/Service/@ServiceAssemblyName] in {"wrong", "Service2.Service.Assembly.dll"};
+if ([Services/Service/@Name] = "Service2") then [Services/Service/@MetadataAssemblyName] in {"wrong", "Service2.Metadata.Assembly.dll"};
+if ([Services/Service/@Name] = "Service2") then [Services/Service/Libraries/Library/@Name] in {"empty", "Library2"};
+#
+# Service2 library.
+#
+if ([Services/Service/Libraries/Library/@Name] = "Library2") then [Services/Service/Libraries/Library/@AgentAssemblyName] in {"wrong", "Service2.Library2.Agent.Assembly.dll"};
+if ([Services/Service/Libraries/Library/@Name] = "Library2") then [Services/Service/Libraries/Library/@ServiceAssemblyName] in {"wrong", "Service2.Library2.Service.Assembly.dll"};
+if ([Services/Service/Libraries/Library/@Name] = "Library2") then [Services/Service/Libraries/Library/@MetadataAssemblyName] in {"wrong", "Service2.Library2.Metadata.Assembly.dll"};
+#
+# Service2 Setting.
+#
+if ([Services/Service/@Name] = "Service2") then [Services/Service/Settings/Setting/App/@Access] in {"OutScope", "CannotModify", "CanModify", "MustModify"};
+if ([Services/Service/@Name] = "Service2") then [Services/Service/Settings/Setting/Meta/@Access] in {"OutScope", "CannotModify", "CanModify", "MustModify"};
+if ([Services/Service/@Name] = "Service2") then [Services/Service/Settings/SettingEntity@Access] in {"OutScope", "CannotModify", "CanModify", "MustModify"};
+

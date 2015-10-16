@@ -1,0 +1,8 @@
+# com
+# com
+
+A: a, b, c
+
+B,b,c,d
+if [a]="a" then [b]="b";
+C , c, d, e

@@ -1,0 +1,28 @@
+###############################################
+#
+# Testing of /o
+#
+###############################################
+	
+func001.txt             -> SUCCESS
+func001.txt /o:1        -> SUCCESS
+func001.txt /o:2        -> SUCCESS
+func001.txt /o:3        -> SUCCESS
+func002.txt             -> SUCCESS
+func003.txt             -> SUCCESS
+func004.txt             -> SUCCESS
+func005.txt             -> SUCCESS
+func006.txt             -> SUCCESS
+func007.txt             -> SUCCESS
+func008.txt             -> SUCCESS
+func021.txt             -> SUCCESS
+func024.txt             -> SUCCESS
+func025.txt             -> SUCCESS
+func026.txt             -> SUCCESS
+
+func020.txt             -> BAD_CONSTRAINTS
+func022.txt             -> BAD_CONSTRAINTS
+func023.txt             -> BAD_CONSTRAINTS
+func027.txt             -> BAD_CONSTRAINTS
+func028.txt             -> BAD_MODEL
+func029.txt             -> BAD_MODEL

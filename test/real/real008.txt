@@ -1,0 +1,10 @@
+#
+# different machine configurations
+#
+CPU,Pent,PentPro,PII,PIII,P4,IA-64
+CPUS,Single,Dual,Quad
+RAM,16MB,32MB,64MB,128MB,256MB,512MB
+OS,Win98,NT4,Win2K,WinXP
+IE,4.0,5.0,5.5,6.0
+DISK,SCSI,IDE
+DUALMON,yes,no

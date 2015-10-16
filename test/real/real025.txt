@@ -1,0 +1,121 @@
+# Get
+#
+ 
+# Project Type
+ProjectType: VCM | VCUM, VB, C#, Web.SP | Web.Local.IIS | Web.Local.File
+
+
+#FileType
+#------------------------------------------------
+FileType: CBPair, CB, Bin, Txt, Unicode, Prj, Sln, Folder
+FileLinked: Yes, No
+
+
+#Second File
+#----------------------------------
+SecondFile: None, SameType, DiffType
+
+
+#File Name/Size/Location
+#---------------------------------------------------------------------------------------
+FileSELoc: Default, Prj | PrjFolder, Solution | SlnFolder, SubFolder
+FileDiskLocation:  Default, SlnFolder|PrjFolder, DiffFolder|DiffDisk,UNC|Mapped|Removable
+FileName: Long| DBCS| IName | IExt, Any
+FileSize: Any, Large, Null
+
+
+# LocalVersion
+#---------------------------------------------------------------------------------------
+LocalVersion: First, Middle, Last
+
+
+#Shared
+#---------------------------------------------------------------------------------------
+Shared: No, Branched | Shared
+
+
+#IDE Status
+#---------------------------------
+FileEditor: Loaded, Modified, Unloaded
+
+
+# File Status
+#-------------------------------------------
+FileCO: CI, COS, COE, COSMe, COEMe, COSMeCOS
+FileChange: None, ChangeLoc | ChUnicode, ChangeSer, ChangeBoth
+#FileChangeType: None, Contents,Type,Both
+#FileAdd: None, AddLoc | AddSer | AddLocAddSer
+#FileDel: None, DelSer, DelLoc, DelSE, DelLocDelSer
+FileDel: None, DelLoc, DelSE
+FileRO: RO, RW, DNE
+#FileReadAccess: Yes, No
+#FileWriteAccess: Yes, No
+#FileAdminAccess: Yes, No
+FileHidden: Yes, No
+FileSystem: Yes, No
+
+
+#Misc status params
+#FileExtra: None, Pinned | MergedNotVerified | Shared | VersionLocked
+FileExtra: None,  Pinned | MergedNotVerified | VersionLocked
+
+
+# Get Op
+GetOperation: Get | GLV 
+
+
+# Constraints
+#
+#------------------------------------------------------------------------
+# Project Type
+#------------------------------------------------------------------------
+if [ProjectType] not in {"VB", "C#"} then [FileLinked] = "No";
+
+
+#------------------------------------------------------------------------
+# File Type
+#------------------------------------------------------------------------
+if [FileType] in {"Sln", "Prj", "Folder"} then [FileSize] = "Any";
+if [FileType] in {"Sln", "Prj", "Folder"} then [FileLinked] = "No";
+#if [FileType] in {"Sln", "Prj"} then [FileName] <> "iExt";
+#if [FileType] in {"bin","Sln", "Prj", "Folder"} then [FileExtra] = "None";
+if [FileType] in {"bin", "Folder"} then [FileExtra] = "None";
+if [FileType] = "sln" then [SecondFile] <> "None";
+
+#------------------------------------------------------------------------
+# File Location
+#------------------------------------------------------------------------
+if [FileType] in {"Sln", "Folder"} then [FileSELoc] = "Default";
+if [FileType] in {"Sln", "Folder"} then [FileDiskLocation] = "Default";
+
+#------------------------------------------------------------------------
+# File Deleted
+#------------------------------------------------------------------------
+#if [FileDel] in {"DelSE", "DelLoc", "DelLocDelSer"} then [FileRO] = "DNE";
+if [FileDel] in {"DelSE", "DelLoc"} then [FileRO] = "DNE";
+if [FileType]="Sln" then [FileDel] <> "DelSE";
+#if [FileDel] in {"DelSE", "DelLoc", "DelLocDelSer"} then [FileChange] = "None";
+if [FileDel] in {"DelSE", "DelLoc"} then [FileChange] = "None";
+#if [FileDel] in {"DelSer", "DelLocDelSer"} then [FileCO] not in {"COE", "COS", "COSMeCOS"};
+
+#------------------------------------------------------------------------
+# File Editor
+#------------------------------------------------------------------------
+if [FileType] in {"Sln", "Prj", "Folder"} then [FileEditor] = "Unloaded";
+#if [FileDel] in {"DelSE", "DelLoc", "DelLocDelSer"} then [FileEditor] = "Unloaded";
+if [FileDel] in {"DelSE"} then [FileEditor] = "Unloaded";
+
+#------------------------------------------------------------------------
+# File Change
+#------------------------------------------------------------------------
+if [FileType] in {"Folder"} then [FileChange] = "None";
+#if [FileChange] in {"None", "ChangeSer"} then [FileChangeType] = "None";
+#if [FileChange] in {"ChangeLoc", "ChangeBoth"} then [FileChangeType] <> "None";
+
+#------------------------------------------------------------------------
+# File Linked
+#------------------------------------------------------------------------
+#if [FileLinked] = "Yes" then [FileAdd] = "None";
+if [FileLinked] = "Yes" then [FileSELoc] in {"Prj", "PrjFolder"};
+#if [FileLinked] = "Yes" then [FileDiskLocation] <> "Default";
+

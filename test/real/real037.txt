@@ -1,0 +1,12 @@
+﻿AccessModifier: Default,Public,Private,Protected,Internal,InternalProtected
+IsStatic: True,False
+NameProperty: m,mhhoy,rhhivpcnyopduqxrtundorucblogjcypoxaxgxvyqykbphvwqu
+Summary: r,mskka,lehjavdwoynvqalvxompgtmtpqpojmvdnylbplxuumlpsygqiu
+IsExtern: True,False
+Returns: m,gyyju,ldxhhxdkeoktadvccnsyjsyuuhyxfxtfjnqmqhxcecdceiwlek
+IsNew: True,False
+InheritanceModifier: Virtual,Override,None,Abstract,Sealed
+TypeProperty: MS.Internal.Xml.QilPatternVisitor,sÂakb.WitÀbhmöor.Class1,MS.Internal.Xml.IXmlDocumentInfo
+
+
+

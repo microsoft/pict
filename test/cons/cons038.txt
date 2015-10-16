@@ -1,0 +1,9 @@
+#
+# group name with " should be literally put in condition
+# no escape char is necessary
+#
+G"1,a,b,c,d
+G2,f,g,h,
+
+if [G1] = "A" then [G\"2] = "g";
+if [G1] > "A" then [G2] > "f";

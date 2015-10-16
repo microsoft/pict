@@ -1,0 +1,35 @@
+# ExcludeFromScc
+#
+ 
+
+#FileType
+#------------------------------------------------
+FileType: CBPair, CB, projectitem, solutionitem
+
+#Second File
+#----------------------------------
+SecondFile: None, SameType , DiffType
+
+
+#File Name/Size/Location
+#---------------------------------------------------------------------------------------
+FileSELoc: Prj , PrjFolder, Solution | SlnFolder, SubFolder
+
+
+# File Status
+#-------------------------------------------
+FileSccStatus: NotUnderSccYet, Pending, CI, COS, COE, COSMe, COEMe, COSMeCOS
+FileChange: None, ChangeLoc, ChangeSer, ChangeBoth
+FileDel: None, DelSer, DelLoc
+
+
+# Constraints
+#
+
+
+#------------------------------------------------------------------------
+# File Deleted
+#------------------------------------------------------------------------
+if [FileDel] in {"DelLoc"} then [FileChange] = "None";
+if [FileType] = "projectitem" then [FileSELoc] in {"Prj", "PrjFolder"}; 
+

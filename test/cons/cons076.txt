@@ -1,0 +1,5 @@
+G1,a"ab,bbbb,XXXX|cccd,ddee
+G2,AABB,BBCC,C1|C2
+G3,1,2,3,b
+
+if [G1] like "a[\"]??" then [G3] like 1;

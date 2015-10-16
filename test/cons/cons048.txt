@@ -1,0 +1,8 @@
+#
+# string not allowed: "s""s"
+#
+G1,ab"c,b,c,d
+G2,f,g,h,
+
+if [G1] = "AB""c" then [G2] = "g";
+if [G1] > "a"   then [G2] > "f";

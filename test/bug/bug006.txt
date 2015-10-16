@@ -1,0 +1,7 @@
+# case sensitive LIKE
+#
+A: a, b, c
+B: aa, ab, ac, Ad, Ae
+C: a, b, c
+
+if [B] like "a?" then [C] = "c";

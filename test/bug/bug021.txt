@@ -1,0 +1,11 @@
+Access: Read,Write,~ReadWrite
+OS_1: Professional,Server,WinPowered
+OS_2: Professional,WinPowered
+
+# space after {
+IF [OS_1] IN { "Professional"} THEN [Access] IN {"Read"};
+
+# no space after {
+IF [OS_1] IN {"Professional"} THEN [Access] IN {"Read"};
+
+[OS_1] <> [OS_2];

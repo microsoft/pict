@@ -1,0 +1,40 @@
+###############################################
+#
+# Testing parameters and values defintion
+#
+###############################################
+
+para003.txt            -> SUCCESS
+para004.txt            -> SUCCESS
+para004.txt /o:1       -> SUCCESS
+para004.txt /o:2       -> SUCCESS
+para004.txt /o:3       -> SUCCESS
+para005.txt /o:1       -> SUCCESS
+para006.txt /o:1       -> SUCCESS
+para006.txt /o:2       -> SUCCESS
+para001.txt            -> SUCCESS [NO_SEEDING]
+para011.txt            -> SUCCESS
+para012.txt            -> SUCCESS [NO_SEEDING]
+para012.txt -C         -> SUCCESS [NO_SEEDING]
+para013.txt /o:1       -> SUCCESS
+para014.txt            -> SUCCESS
+para015.txt            -> SUCCESS
+para015.txt /o:1       -> SUCCESS
+para016.txt /o:2       -> SUCCESS [NO_SEEDING]
+para017.txt /d:tab     -> SUCCESS
+para018.txt            -> SUCCESS
+para018.txt /a:z       -> SUCCESS
+para022.txt            -> SUCCESS [NO_SEEDING]
+para022.txt -C         -> SUCCESS
+para023.txt            -> SUCCESS
+
+para002.txt            -> BAD_MODEL
+para005.txt /o:2       -> BAD_MODEL
+para007.txt            -> BAD_MODEL
+para008.txt            -> BAD_MODEL
+para009.txt            -> BAD_MODEL
+para010.txt            -> BAD_MODEL
+para015.txt /o:3       -> BAD_MODEL
+para017.txt            -> BAD_MODEL
+para017.txt /d:space   -> BAD_MODEL
+para019.txt            -> BAD_MODEL

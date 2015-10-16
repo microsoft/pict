@@ -1,0 +1,26 @@
+# OpenFromScc
+#
+ 
+# Project Type
+#ProjectType: VCM | VCUM, VB, C#, Web.SP | Web.Local.IIS | Web.Local.File
+
+# OpenFrom attributes
+OpenFromMenu: NSE, OldWay
+FromLocation: Root, TopLevel, LongNestedFolder
+FromType: BlnkSln, Sln1Prj, SlnSlnItems, SlnMultiPrjs | SlnSlnItemsPrjs, SlnSlnFolders, SlnAddedAsSelection, Prj, PrjPrjFolders
+slnLocationWRTPrjFile: None, SameDir, PrjUnderSlnFolder, SlnPrjSisters
+FromName: Long| DBCS| IName, Any
+FromSccStatus: CI, COE, COS, Shared, Excluded | Mixed
+
+# To attributes
+CurrentlyHasSlnOpened: yes|no
+ToDiskLocation: Default, DirExist|DirNotExist, SameFolder, DiffFolder|DiffDisk,UNC|Mapped|Removable
+ToSlnHidden: Yes, No
+
+
+# Constraints
+#
+#------------------------------------------------------------------------
+# ToSccStatusSln
+#------------------------------------------------------------------------
+if [FromType] in {"BlnkSln", "SlnSlnItems", "SlnAddedAsSelection"} then [slnLocationWRTPrjFile] = "None";

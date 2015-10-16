@@ -1,0 +1,28 @@
+###############################################
+#
+# Seeding
+#
+###############################################
+
+seed001.txt /e:                        -> BAD_OPTION
+seed001.txt /e:a                       -> BAD_ROWSEED_FILE
+
+seed001.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]
+seed001.txt /e:%curdir%seed001.sed /o:3        -> SUCCESS [NO_SEEDING]
+seed001.txt /e:%curdir%seed001.sed /r          -> SUCCESS [NO_SEEDING]
+seed001.txt /e:%curdir%seed002.sed /r          -> SUCCESS [NO_SEEDING]
+seed001.txt /e:%curdir%seed003.sed             -> SUCCESS [NO_SEEDING]
+seed001.txt /e:%curdir%seed004.sed             -> SUCCESS [NO_SEEDING]
+seed001.txt /e:%curdir%seed005.sed             -> SUCCESS [NO_SEEDING]
+seed001.txt /e:%curdir%seed006.sed             -> SUCCESS [NO_SEEDING]
+seed001.txt /e:%curdir%seed007.sed             -> SUCCESS [NO_SEEDING]
+seed002.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]
+
+seed010.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]
+seed011.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]
+seed012.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]
+seed013.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]
+seed014.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]
+seed015.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]
+seed016.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]
+seed017.txt /e:%curdir%seed001.sed             -> SUCCESS [NO_SEEDING]

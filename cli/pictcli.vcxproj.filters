@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pict.cpp" />
+    <ClCompile Include="cparser.cpp">
+      <Filter>Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="mparser.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="strings.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="cmdline.cpp">
+      <Filter>InputOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="gcd.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp" />
+    <ClCompile Include="ctokenizer.cpp">
+      <Filter>Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="ccommon.cpp">
+      <Filter>Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="gcdexcl.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="gcdmodel.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="cparser.h">
+      <Filter>Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>InputOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="strings.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="cmdline.h">
+      <Filter>InputOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="gcd.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h" />
+    <ClInclude Include="ctokenizer.h">
+      <Filter>Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="ccommon.h">
+      <Filter>Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="gcdexcl.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="gcdmodel.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="ver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Constraints">
+      <UniqueIdentifier>{c07e8537-ab98-4a1c-98b5-01c2b3f803c2}</UniqueIdentifier>
+      <Extensions>
+      </Extensions>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{32703ba2-a22c-4c91-95d8-e1ef64ed3328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="InputOutput">
+      <UniqueIdentifier>{fd96c1bf-4a67-4c2e-9888-910350973ba4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client">
+      <UniqueIdentifier>{44687e14-1291-4c2e-a553-0d97ee66997a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

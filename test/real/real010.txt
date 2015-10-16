@@ -1,0 +1,30 @@
+#
+# Win2K installed with different IE and IIS versions
+# SRV and ADS are treated as equivalent
+#
+SKU,Pro,Srv|ADS,DTC,WP
+SP,Gold,SP1,SP2
+Encrypt,low,high
+IE,5.01,5.01 SP1,5.01 SP2,5.5,5.5 SP1,5.5 SP2,6.0
+MUI,MUI,(no MUI)
+IIS,PWS 5,IIS 5,(no IIS)
+
+#
+# SP2 is always 128-bit
+#
+if [SP] = "SP2" then [Encrypt] = "high";
+
+#
+# PWS is only tested on Pro
+#
+if [IIS] = "PWS 5" then [SKU] =  "Pro";
+
+#
+# IIS is only tested on Srv+
+#
+if [IIS] = "IIS 5" then [SKU] <> "Pro";
+
+#
+# SP2 comes with 5.01 SP2
+#
+if [SP] = "SP2" then [IE] >= "5.01 SP2";

@@ -1,0 +1,16 @@
+###############################################
+#
+# Testing of files with different encoding
+#
+###############################################
+
+#
+# UTF-8 is supported
+#
+enc003.txt   -> SUCCESS
+
+#
+# Unicode not supported thus failure
+#
+enc001.txt   -> BAD_MODEL
+enc002.txt   -> BAD_MODEL

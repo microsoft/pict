@@ -1,0 +1,103 @@
+# Pretty much based on the spec, but I reordered it so Client/Server is first (makes sorting easier). Can't have blank lines: they must be commented.
+#
+# • Client type
+# o	Windows 2000 Server
+# o	Windows XP Professional
+# o	Windows .Net Server (smoke test only for M3)
+CLIENTTYPE,Win2kServer,XPPro,NetServer
+#
+#  
+SERVERTYPE,SameMachineSameProc,SameMachineDiffProcs,Win2kAdvancedServer,XPPro,NetServer
+#
+# • Client’s and server’s user account’s group membership
+# o	Regular user and LocalSystem (Network service on .Net server)
+# o	Administrator and Administrator
+# -- added Client Regular user and Server regular user
+ACCOUNTS,ClientRegularUserServerAdministrator,BothAdministrator,ClientRegularUserServerLocalSystem
+#
+# • Server location
+# o	In-proc
+# o	Cross-proc, same machine, TCP
+# o	Remote, direct connection, TCP
+# o	Remote, routed, TCP
+COMMUNICATIONSSTYLE,InProc,XProc,DirectTcp,RoutedTcp,RoutedInProc
+#
+#
+# • Encryption requirements on server
+# o	No encryption
+# o	Username/password only
+# o	WinAuth only
+# o	X.509 v3 only
+# o	XrML (symmetric key) only (M3: only tested as permissions token, elsewhere)
+# o	XrML (asymmetric keys) only (not M3)
+# o	XrML (either key) (not M3)
+# o	Not supported: Any supported encryption other than none
+ENCRYPTIONONSERVER,None,UsernamePassword,WinAuth,X509
+#
+#
+# • Signature requirements
+# o	No signature
+# o	Username/password only
+# o	Kerberos only
+# o	X.509 v3 only
+# o	XrML (symmetric key) only (M3: only tested as permissions token, elsewhere)
+# o	XrML (asymmetric keys) only (not M3)
+# o	XrML (either keys) (not M3)
+# o	Any supported signature other than none
+SIGNATUREREQUIREMENTS,None,UsernamePassword,WinAuth,X509,Any,All
+#
+#
+#o	No tokens
+#o	Username/password for GetIntByName
+#o	Username/password for both GetIntByName and SetIntByName
+#o	Both username/passwords (not possible in M3)
+#o	Windows authentication (context for GetIntByName only)
+#o	Windows authentication (context for GetIntByName and SetIntByName)
+#o	X.509 v3 for GetIntByName
+#o	X.509 v3 for GetIntByName and SetIntByName
+#o	One of each kind of token for GetIntByName (M3: not XrML)
+#o	One of each kind of token for GetIntByName and SetIntByName (M3: not XrML)
+# Removed: UsernamePassword_Custom, X509_Custom
+TOKENAVAILABILITY,None,UsernamePassword_Get,UsernamePassword_Set,WinAuth_Get,WinAuth_Set,X509_Get,X509_Set,All_Get,All_Set
+#
+#
+# • Permissions token issuance
+# o	On = True
+# o	Off = False
+# Note: removing True temporarily
+PERMISSIONSTOKENISSUANCE,True,False
+#
+#
+# • Method called
+# o	GetNegativeIntByName
+# o	GetIntByName
+# o	SetIntByName followed by GetIntByName
+TESTMETHODNAME,Get,Set,GetNegative
+#
+#
+
+# blank line above needed to go into conditional mode
+#
+# no tokens
+if ([TOKENAVAILABILITY] = "None" or [SIGNATUREREQUIREMENTS] = "None") then [TESTMETHODNAME] = "GetNegative";
+if [TOKENAVAILABILITY] in {"UsernamePassword_Get","WinAuth_Get","X509_Get","All_Get"} then [TESTMETHODNAME] in {"Get", "GetNegative"};
+# require a signature of some kind (except for x509)
+if [ENCRYPTIONONSERVER] = "UsernamePassword" then [SIGNATUREREQUIREMENTS] in {"Any", "UsernamePassword", "All"};
+if [ENCRYPTIONONSERVER] = "WinAuth" then [SIGNATUREREQUIREMENTS] in {"Any", "WinAuth", "All"};
+# if we have to sign or encrypt, then we need the right tokens
+if [SIGNATUREREQUIREMENTS] = "UsernamePassword" or [ENCRYPTIONONSERVER] = "UsernamePassword" then [TOKENAVAILABILITY] in {"UsernamePassword_Set", "UsernamePassword_Get", "All_Get", "All_Set"};
+if [SIGNATUREREQUIREMENTS] = "WinAuth" or [ENCRYPTIONONSERVER] = "WinAuth"  then [TOKENAVAILABILITY] in {"WinAuth_Set", "WinAuth_Get", "All_Get", "All_Set"};
+if [SIGNATUREREQUIREMENTS] = "X509" then [TOKENAVAILABILITY] in {"X509_Set", "X509_Get", "All_Get", "All_Set"};
+if [SIGNATUREREQUIREMENTS] = "Any" then [TOKENAVAILABILITY] <> "None";
+if [SIGNATUREREQUIREMENTS] = "All" then [TOKENAVAILABILITY] in {"All_Get", "All_Set"};
+# special cases: can't do perm tokens with All/None signatures
+# note: should add "None" later
+if [SIGNATUREREQUIREMENTS] in {"All", "None"} then [PERMISSIONSTOKENISSUANCE] = "False";
+#
+# if we want to do XProc, we have to be on the same machine
+if [COMMUNICATIONSSTYLE] in {"XProc"} then [SERVERTYPE] in {"SameMachineDiffProcs", "SameMachineSameProc"};
+# if we want to do InProc, we have to be on the same process
+if [COMMUNICATIONSSTYLE] in {"InProc", "RoutedInProc"} then [SERVERTYPE] in {"SameMachineSameProc"};
+# overly restrictive
+if [SERVERTYPE] = "SameMachineSameProc" and ([TOKENAVAILABILITY] in {"WinAuth_Set", "WinAuth_Get", "All_Get", "All_Set"}) then [ACCOUNTS] = "BothAdministrator";
+# no cross-machine between non-admin users

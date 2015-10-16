@@ -1,0 +1,27 @@
+#
+# Win2K SP client/server:
+# setup, update and interoperability with 2195 and WinXP
+#
+# BLD meaning:
+# 2195  - install Win2K 2195
+# SP    - install Win2K with integrated latest Service Pack
+# ->SP  - install Win2K 2195 and then apply latest Service Pack
+# WinXP - install WinXP
+#
+SRV_BLD,SP,2195,->SP,WinXP
+SRV_SKU,Svr,Ads,DTC,WP
+SRV_LNG,EN,DE
+CLI_BLD,SP,2195,->SP,WinXP
+CLI_SKU,Pro,Svr,Ads,DTC,WP
+CLI_LNG,EN,DE
+
+#
+# WP is valid only for EN
+#
+if [SRV_LNG] <> "EN" then [SRV_SKU] <> "WP";
+if [CLI_LNG] <> "EN" then [CLI_SKU] <> "WP";
+
+#
+# don't test WinXP and 2195 as SVR and CLI at the same time
+#
+if [SRV_BLD] in {"WinXP", "2195"} then [CLI_BLD] in {"SP", "->SP"};

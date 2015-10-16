@@ -1,0 +1,45 @@
+# Bug: ":" in the value used in the first constraint. That constraint was assumed a parameter definition
+
+############################################################
+# PICT Model for OpticalMediaDiscProject Element
+
+############################################################
+ROMSectionRoot:0,1
+SubpicturePalette:0,1
+_ChoiceParameter1:SKIP,Menu,SlideShow,Media
+_ChoiceParameter2:SKIP,Menu,SlideShow,Media
+_ChoiceParameter3:SKIP,Menu,SlideShow,Media
+_ChoiceParameter4:SKIP,Menu,SlideShow,Media
+_ChoiceParameter5:SKIP,Menu,SlideShow,Media
+
+OpticalMediaDiscProject.Name:TestDVD
+OpticalMediaDiscProject.FirstPlay:MainMenu
+OpticalMediaDiscProject.JacketPicture:SKIP
+OpticalMediaDiscProject.SchemaVersion:SKIP
+OpticalMediaDiscProject.Language:SKIP
+OpticalMediaDiscProject.Encoding:SKIP
+OpticalMediaDiscProject.DiscBurner:SKIP
+OpticalMediaDiscProject.DiscVolumeOnHardDrive:C:\TestDVD
+OpticalMediaDiscProject.TempFolder:SKIP
+OpticalMediaDiscProject.DiscType:DVD
+OpticalMediaDiscProject.VideoSetting:NTSC,PAL
+OpticalMediaDiscProject.Reedit:SKIP
+OpticalMediaDiscProject.AspectRatio:4:3,16:9
+OpticalMediaDiscProject.NumberOfCopies:1
+
+
+############################################################
+# Special groups of parameters can be defined in sub-models
+
+############################################################
+
+
+############################################################
+# Special conditions are captured in constraints
+
+############################################################
+if [OpticalMediaDiscProject.DiscType] = "DVD" then [OpticalMediaDiscProject.AspectRatio] = "16:9";
+if [_ChoiceParameter1] = "SKIP" then [_ChoiceParameter2] = "SKIP";
+if [_ChoiceParameter2] = "SKIP" then [_ChoiceParameter3] = "SKIP";
+if [_ChoiceParameter3] = "SKIP" then [_ChoiceParameter4] = "SKIP";
+if [_ChoiceParameter4] = "SKIP" then [_ChoiceParameter5] = "SKIP";

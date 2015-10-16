@@ -1,0 +1,44 @@
+###############################################
+#
+# Bugs once found
+#
+###############################################
+
+bug001.txt /o:3     -> SUCCESS
+bug004.txt          -> SUCCESS
+bug005.txt          -> SUCCESS
+bug005.txt /o:1     -> SUCCESS
+bug006.txt          -> SUCCESS
+bug006.txt -c       -> SUCCESS
+bug010.txt          -> SUCCESS
+bug011.txt          -> SUCCESS
+bug012.txt          -> SUCCESS
+
+#
+# this one has NO_SEEDING because regenerating with full seeds
+# creates more compact result than the initial output and even
+# though both cover the same combinations they are slightly
+# different and the test driver would log a failure
+#
+bug013.txt          -> SUCCESS [NO_SEEDING]
+
+#
+# if an unknown parameter is used in a constraint, issue a warning and skip
+#
+bug020.txt          -> SUCCESS
+
+bug014.txt          -> SUCCESS
+bug015.txt          -> SUCCESS
+bug015.txt /o:1     -> SUCCESS
+bug015.txt /o:3     -> SUCCESS
+bug015.txt /r       -> SUCCESS [NO_SEEDING]
+bug015.txt /r       -> SUCCESS [NO_SEEDING]
+bug020.txt /d:`     -> SUCCESS
+bug021.txt          -> SUCCESS
+bug022.txt          -> SUCCESS
+bug023.txt /o:1     -> SUCCESS
+
+bug002.txt          -> BAD_MODEL
+bug003.txt          -> BAD_MODEL
+bug005.txt /o:2     -> BAD_MODEL
+bug007.txt          -> BAD_CONSTRAINTS

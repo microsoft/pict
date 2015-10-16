@@ -1,0 +1,7 @@
+# com
+# com
+
+A: a, b, c
+{a}
+B,b,c,d
+C , c, d, e

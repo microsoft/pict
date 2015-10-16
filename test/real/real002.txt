@@ -1,0 +1,18 @@
+Font,Times,Arial,Courier
+Style,Regular,Italic,Bold,Bold Italic
+Size,10,12,14,16
+Color,Auto,Blue,Green,Red,Yellow
+Under,Yes,No
+UStyle,none,words,solid,dblSolid,bold,dashed,dotted
+UColor,Auto,Blue,Green,Red,Yellow
+Strike,Yes,No
+DblStr,Yes,No
+SupScr,Yes,No
+SubScr,Yes,No
+Shadow,Yes,No
+Outline,Yes,No
+Emboss,Yes,No
+Engrave,Yes,No
+Small,Yes,No
+Caps,Yes,No
+Hidden,Yes,No

@@ -1,0 +1,40 @@
+# Bind
+
+BindItem: Project, Solution
+
+BindTo: Same, Branched, Shared, NewEmpty, OtherProject, ChildFolder, DiffDB
+LocalPath: UNC, Local, Mapped
+
+ChangeLocPrj: None, Contents, Delete, Add
+ChangeLocFile: None, Contents, EncType, Delete, Add
+ChangeLocManyFile: None, Contents, EncType, Delete, Add
+ChangeLocSln: None, Contents
+
+ChangeSrvPrj: None, Contents, Delete, Add
+ChangeSrvFile: None, Contents, Delete, Add
+ChangeSrvManyFile: None, Contents, Delete, Add
+ChangeSrvSln: None, Contents, Delete
+
+UnloadedPrj: Yes, No
+ExcludedFile: Yes, No
+
+
+# LocalVersion
+LocalVersion: First, Middle, Last
+
+FileRO: RO, RW, DNE
+ProjectRO: RO, RW, DNE
+SolutionRO: RO, RW, DNE
+
+User: Same, User2
+
+FileSELoc: Default, Prj | PrjFolder, Solution | SlnFolder, SubFolder
+
+MovedLocalyTo: UNC, Local, Mapped
+
+# Constraints
+#
+#------------------------------------------------------------------------
+# Bind Item
+#------------------------------------------------------------------------
+if [UnloadedPrj] = "Yes" then [BindItem] <> "Project";

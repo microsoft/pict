@@ -1,0 +1,15 @@
+A: a1, a2, a3, a4, a5, a6, a7
+B: b1
+C: c1
+D: d1
+E: e1, e2
+F: f1
+G: g1
+H: h1, h2
+I: i1
+J: j1
+
+if [C] <> "c1" then [D] = "d2";
+if [F] <> "f1" then [G] = "g2";
+if [I] <> "i1" then [J] = "j2";
+if [B] =  "b1" then [J] = "j2";

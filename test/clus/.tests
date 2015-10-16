@@ -1,0 +1,110 @@
+###############################################
+#
+# Testing of clusters
+#
+###############################################
+
+clus001.txt                            -> SUCCESS
+clus001.txt /o:1                       -> SUCCESS
+
+clus001.txt /o:3                       -> SUCCESS
+
+clus002.txt                            -> SUCCESS
+clus004.txt                            -> SUCCESS
+clus008.txt                            -> SUCCESS
+clus008.txt -O:1                       -> SUCCESS
+clus009.txt                            -> SUCCESS
+clus009.txt /o:1                       -> SUCCESS
+clus010.txt /o:1                       -> SUCCESS
+clus010.txt /o:2                       -> SUCCESS
+clus011.txt /o:1                       -> SUCCESS
+clus011.txt /o:2                       -> SUCCESS
+clus011.txt /o:3                       -> SUCCESS
+clus011.txt /o:4                       -> SUCCESS
+clus011.txt /o:5                       -> SUCCESS
+clus011.txt /o:6                       -> SUCCESS
+clus012.txt /o:1                       -> SUCCESS
+clus012.txt /o:2                       -> SUCCESS
+clus012.txt /o:3                       -> SUCCESS
+clus012.txt /o:4                       -> SUCCESS
+clus012.txt /o:5                       -> SUCCESS
+clus013.txt                            -> SUCCESS
+clus015.txt -o:1                       -> SUCCESS
+clus015.txt -o:2                       -> SUCCESS
+clus015.txt -o:3                       -> SUCCESS
+clus016.txt -o:1                       -> SUCCESS
+clus016.txt -o:2                       -> SUCCESS
+clus016.txt -o:3                       -> SUCCESS
+clus017.txt -o:1                       -> SUCCESS
+clus017.txt -o:2                       -> SUCCESS
+clus019.txt                            -> SUCCESS
+clus020.txt -o:1                       -> SUCCESS
+clus020.txt -o:2                       -> SUCCESS
+clus020.txt -o:3                       -> SUCCESS
+clus020.txt -o:4                       -> SUCCESS
+clus020.txt -o:5                       -> SUCCESS
+clus020.txt -o:6                       -> SUCCESS
+
+clus023.txt /d:space                   -> SUCCESS
+clus023.txt /d:space /o:1              -> SUCCESS
+clus024.txt /d:space                   -> SUCCESS [NO_SEEDING]
+clus024.txt /O:1 /d:space              -> SUCCESS [NO_SEEDING]
+clus024.txt /O:2 /d:space              -> SUCCESS [NO_SEEDING]
+clus024.txt /O:3 /d:space              -> SUCCESS [NO_SEEDING]
+
+clus025.txt                            -> SUCCESS
+clus001.txt /d:" "                     -> SUCCESS
+
+#
+# Two submodels with the same parameter
+#
+clus005.txt                             -> SUCCESS
+clus014.txt                             -> SUCCESS
+clus100.txt /o:1                        -> SUCCESS
+clus100.txt /o:2                        -> SUCCESS
+clus100.txt /o:3                        -> SUCCESS
+clus101.txt /o:1                        -> SUCCESS
+clus101.txt /o:2                        -> SUCCESS
+clus102.txt /o:1                        -> SUCCESS
+clus102.txt /o:2                        -> SUCCESS
+clus100.txt /o:4                        -> BAD_MODEL
+
+#
+# if an unknown parameter is used in a constraint, issue a warning and skip
+#
+clus023.txt /d:,                        -> SUCCESS
+clus024.txt /O:2                        -> SUCCESS
+
+clus003.txt                             -> BAD_MODEL
+clus006.txt                             -> BAD_MODEL
+clus007.txt                             -> BAD_MODEL
+clus010.txt /o:3                        -> BAD_MODEL
+clus011.txt /o:7                        -> BAD_MODEL
+clus012.txt /o:6                        -> BAD_MODEL
+clus015.txt -o:4                        -> BAD_MODEL
+clus016.txt -o:4                        -> BAD_MODEL
+clus017.txt -o:3                        -> BAD_MODEL
+clus018.txt                             -> BAD_MODEL
+clus018.txt -o:1                        -> BAD_MODEL
+clus018.txt /o:2                        -> BAD_MODEL
+clus018.txt /o:3                        -> BAD_MODEL
+clus020.txt /o:7                        -> BAD_MODEL
+clus021.txt                             -> BAD_MODEL
+clus021.txt /o:1                        -> BAD_MODEL
+clus021.txt /o:2                        -> BAD_MODEL
+clus021.txt /o:3                        -> BAD_MODEL
+clus021.txt /o:4                        -> BAD_MODEL
+clus021.txt /o:5                        -> BAD_MODEL
+clus021.txt /o:6                        -> BAD_MODEL
+clus022.txt                             -> BAD_MODEL
+clus022.txt -O:1                        -> BAD_MODEL
+clus022.txt -O:2                        -> BAD_MODEL
+clus022.txt -O:3                        -> BAD_MODEL
+clus022.txt -O:4                        -> BAD_MODEL
+clus022.txt -O:5                        -> BAD_MODEL
+clus022.txt -O:6                        -> BAD_MODEL
+clus023.txt /o:5 /d:space               -> BAD_MODEL
+clus024.txt /O:4 /d:space               -> BAD_MODEL
+clus026.txt                             -> BAD_MODEL
+clus027.txt                             -> BAD_MODEL
+clus028.txt                             -> BAD_MODEL

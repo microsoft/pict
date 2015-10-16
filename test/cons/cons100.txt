@@ -1,0 +1,9 @@
+#
+# not a number
+#
+G1,a,b,c,d
+G2,1a,2,3
+G3,1 a,2,3
+
+if [G1] = "A" then [G2] = "1a";
+if [G1] > "A" then [G3] > "1 a";

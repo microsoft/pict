@@ -1,0 +1,19 @@
+G1,a1|a2|a3,b,c,d
+G2,1,2,3,4,a
+G3,A1|A2|ZZ,B,C
+G4,#,!,$
+
+# all elements in condition (all names)
+if [g1] in {"a1", "a2", "A3", "b", "c", "d"} then [G2] = "1";
+
+# all elements in condition (only one name)
+if [g3] in {"ZZ", "b", "c"} then [G2] = "2";
+
+# no elements in condition
+if [g4] in {"#", "!", "$"} then [g2] = "3";
+
+# all elements in term
+if [g4] in {"#"}    then [g2] in {"1", "2", "3", "4", "a"};
+
+# none elements in term
+if [g4] in {"#"}    then [g2] > "z";

@@ -1,0 +1,83 @@
+# -------------------------------------------------------------------------
+# This file contains a list of required images for testing for MS Speech 
+# server bootstrapper
+# -------------------------------------------------------------------------
+
+OS:		Windows_ME, Windows_NT4.0_Ent_Server, Win2000_Pro, Win2000_server, WinXP_Professional, Win2003_Server, Win2003_Ent, WinXP_Home
+
+# -------------------------------------------------------------------------
+# Existing Speech Software
+# -------------------------------------------------------------------------
+
+Exist_SES_INST:	Full, Admin_tools_only, SES, TAS, None
+Exist_SES_Ver:  	Retail_Standard, VL_Standard, Retail_Developer, MSDN_Developer, Retail_Enterprise, VL_Enterprise, Evaluation, Beta, None
+
+# -------------------------------------------------------------------------
+# Existing System Software
+# -------------------------------------------------------------------------
+
+ASP.NET:		Installed, None
+IIS:			Installed, None
+EIF:			None, Beta_1_Version, RTM_Version
+IE:			IE_6.0, IE_5.0, IE_5.5
+TIM:			Installed, None
+QFEs:			KB823534, KB829585, KB829986, All, None
+
+# -------------------------------------------------------------------------
+# Setup Type
+# -------------------------------------------------------------------------
+{OS, Exist_SES_INST, Exist_SES_Ver, ASP.NET, IIS, EIF, IE, TIM, QFEs } @ 2
+
+
+# -------------------------------------------------------------------------
+# Win2003 Already has latest IE and .NET
+# -------------------------------------------------------------------------
+
+IF [OS]="Win2003_Server" THEN
+	[Exist_SES_Ver] in {"Retail_Standard", "VL_Standard", "Retail_Developer", "MSDN_Developer", "Beta", "None"};
+IF [OS]="Win2003_Server" THEN
+	[IE] ="IE_6.0";
+
+# -------------------------------------------------------------------------
+# REMOVE THIS CLAUSE AND THERE WILL BE NO LOOP
+# -------------------------------------------------------------------------
+IF [OS]="Win2003_Ent" THEN
+	[IE] not in {"IE_6.0", "IE_5.0"};
+
+
+# -------------------------------------------------------------------------
+# We don't care on system software Pre-recs in OSs unsupported by SES, 
+# -------------------------------------------------------------------------
+IF [OS] in {"Windows_ME", "Windows_NT4.0_Ent_Server", "Win2000_Pro", "Win2000_server", "WinXP_Professional", "WinXP_Home" } THEN 
+	[QFEs] in {"None"};
+IF [OS] in {"Windows_ME", "Windows_NT4.0_Ent_Server", "Win2000_Pro", "Win2000_server", "WinXP_Professional", "WinXP_Home" } THEN 
+	[ASP.NET] in {"None"};
+IF [OS] in {"Windows_ME", "Windows_NT4.0_Ent_Server", "Win2000_Pro", "Win2000_server", "WinXP_Professional", "WinXP_Home" } THEN 
+	[TIM] in {"None"};
+IF [OS] in {"Windows_ME", "Windows_NT4.0_Ent_Server", "Win2000_Pro", "Win2000_server", "WinXP_Professional", "WinXP_Home" } THEN 
+	[EIF] in {"None"};
+IF [OS] in {"Windows_ME", "Windows_NT4.0_Ent_Server", "Win2000_Pro", "Win2000_server", "WinXP_Professional", "WinXP_Home" } THEN 
+	[IIS] ="None";
+
+
+
+# -------------------------------------------------------------------------
+# Pre-existing SES can only be on supported OS-es
+# -------------------------------------------------------------------------
+IF [OS] in {"Windows_ME", "Windows_NT4.0_Ent_Server", "Win2000_server", "WinXP_Home"} THEN 
+	[Exist_SES_INST] ="None";
+IF [OS] in {"Windows_ME", "Windows_NT4.0_Ent_Server", "Win2000_Pro", "Win2000_server", "WinXP_Professional", "WinXP_Home"} THEN 
+	[Exist_SES_INST] in {"Admin_tools_only", "None"};
+IF [OS] in {"Windows_ME", "Windows_NT4.0_Ent_Server", "Win2000_Pro", "Win2000_server", "WinXP_Professional", "WinXP_Home" } THEN 
+	[Exist_SES_Ver] in {"Retail_Standard", "Retail_Enterprise", "Beta", "None"};
+
+
+
+# If IIS is not installed then There is no ASP
+IF [IIS] = "None" THEN [ASP.NET] in {"None"};
+IF [Exist_SES_INST] ="None" THEN [Exist_SES_Ver] ="None";
+
+
+# -------------------------------------------------------------------------
+# The End
+# -------------------------------------------------------------------------
