@@ -9,6 +9,7 @@
 /cli/Release
 /Debug
 /Release
+/bin
 /test/.stderr*
 /test/.stdout*
 *.suo

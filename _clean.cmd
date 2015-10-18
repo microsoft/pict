@@ -11,6 +11,8 @@ for %%i in (Debug, Release) DO (
   )
 )
 
+rmdir /q /s bin
+
 attrib -h *.suo
 del /q *.suo
 del /q *.sdf
