@@ -18,7 +18,7 @@ There are thousands of possible combinations of these values. It would be very d
 
 #More information
 
-See **doc/pict35.md** for detailed documentation on PICT and http://pairwise.org has details on this testing methododology. 
+See **doc/pict.md** for detailed documentation on PICT and http://pairwise.org has details on this testing methododology. 
 
 #Contributing
 
