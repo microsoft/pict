@@ -14,7 +14,7 @@ For instance, if you wish to create a test suite for partition and volume creati
     Cluster size:  512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
     Compression:   On, Off
 
-There are thousands of possible combinations of these values. It would be  difficult to test all of them in a reasonable amount of time. Instead, we settle on testing all possible pairs of values. For example, **{Single, FAT}** is one pair, **{10, Slow}** is another; one test case can cover many pairs. Research shows that testing all pairs is an effective alternative to exhausting testing and much less costly. It will provide very good coverage and the number of test cases will remain manageable.
+There are thousands of possible combinations of these values. It would be  difficult to test all of them in a reasonable amount of time. Instead, we settle on testing all possible pairs of values. For example, **{Single, FAT}** is one pair, **{10, Slow}** is another; one test case can cover many pairs. Research shows that testing all pairs is an effective alternative to exhaustive testing and much less costly. It will provide very good coverage and the number of test cases will remain manageable.
 
 #More information
 
