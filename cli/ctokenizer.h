@@ -39,13 +39,13 @@ private:
     CValue*      getValue();
     double       getNumber();
     std::wstring getParameterName();
-    std::wstring getString  ( IN std::wstring& terminator );
+    std::wstring getString  ( IN const std::wstring& terminator );
     void         getValueSet( OUT CValueSet& valueSet );
 
     void skipWhiteChars();
     wchar_t peekNextChar();
     void movePosition   ( IN int count );
-    bool isNextSubstring( IN std::wstring& text, IN bool dontMoveCursor = false );
+    bool isNextSubstring( IN const std::wstring& text, IN bool dontMoveCursor = false );
 
     void cleanUpTokenLists();
 };

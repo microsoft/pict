@@ -128,13 +128,13 @@ public:
         m_totalCombinations(0),
         m_remainingCombinations(0) {}
 
-    bool ReadModel( std::wstring& filePath );
+    bool ReadModel( const std::wstring& filePath );
     bool ReadRowSeedFile( std::wstring& filePath );
 
     size_t TotalParameterCount() { return(Parameters.size()); }
     size_t ResultParameterCount();
 
-    std::vector< CModelParameter >::iterator FindParameterByName( std::wstring& Name );
+    std::vector< CModelParameter >::iterator FindParameterByName( const std::wstring& Name );
     std::vector< CModelParameter >::iterator FindParameterByGcdPointer( Parameter* Pointer );
 
     std::wstring GetConstraintText( unsigned int index );
@@ -157,8 +157,8 @@ private:
     long         m_totalCombinations;     // number of combinations PICT dealt with in this run
     long         m_remainingCombinations; // number of uncovered combinations (Preview and Approximate)
 
-    std::wifstream openFile( std::wstring& filePath );
-    bool readModel                 ( std::wstring& filePath );
+    std::wifstream openFile( const std::wstring& filePath );
+    bool readModel                 ( const std::wstring& filePath );
     bool readParameter             ( std::wstring& line );
     bool readParamSet              ( std::wstring& line );
     void getUnmatchedParameterNames( wstrings& paramsOfSubmodel, wstrings& unmatchedParams );

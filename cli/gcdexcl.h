@@ -21,7 +21,7 @@ public:
     const wstrings& GetWarnings() { return( _warnings ); }
 
 private:
-    void interpretConstraint    ( IN pcc::CConstraint& constraint, IN OUT CGcdExclusions& gcdExclusions );
+    void interpretConstraint    ( IN const pcc::CConstraint& constraint, IN OUT CGcdExclusions& gcdExclusions );
     void interpretSyntaxTreeItem( IN pcc::CSyntaxTreeItem* item,   IN OUT CGcdExclusions& gcdExclusions );
     void interpretTerm          ( IN pcc::CTerm* term,             IN OUT CGcdExclusions& gcdExclusions );
     void interpretFunction      ( IN pcc::CFunction* function,     IN OUT CGcdExclusions& gcdExclusions );

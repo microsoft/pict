@@ -74,7 +74,7 @@ typedef std::list<CSemanticWarning>  CSemanticWarnings;
 class ConstraintsParser
 {
 public:
-    ConstraintsParser( IN CTokenLists& tokenLists ):
+    ConstraintsParser( IN const CTokenLists& tokenLists ):
             _tokenLists( tokenLists ) {}
    
     ~ConstraintsParser()

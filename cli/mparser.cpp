@@ -176,7 +176,7 @@ bool CModelData::readParameter( wstring& line )
         if ( ! i_val->empty() 
           && *(i_val->begin())  == PARAM_REF_BEGIN
           && *(i_val->rbegin()) == PARAM_REF_END
-          &&( refParam = FindParameterByName( static_cast<wstring&> (i_val->substr( 1, i_val->length() - 2 )))) !=
+          &&( refParam = FindParameterByName( i_val->substr( 1, i_val->length() - 2 ))) !=
                          Parameters.end() )
         {
             __push_back( parameter.Values, refParam->Values.begin(), refParam->Values.end() );
@@ -424,7 +424,7 @@ bool CModelData::readParamSet( wstring& line )
 //
 //
 //
-wifstream CModelData::openFile( wstring& filePath )
+wifstream CModelData::openFile( const wstring& filePath )
 {
     // change name to ANSI
     string ansiFileName;
@@ -447,7 +447,7 @@ wifstream CModelData::openFile( wstring& filePath )
 //
 //
 //
-bool CModelData::readModel( wstring& filePath )
+bool CModelData::readModel( const wstring& filePath )
 {
     wifstream file = openFile( filePath );
     if( ! file ) return( false );
@@ -521,7 +521,7 @@ bool CModelData::readModel( wstring& filePath )
 //
 // reads model file
 //
-bool CModelData::ReadModel( wstring& filePath )
+bool CModelData::ReadModel( const wstring& filePath )
 {
     if( !readModel( filePath ))
     {
