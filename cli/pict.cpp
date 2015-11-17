@@ -113,7 +113,8 @@ int main
     {
         size_t len = strlen( args[ ii ] );
         wargs[ ii ] = new wchar_t[ len + 1 ];
-        for( size_t jj = 0; jj < len; ++jj )
+        size_t jj;
+        for( jj = 0; jj < len; ++jj )
         {
             wargs[ ii ][ jj ] = (wchar_t) args[ ii ][ jj ];
         }

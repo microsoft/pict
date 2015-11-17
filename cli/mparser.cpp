@@ -195,7 +195,7 @@ bool CModelData::readParameter( wstring& line )
             // '(' must exist, ')' must be the last character
             if ( weightBegin != -1 && weightEnd == i_val->length() - 1 ) 
             {
-                wstring weightStr = trim( static_cast<wstring&> (i_val->substr( weightBegin + 1, weightEnd - weightBegin - 1 )));
+                wstring weightStr = trim( i_val->substr( weightBegin + 1, weightEnd - weightBegin - 1 ));
                 double weightDbl = 0;
 
                 // anything after @ must be a positive integer
@@ -226,7 +226,7 @@ bool CModelData::readParameter( wstring& line )
                  &&(*i_name)[ 0 ] == InvalidPrefix )
                 {
                     positive = false;
-                    *i_name = trim( static_cast<wstring&> (i_name->substr( 1, i_name->length() - 1 )));
+                    *i_name = trim( i_name->substr( 1, i_name->length() - 1 ));
                 }
             }
 
@@ -615,7 +615,7 @@ bool CModelData::ReadRowSeedFile( wstring& filePath )
                 // remove the negative marker and match up the raw name
                 if ( i_value->length() > 0  && (*i_value)[ 0 ] == InvalidPrefix )
                 {
-                    *i_value = trim( static_cast<wstring&> (i_value->substr( 1, i_value->length() - 1 )));
+                    *i_value = trim( i_value->substr( 1, i_value->length() - 1 ));
                 }
 
                 // if any value could not be found, the whole seed row is not invalid
