@@ -365,7 +365,7 @@ void ConstraintsInterpreter::interpretSyntaxTreeItem( IN CSyntaxTreeItem* item, 
 //
 //
 //
-void ConstraintsInterpreter::interpretConstraint( IN CConstraint& constraint, IN OUT CGcdExclusions& gcdExclusions )
+void ConstraintsInterpreter::interpretConstraint( IN const CConstraint& constraint, IN OUT CGcdExclusions& gcdExclusions )
 {
     // if there's no condition, look at the term only
     if ( NULL == constraint.Condition )
@@ -623,7 +623,7 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
         }
 
         // 3. interpret and translate into a form understanable by the core engine
-        CConstraints& constraints = parser.GetConstraints();
+        const CConstraints& constraints = parser.GetConstraints();
 
         if ( _modelData.Verbose )
         {

@@ -81,7 +81,7 @@ public:
                     return( false );
                 }
 
-                pair<typename TNodeCol::iterator, bool> ret = current->children.insert( make_pair( *ic, node ) );
+                std::pair<typename TNodeCol::iterator, bool> ret = current->children.insert( make_pair( *ic, node ) );
                 if( !ret.second ) return( false );
 
                 found = ret.first;

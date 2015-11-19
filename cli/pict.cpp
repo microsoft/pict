@@ -51,7 +51,7 @@ int __cdecl wmain
         return( ErrorCode_BadOption );
     }
 
-    if( !modelData.ReadModel( static_cast<wstring&> ( wstring( args[ 1 ] ))))
+    if( !modelData.ReadModel( wstring( args[ 1 ] )))
     {
         return( ErrorCode_BadModel );
     }
@@ -84,7 +84,7 @@ int __cdecl wmain
     {
         modelData.PrintStatistics();
         result.PrintStatistics();
-        PrintStatisticsCaption( static_cast<wstring&> ( wstring( L"Generation time" )));
+        PrintStatisticsCaption( wstring( L"Generation time" ));
         printTimeDifference( start, end );
     }
     else
@@ -113,7 +113,8 @@ int main
     {
         size_t len = strlen( args[ ii ] );
         wargs[ ii ] = new wchar_t[ len + 1 ];
-        for( size_t jj = 0; jj < len; ++jj )
+        size_t jj;
+        for( jj = 0; jj < len; ++jj )
         {
             wargs[ ii ][ jj ] = (wchar_t) args[ ii ][ jj ];
         }

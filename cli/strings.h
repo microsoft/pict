@@ -37,8 +37,8 @@ bool lineIsEmpty
 //
 int stringCompare
     (
-    IN  std::wstring& s1,
-    IN  std::wstring& s2,
+    IN  const std::wstring& s1,
+    IN  const std::wstring& s2,
     OUT bool          caseSensitive
     );
 

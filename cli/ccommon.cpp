@@ -199,7 +199,7 @@ void CSyntaxTreeItem::Print( unsigned int indent )
 //
 //
 //
-void CConstraint::Print()
+void CConstraint::Print() const
 {
     wcerr << L"Condition:\n";
     if( NULL == Condition )

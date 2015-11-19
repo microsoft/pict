@@ -364,6 +364,9 @@ PictDeleteModel
 //
 void generate( Model* model )
 {
-    for_each( model->GetSubmodels().begin(), model->GetSubmodels().end(), generate );
+    for ( Model* subModel : model->GetSubmodels() )
+    {
+        generate(subModel);
+    }
     model->Generate();
 }

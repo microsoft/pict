@@ -176,7 +176,7 @@ bool CModelData::readParameter( wstring& line )
         if ( ! i_val->empty() 
           && *(i_val->begin())  == PARAM_REF_BEGIN
           && *(i_val->rbegin()) == PARAM_REF_END
-          &&( refParam = FindParameterByName( static_cast<wstring&> (i_val->substr( 1, i_val->length() - 2 )))) !=
+          &&( refParam = FindParameterByName( i_val->substr( 1, i_val->length() - 2 ))) !=
                          Parameters.end() )
         {
             __push_back( parameter.Values, refParam->Values.begin(), refParam->Values.end() );
@@ -195,7 +195,7 @@ bool CModelData::readParameter( wstring& line )
             // '(' must exist, ')' must be the last character
             if ( weightBegin != -1 && weightEnd == i_val->length() - 1 ) 
             {
-                wstring weightStr = trim( static_cast<wstring&> (i_val->substr( weightBegin + 1, weightEnd - weightBegin - 1 )));
+                wstring weightStr = trim( i_val->substr( weightBegin + 1, weightEnd - weightBegin - 1 ));
                 double weightDbl = 0;
 
                 // anything after @ must be a positive integer
@@ -226,7 +226,7 @@ bool CModelData::readParameter( wstring& line )
                  &&(*i_name)[ 0 ] == InvalidPrefix )
                 {
                     positive = false;
-                    *i_name = trim( static_cast<wstring&> (i_name->substr( 1, i_name->length() - 1 )));
+                    *i_name = trim( i_name->substr( 1, i_name->length() - 1 ));
                 }
             }
 
@@ -424,7 +424,7 @@ bool CModelData::readParamSet( wstring& line )
 //
 //
 //
-wifstream CModelData::openFile( wstring& filePath )
+wifstream CModelData::openFile( const wstring& filePath )
 {
     // change name to ANSI
     string ansiFileName;
@@ -447,7 +447,7 @@ wifstream CModelData::openFile( wstring& filePath )
 //
 //
 //
-bool CModelData::readModel( wstring& filePath )
+bool CModelData::readModel( const wstring& filePath )
 {
     wifstream file = openFile( filePath );
     if( ! file ) return( false );
@@ -521,7 +521,7 @@ bool CModelData::readModel( wstring& filePath )
 //
 // reads model file
 //
-bool CModelData::ReadModel( wstring& filePath )
+bool CModelData::ReadModel( const wstring& filePath )
 {
     if( !readModel( filePath ))
     {
@@ -615,7 +615,7 @@ bool CModelData::ReadRowSeedFile( wstring& filePath )
                 // remove the negative marker and match up the raw name
                 if ( i_value->length() > 0  && (*i_value)[ 0 ] == InvalidPrefix )
                 {
-                    *i_value = trim( static_cast<wstring&> (i_value->substr( 1, i_value->length() - 1 )));
+                    *i_value = trim( i_value->substr( 1, i_value->length() - 1 ));
                 }
 
                 // if any value could not be found, the whole seed row is not invalid

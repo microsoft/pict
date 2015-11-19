@@ -7,7 +7,7 @@ namespace pictcore
 // this is to verify whether a is contained within b.
 // if it's true, b is obsolete.
 //
-inline bool contained( Exclusion &a, Exclusion &b )
+bool contained( Exclusion &a, Exclusion &b )
 {
     if( b.size() < a.size() ) return( false );
 

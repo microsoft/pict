@@ -54,5 +54,5 @@ void PrintLogHeader
 //
 void PrintStatisticsCaption
     (
-    IN std::wstring& caption
+    IN const std::wstring& caption
     );

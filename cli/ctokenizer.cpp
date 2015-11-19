@@ -604,7 +604,7 @@ double ConstraintsTokenizer::getNumber()
 // Reads next characters considering them part of string
 // Terminator is the enclosing char, typically a "
 //
-wstring ConstraintsTokenizer::getString( IN wstring& terminator )
+wstring ConstraintsTokenizer::getString( IN const wstring& terminator )
 {
     wstring ret;
 
@@ -697,7 +697,7 @@ wchar_t ConstraintsTokenizer::peekNextChar()
 // If texts match, returns True and also updates the current cursor position
 // (unless explicitly requested not to)
 //
-bool ConstraintsTokenizer::isNextSubstring( IN wstring& text, IN bool dontMoveCursor )
+bool ConstraintsTokenizer::isNextSubstring( IN const wstring& text, IN bool dontMoveCursor )
 {
     skipWhiteChars();
 

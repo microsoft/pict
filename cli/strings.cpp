@@ -35,7 +35,7 @@ bool lineIsEmpty( wstring &line )
 //
 //
 //
-int stringCompare( wstring& s1, wstring& s2, bool caseSensitive )
+int stringCompare( const wstring& s1, const wstring& s2, bool caseSensitive )
 {
     if( !caseSensitive )
     {

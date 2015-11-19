@@ -101,7 +101,7 @@ size_t CModelData::ResultParameterCount()
 //
 //
 //
-vector< CModelParameter >::iterator CModelData::FindParameterByName( wstring& name )
+vector< CModelParameter >::iterator CModelData::FindParameterByName( const wstring& name )
 {
     for( vector< CModelParameter >::iterator i_param =  Parameters.begin();
                                              i_param != Parameters.end();
@@ -253,13 +253,13 @@ bool CModelData::ValidateRowSeeds()
 //
 void CModelData::PrintStatistics()
 {
-    PrintStatisticsCaption( static_cast<wstring&>( wstring( L"Combinations" ) ) );
+    PrintStatisticsCaption( wstring( L"Combinations" ) );
     wcout << m_totalCombinations << endl;
 
     if( GenerationMode == Approximate )
     {
         long covered = m_totalCombinations - m_remainingCombinations;
-        PrintStatisticsCaption( static_cast<wstring&>( wstring( L"Covered" ) ) );
+        PrintStatisticsCaption( wstring( L"Covered" ) );
         wcout << covered << L" (" << covered * 100 / m_totalCombinations << L"%)" << endl;
     }
 }

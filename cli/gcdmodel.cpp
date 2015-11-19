@@ -399,7 +399,7 @@ void CResult::PrintConstraintWarnings()
 //
 void CResult::PrintStatistics()
 {
-    PrintStatisticsCaption( static_cast<wstring&> ( wstring( L"Generated tests" ) ) );
+    PrintStatisticsCaption( wstring( L"Generated tests" ) );
     wcout << static_cast<int> ( TestCases.size() ) << endl;
 }
 

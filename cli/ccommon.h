@@ -462,7 +462,7 @@ public:
     CSyntaxTreeItem* Condition;
     CSyntaxTreeItem* Term;
 
-    void Print();
+    void Print() const;
 };
 
 typedef std::vector<CConstraint> CConstraints;

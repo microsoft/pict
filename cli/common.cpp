@@ -82,7 +82,7 @@ void PrintLogHeader( wstring title )
 //
 //
 //
-void PrintStatisticsCaption( wstring& caption )
+void PrintStatisticsCaption( const wstring& caption )
 {
     const size_t PADDING_SIZE = 15;
     assert( PADDING_SIZE >= caption.size() );
