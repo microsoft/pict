@@ -27,6 +27,7 @@ PICT consists of three projects:
  * Console PICT.EXE client of the engine,
  * A sample of how the engine API can be used in other projects.
 
+##Building and testing on Windows with MsBuild
 Use **pict.sln** to open the solution in Visual Studio 2015. You will need VC++ tools installed.
 
 PICT uses MsBuild for building. **_build.cmd** script in the root directory will build both Debug and Release from the command-line (relies on compilers brought in by VS2015).
@@ -36,3 +37,10 @@ The **test** folder contains all that is necessary to test PICT. You need Perl t
 The test script produces a log: **dbg.log** or **rel.log** for the Debug and Release bits respectively. Compare them with their committed baselines and make sure all the differences can be explained.
 
 >There are tests which randomize output which typically make it different on each run. These results should be masked in the baseline but currently aren't.
+
+##Building with clang++ on Linux, OS/X, *BSD, etc
+Install clang through your package manager (most systems), Xcode (OS/X), or from the [LLVM website](http://llvm.org/releases/).
+
+Run `make` to build the `pict` binary.
+
+Run `make test` to run the tests as described above (requires Perl).
