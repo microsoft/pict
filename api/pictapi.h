@@ -1,5 +1,5 @@
-#if !defined( _PICT_H_ )
-#define _PICT_H_
+#if !defined( PICT_H )
+#define PICT_H
 
 #if !defined( IN )
 #define IN
@@ -389,4 +389,4 @@ PictDeleteModel
 } // extern "C"
 #endif
 
-#endif // _PICT_H_
+#endif // PICT_H
