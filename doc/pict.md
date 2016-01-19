@@ -370,7 +370,7 @@ When seeding is used, you will be warned if any of those problems exist in your 
     Clause        :: =
       Term
     | ( Predicate )
-    | NOT Compound
+    | NOT Predicate
 
     Term          :: =
       ParameterName Relation Value
