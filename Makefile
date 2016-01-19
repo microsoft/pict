@@ -1,6 +1,6 @@
 CXX=clang++
 # suppress all warnings :-(
-CXXFLAGS=-std=c++11 -stdlib=libc++ -Iapi -w
+CXXFLAGS=-std=c++11 -Iapi -w
 TARGET=pict
 all:
 	$(CXX) $(CXXFLAGS) api/*cpp cli/*cpp -o $(TARGET)

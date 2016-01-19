@@ -4,6 +4,7 @@
 #endif
 
 #include <ctime>
+#include <cstring>
 using namespace std;
 
 #include "cmdline.h"
