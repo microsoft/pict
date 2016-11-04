@@ -421,34 +421,18 @@ bool CModelData::readParamSet( wstring& line )
     return ( true );
 }
 
-//
-//
-//
-void CModelData::openFile( const wstring& filePath )
-{
-    // change name to ANSI
-    string ansiFileName;
-    ansiFileName.reserve( filePath.size() );
-    for( auto c : filePath )
-    {
-        ansiFileName += static_cast< char > ( c );
-    }
-
-    // open file into input stream
-    m_inputFile.open( ansiFileName.c_str() );
-    if( !m_inputFile )
-    {
-        PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*) filePath.data() );
-    }
-}
 
 //
 //
 //
 bool CModelData::readModel( const wstring& filePath )
 {
-    openFile( filePath );
-    if( ! m_inputFile ) return( false );
+    wifstream file( filePath.c_str() );
+    if ( !file )
+    {
+        PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*)filePath.data() );
+        return( false );
+    }
 
     wstring line;
 
@@ -541,9 +525,12 @@ bool CModelData::ReadRowSeedFile( wstring& filePath )
 {
     if( trim( filePath ).empty() ) return( true );
 
-    openFile( filePath, m_inputFile );
-    if( ! m_inputFile ) return( false );
-
+    wifstream file( filePath.c_str() );
+    if ( !file )
+    {
+        PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*)filePath.data() );
+        return( false );
+    }
     wstring line;
 
     // parameter names
@@ -590,7 +577,7 @@ bool CModelData::ReadRowSeedFile( wstring& filePath )
     // if any parameter equals to ModelData.Parameters.end()
     // this parameter could not be found in the model
 
-    while( readLineFromFile( file, line ))
+    while( readLineFromFile(file, line ))
     {
         if ( trim(line).empty() ) break;
 

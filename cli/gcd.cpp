@@ -158,7 +158,7 @@ ErrorCode GcdRunner::Generate()
     // we have to run production twice: once for positive and once negative values
 
     // make a copy
-    CModelData modelData2( _modelData );
+    CModelData modelData2 = _modelData;
 
     // the "positive" run; remove all negative values 
     if( _modelData.HasNegativeValues() )
