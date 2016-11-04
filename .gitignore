@@ -15,3 +15,5 @@
 *.suo
 /test/rel.log
 /test/dbg.log
+/pict.VC.db
+/pict.VC.VC.opendb

@@ -114,6 +114,14 @@ std::wstring charArrToStr
     );
 
 //
+// Converts a wide-char string to ANSI
+//
+std::string wideCharToAnsi
+    (
+    IN const std::wstring& text
+    );
+
+//
 //
 //
 enum EncodingType
