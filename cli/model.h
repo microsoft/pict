@@ -152,12 +152,14 @@ public:
     void PrintStatistics();
     
 private:
-    bool         m_hasNegativeValues;
-    EncodingType m_encoding;              // io encoding determined based on input file
-    long         m_totalCombinations;     // number of combinations PICT dealt with in this run
-    long         m_remainingCombinations; // number of uncovered combinations (Preview and Approximate)
+    std::wifstream  m_inputFile;
 
-    std::wifstream openFile( const std::wstring& filePath );
+    bool            m_hasNegativeValues;
+    EncodingType    m_encoding;              // io encoding determined based on input file
+    long            m_totalCombinations;     // number of combinations PICT dealt with in this run
+    long            m_remainingCombinations; // number of uncovered combinations (Preview and Approximate)
+
+    void openFile                  ( const std::wstring& filePath );
     bool readModel                 ( const std::wstring& filePath );
     bool readParameter             ( std::wstring& line );
     bool readParamSet              ( std::wstring& line );

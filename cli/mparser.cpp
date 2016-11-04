@@ -424,7 +424,7 @@ bool CModelData::readParamSet( wstring& line )
 //
 //
 //
-wifstream CModelData::openFile( const wstring& filePath )
+void CModelData::openFile( const wstring& filePath )
 {
     // change name to ANSI
     string ansiFileName;
@@ -435,13 +435,11 @@ wifstream CModelData::openFile( const wstring& filePath )
     }
 
     // open file into input stream
-    wifstream file( ansiFileName.c_str() );
-    if( !file )
+    m_inputFile.open( ansiFileName.c_str() );
+    if( !m_inputFile )
     {
         PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*) filePath.data() );
     }
-
-    return( file );
 }
 
 //
@@ -449,8 +447,8 @@ wifstream CModelData::openFile( const wstring& filePath )
 //
 bool CModelData::readModel( const wstring& filePath )
 {
-    wifstream file = openFile( filePath );
-    if( ! file ) return( false );
+    openFile( filePath );
+    if( ! m_inputFile ) return( false );
 
     wstring line;
 
@@ -543,8 +541,8 @@ bool CModelData::ReadRowSeedFile( wstring& filePath )
 {
     if( trim( filePath ).empty() ) return( true );
 
-    wifstream file = openFile( filePath );
-    if( !file ) return( false );
+    openFile( filePath, m_inputFile );
+    if( ! m_inputFile ) return( false );
 
     wstring line;
 
