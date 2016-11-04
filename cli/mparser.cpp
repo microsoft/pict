@@ -421,36 +421,20 @@ bool CModelData::readParamSet( wstring& line )
     return ( true );
 }
 
-//
-//
-//
-wifstream CModelData::openFile( const wstring& filePath )
-{
-    // change name to ANSI
-    string ansiFileName;
-    ansiFileName.reserve( filePath.size() );
-    for( auto c : filePath )
-    {
-        ansiFileName += static_cast< char > ( c );
-    }
-
-    // open file into input stream
-    wifstream file( ansiFileName.c_str() );
-    if( !file )
-    {
-        PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*) filePath.data() );
-    }
-
-    return( file );
-}
 
 //
 //
 //
 bool CModelData::readModel( const wstring& filePath )
 {
-    wifstream file = openFile( filePath );
-    if( ! file ) return( false );
+    // Some implementations of wifstream only allow ANSI strings as file names so converting before using
+    string ansiFilePath = wideCharToAnsi( filePath );
+    wifstream file( ansiFilePath.c_str() );
+    if ( !file )
+    {
+        PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*)filePath.data() );
+        return( false );
+    }
 
     wstring line;
 
@@ -539,13 +523,18 @@ bool CModelData::ReadModel( const wstring& filePath )
 //
 //
 //
-bool CModelData::ReadRowSeedFile( wstring& filePath )
+bool CModelData::ReadRowSeedFile( const wstring& filePath )
 {
     if( trim( filePath ).empty() ) return( true );
 
-    wifstream file = openFile( filePath );
-    if( !file ) return( false );
-
+    // Some implementations of wifstream only allow ANSI strings as file names so converting before using
+    string ansiFilePath = wideCharToAnsi( filePath );
+    wifstream file( ansiFilePath.c_str() );
+    if ( !file )
+    {
+        PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*)filePath.data() );
+        return( false );
+    }
     wstring line;
 
     // parameter names
@@ -592,7 +581,7 @@ bool CModelData::ReadRowSeedFile( wstring& filePath )
     // if any parameter equals to ModelData.Parameters.end()
     // this parameter could not be found in the model
 
-    while( readLineFromFile( file, line ))
+    while( readLineFromFile(file, line ))
     {
         if ( trim(line).empty() ) break;
 

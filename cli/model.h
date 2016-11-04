@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <limits>
+#include <fstream>
 #include "generator.h"
 #include "strings.h"
 using namespace pictcore;
@@ -128,8 +129,8 @@ public:
         m_totalCombinations(0),
         m_remainingCombinations(0) {}
 
-    bool ReadModel( const std::wstring& filePath );
-    bool ReadRowSeedFile( std::wstring& filePath );
+    bool ReadModel      ( const std::wstring& filePath );
+    bool ReadRowSeedFile( const std::wstring& filePath );
 
     size_t TotalParameterCount() { return(Parameters.size()); }
     size_t ResultParameterCount();
@@ -152,12 +153,12 @@ public:
     void PrintStatistics();
     
 private:
-    bool         m_hasNegativeValues;
-    EncodingType m_encoding;              // io encoding determined based on input file
-    long         m_totalCombinations;     // number of combinations PICT dealt with in this run
-    long         m_remainingCombinations; // number of uncovered combinations (Preview and Approximate)
+    bool            m_hasNegativeValues;
+    EncodingType    m_encoding;              // io encoding determined based on input file
+    long            m_totalCombinations;     // number of combinations PICT dealt with in this run
+    long            m_remainingCombinations; // number of uncovered combinations (Preview and Approximate)
 
-    std::wifstream openFile( const std::wstring& filePath );
+    void readFile                  ( const std::wstring& filePath );
     bool readModel                 ( const std::wstring& filePath );
     bool readParameter             ( std::wstring& line );
     bool readParamSet              ( std::wstring& line );
