@@ -427,7 +427,9 @@ bool CModelData::readParamSet( wstring& line )
 //
 bool CModelData::readModel( const wstring& filePath )
 {
-    wifstream file( filePath.c_str() );
+    // Some implementations of wifstream only allow ANSI strings as file names so converting before using
+    string ansiFilePath = wideCharToAnsi( filePath );
+    wifstream file( ansiFilePath.c_str() );
     if ( !file )
     {
         PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*)filePath.data() );
@@ -521,11 +523,13 @@ bool CModelData::ReadModel( const wstring& filePath )
 //
 //
 //
-bool CModelData::ReadRowSeedFile( wstring& filePath )
+bool CModelData::ReadRowSeedFile( const wstring& filePath )
 {
     if( trim( filePath ).empty() ) return( true );
 
-    wifstream file( filePath.c_str() );
+    // Some implementations of wifstream only allow ANSI strings as file names so converting before using
+    string ansiFilePath = wideCharToAnsi( filePath );
+    wifstream file( ansiFilePath.c_str() );
     if ( !file )
     {
         PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*)filePath.data() );

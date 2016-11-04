@@ -129,8 +129,8 @@ public:
         m_totalCombinations(0),
         m_remainingCombinations(0) {}
 
-    bool ReadModel( const std::wstring& filePath );
-    bool ReadRowSeedFile( std::wstring& filePath );
+    bool ReadModel      ( const std::wstring& filePath );
+    bool ReadRowSeedFile( const std::wstring& filePath );
 
     size_t TotalParameterCount() { return(Parameters.size()); }
     size_t ResultParameterCount();
