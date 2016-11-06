@@ -8,7 +8,7 @@ PICT generates test cases and test configurations. With PICT, you can generate t
 
 PICT runs as a command line tool. Prepare a model file detailing the parameters of the interface (or set of configurations, or data) you want to test. PICT generates a compact set of parameter value choices that represent the test cases you should use to get comprehensive combinatorial coverage of your parameters.
 
-For instance, if you wish to create a test suite for partition and volume creation, the domain can be described by the following parameters: **Type**, **Size**, **File system**, **Format method**, **Cluster size**, and **Compression**. Each parameter has a limited number of possible values, each of which is determined by its nature (for example, **Compression** can only be **On** or **Off**) or by the equivalence partitioning (such as **Size**).
+For instance, to create a test suite for disk partition creation, the domain can be described by the following parameters: **Type**, **Size**, **File system**, **Format method**, **Cluster size**, and **Compression**. Each parameter consists of a finite number of possible values. For example, **Compression** naturally can only be **On** or **Off**, other parameters are made finite with help of equivalence partitioning (e.g. **Size**).
 
     Type:          Single, Span, Stripe, Mirror, RAID-5
     Size:          10, 100, 500, 1000, 5000, 10000, 40000
@@ -17,7 +17,7 @@ For instance, if you wish to create a test suite for partition and volume creati
     Cluster size:  512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
     Compression:   On, Off
 
-There are thousands of possible combinations of these values. It would be  difficult to test all of them in a reasonable amount of time. Instead, we settle on testing all possible pairs of values. For example, **{Single, FAT}** is one pair, **{10, Slow}** is another; one test case can cover many pairs. Research shows that testing all pairs is an effective alternative to exhaustive testing and much less costly. It will provide very good coverage and the number of test cases will remain manageable.
+For such a model, thousands of possible test cases can be generated. It would be difficult to test all of them in a reasonable amount of time. Instead of attempting to cover all possible combinations, we settle on testing all possible pairs of values. For example, **{Single, FAT}** is one pair, **{10, Slow}** is another. Consequently, one test case can cover many pairs. Research shows that testing all pairs is an effective alternative to exhaustive testing and much less costly. It will provide very good coverage and the number of test cases will remain manageable.
 
 #Usage
 
@@ -37,7 +37,7 @@ PICT is a command-line tool that accepts a plain-text model file as an input and
 
 ##Model File 
 
-A model consists of at least one, and at most, three sections:
+A model consists of the following sections:
 
     parameter definitions
     [sub-model definitions]
@@ -45,7 +45,7 @@ A model consists of at least one, and at most, three sections:
  
 Model sections should always be specified in the order shown above and cannot overlap. All parameters should be defined first, then sub-models, and then constraints. The sub-models definition section is optional, as well as the constraints. Sections do not require any special separators between them. Empty lines can appear anywhere. Comments are also permitted and they should be prefixed with # character.
 
-To produce a very basic model file, list the parameters—each in a separate line—with the respective values delimited by commas:
+To produce a basic model file, list the parameters—each in a separate line—with the respective values delimited by commas:
 
     <ParamName> : <Value1>, <Value2>, <Value3>, ...
 
@@ -64,13 +64,13 @@ Example:
 
 A comma is the default separator but you can specify a different one using **/d** option.
 
-By default, PICT generates a pair-wise test suite (all pairs covered), but the order can be set by option **/o** to a value larger than two. For example, if **/o:3** is specified, the resultant test suite will cover all triplets of values thereby producing a larger number of tests but potentially making the test suite even more effective. The maximum order for a simple model is equal to the number of parameters, which will result in an exhaustive test suite. Following the same principle, specifying **/o:1** will produce a test suite that merely covers all values (combinations of 1).
+By default, PICT generates a pair-wise test suite (all pairs covered), but the order can be set by option **/o** to a value larger than two. For example, if **/o:3** is specified, the test suite will cover all triplets of values thereby producing a larger number of tests but potentially making the test suite even more effective. The maximum order for a simple model is equal to the number of parameters, which will result in an exhaustive test suite. Following the same principle, specifying **/o:1** will produce a test suite that merely covers all values (combinations of 1).
 
 ##Output Format
 
 All errors, warning messages, and the randomization seed are printed to the error stream. The test cases are printed to the standard output stream. The first line of the output contains names of the parameters. Each of the following lines represents one generated test case. Values in each line are separated by a tab. This way redirecting the output to a file creates a tab-separated value format.
 
-If a model and options given to the tool do not change, every run will result in the same output. However, the output can be randomized if **/r** option is used. A randomized generation prints out the seed used for that particular execution to the error output stream. Consequently, that seed can be fed into the tool with **/r:&ltseed&gt** option to replay a particular generation.
+If a model and options given to the tool do not change, every run will result in the same output. However, the output can be randomized if **/r** option is used. A randomized generation prints out the seed used for that particular execution to the error output stream. Consequently, that seed can be fed into the tool with **/r:seed** option to replay a particular generation.
 
 #Constraints
 
