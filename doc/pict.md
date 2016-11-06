@@ -8,7 +8,7 @@ PICT generates test cases and test configurations. With PICT, you can generate t
 
 PICT runs as a command line tool. Prepare a model file detailing the parameters of the interface (or set of configurations, or data) you want to test. PICT generates a compact set of parameter value choices that represent the test cases you should use to get comprehensive combinatorial coverage of your parameters.
 
-For instance, if you wish to create a test suite for partition and volume creation, the domain can be described by the following parameters: **Type**, **Size**, **File system**, **Format method**, **Cluster size**, and **Compression**. Each parameter has a limited number of possible values, each of which is determined by its nature (for example, **Compression** can only be **On** or **Off**) or by the equivalence partitioning (such as **Size**).
+For instance, to create a test suite for disk partition creation, the domain can be described by the following parameters: **Type**, **Size**, **File system**, **Format method**, **Cluster size**, and **Compression**. Each parameter consists of a finite number of possible values. For example, **Compression** naturally can only be **On** or **Off**, other parameters are made finite with help of equivalence partitioning (e.g. **Size**).
 
     Type:          Single, Span, Stripe, Mirror, RAID-5
     Size:          10, 100, 500, 1000, 5000, 10000, 40000
@@ -17,7 +17,7 @@ For instance, if you wish to create a test suite for partition and volume creati
     Cluster size:  512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
     Compression:   On, Off
 
-There are thousands of possible combinations of these values. It would be  difficult to test all of them in a reasonable amount of time. Instead, we settle on testing all possible pairs of values. For example, **{Single, FAT}** is one pair, **{10, Slow}** is another; one test case can cover many pairs. Research shows that testing all pairs is an effective alternative to exhaustive testing and much less costly. It will provide very good coverage and the number of test cases will remain manageable.
+For such a model, thousands of possible test cases can be generated. It would be difficult to test all of them in a reasonable amount of time. Instead of attempting to cover all possible combinations, we settle on testing all possible pairs of values. For example, **{Single, FAT}** is one pair, **{10, Slow}** is another. Consequently, one test case can cover many pairs. Research shows that testing all pairs is an effective alternative to exhaustive testing and much less costly. It will provide very good coverage and the number of test cases will remain manageable.
 
 #Usage
 
@@ -37,7 +37,7 @@ PICT is a command-line tool that accepts a plain-text model file as an input and
 
 ##Model File 
 
-A model consists of at least one, and at most, three sections:
+A model consists of the following sections:
 
     parameter definitions
     [sub-model definitions]
@@ -45,7 +45,7 @@ A model consists of at least one, and at most, three sections:
  
 Model sections should always be specified in the order shown above and cannot overlap. All parameters should be defined first, then sub-models, and then constraints. The sub-models definition section is optional, as well as the constraints. Sections do not require any special separators between them. Empty lines can appear anywhere. Comments are also permitted and they should be prefixed with # character.
 
-To produce a very basic model file, list the parameters—each in a separate line—with the respective values delimited by commas:
+To produce a basic model file, list the parameters—each in a separate line—with the respective values delimited by commas:
 
     <ParamName> : <Value1>, <Value2>, <Value3>, ...
 
@@ -64,13 +64,13 @@ Example:
 
 A comma is the default separator but you can specify a different one using **/d** option.
 
-By default, PICT generates a pair-wise test suite (all pairs covered), but the order can be set by option **/o** to a value larger than two. For example, if **/o:3** is specified, the resultant test suite will cover all triplets of values thereby producing a larger number of tests but potentially making the test suite even more effective. The maximum order for a simple model is equal to the number of parameters, which will result in an exhaustive test suite. Following the same principle, specifying **/o:1** will produce a test suite that merely covers all values (combinations of 1).
+By default, PICT generates a pair-wise test suite (all pairs covered), but the order can be set by option **/o** to a value larger than two. For example, if **/o:3** is specified, the test suite will cover all triplets of values thereby producing a larger number of tests but potentially making the test suite even more effective. The maximum order for a simple model is equal to the number of parameters, which will result in an exhaustive test suite. Following the same principle, specifying **/o:1** will produce a test suite that merely covers all values (combinations of 1).
 
 ##Output Format
 
 All errors, warning messages, and the randomization seed are printed to the error stream. The test cases are printed to the standard output stream. The first line of the output contains names of the parameters. Each of the following lines represents one generated test case. Values in each line are separated by a tab. This way redirecting the output to a file creates a tab-separated value format.
 
-If a model and options given to the tool do not change, every run will result in the same output. However, the output can be randomized if **/r** option is used. A randomized generation prints out the seed used for that particular execution to the error output stream. Consequently, that seed can be fed into the tool with **/r:&ltseed&gt** option to replay a particular generation.
+If a model and options given to the tool do not change, every run will result in the same output. However, the output can be randomized if **/r** option is used. A randomized generation prints out the seed used for that particular execution to the error output stream. Consequently, that seed can be fed into the tool with **/r:seed** option to replay a particular generation.
 
 #Constraints
 
@@ -88,7 +88,7 @@ Constraints allow you to specify limitations on the domain. In the example with 
 
 ##Conditional Constraints
 
-A term **[parameter] relation value** is an atomic part of a predicate. The following relations can be used: =, <>, >, >=, <, <=, and LIKE. LIKE is a wildcard-matching operator (* - any character, ? – one character).
+A term **[parameter] relation value** is an atomic part of a constraint expression. The following relations can be used: =, <>, >, >=, <, <=, and LIKE. LIKE is a wildcard-matching operator (* - any character, ? – one character).
 
     [Size] < 10000
     [Compression] = "OFF"
@@ -99,7 +99,7 @@ Operator IN allows specifying a set of values that satisfy the relation explicit
     IF [Cluster size] in {512, 1024, 2048} THEN [Compression] = "Off";
     IF [File system] in {"FAT", "FAT32"}   THEN [Compression] = "Off";
 
-The IF, THEN, and ELSE parts of a predicate may contain multiple terms joined by logical operators: NOT, AND, and OR. Parentheses are also allowed in order to change the default operator priority:
+The IF, THEN, and ELSE parts of an expression may contain multiple terms joined by logical operators: NOT, AND, and OR. Parentheses are also allowed in order to change the default operator priority:
 
     IF [File system] <> "NTFS" OR
      ( [File system] =  "NTFS" AND [Cluster size] > 4096 ) 
@@ -114,16 +114,16 @@ Parameters can also be compared to other parameters, like in this example:
     #
     # Machine 1
     #
-    OS_1:   Win2000, WinXP
-    SKU_1:  Professional, Server, Datacenter, WinPowered
-    LANG_1: EN, DE
+    OS_1:   Win7, Win8, Win10
+    SKU_1:  Home, Pro
+    LANG_1: English, Spanish, Chinese
 
     #
     # Machine 2
     #
-    OS_2:   Win2000, WinXP
-    SKU_2:  Professional, Server, Datecenter
-    LANG_2: EN, DE
+    OS_2:   Win7, Win8, Win10
+    SKU_2:  Home, Pro
+    LANG_2: English, Spanish, Chinese, Hindi
 
     IF [LANG_1] = [LANG_2]
     THEN [OS_1] <> [OS_2] AND [SKU_1] <> [SKU_2];
@@ -159,12 +159,32 @@ String comparison is lexicographical and case-insensitive by default. Numerical 
 
 By default, PICT does all its comparisons and checks case-insensitively. For instance, if there are two parameters defined: *OS* and *os*, a duplication of names will be detected (parameter names must be unique). Constraints are also resolved case-insensitively by default:
 
-    IF [OS] = "Win2K" THEN ...
+    IF [OS] = "Win10" THEN ...
 
-will match both *Win2K* and *win2k* values (values of a parameter are not required to be unique). Option **/c** however, makes the model evaluation fully case-sensitive.
+will match both *Win10* and *win10* values (values of a parameter are not required to be unique). Option **/c** however, makes the model evaluation fully case-sensitive.
 
-#Advanced modelling features
+#Advanced Modelling Features
 
+##Re-using Parameter Definitions
+
+Once a parameter is defined, it can help in defining other parameters.
+
+    #
+    # Machine 1
+    #
+    OS_1:   Win7, Win8, Win10
+    SKU_1:  Home, Pro
+    LANG_1: English, Spanish, Chinese
+
+    #
+    # Machine 2
+    #
+    OS_2:   <OS_1>
+    SKU_2:  <SKU_1>
+    LANG_2: <LANG_1>, Hindi
+
+Less typing and better maintainability. 
+    
 ##Sub-Models
 
 Sub-models allow the bundling of certain parameters into groups that get their own combinatory orders. This can be useful if combinations of certain parameters need to be tested more thoroughly or must be combined in separation from the other parameters in the model. The sub-model definition has the following format:
@@ -173,13 +193,13 @@ Sub-models allow the bundling of certain parameters into groups that get their o
 
 For example, sub-modeling is useful when hardware and software parameters are combined together. Without sub-models, each test case would produce a new, unique hardware configuration. Placing all hardware parameters into one sub-model produces fewer distinct hardware configurations and potentially lowers the cost of testing. The order of combinations that can be assigned to each sub-model allows for additional flexibility.
 
-    PLATFORM:  x86, ia64, amd64
-    CPUS:      Single, Dual, Quad
-    RAM:       128MB, 1GB, 4GB, 64GB
+    PLATFORM:  x86, x64, arm
+    CPUS:      1, 2, 4
+    RAM:       1GB, 4GB, 64GB
     HDD:       SCSI, IDE
-    OS:        NT4, Win2K, WinXP, Win2K3
-    IE:        4.0, 5.0, 5.5, 6.0
-    APP:       SQLServer, Exchange, Office
+    OS:        Win7, Win8, Win10
+    Browser:   Edge, Opera, Chrome, Firefox
+    APP:       Word, Excel, Powerpoint
     
     { PLATFORM, CPUS, RAM, HDD } @ 3
     { OS, IE } @ 2
@@ -203,43 +223,15 @@ Notes:
 
 ##Aliasing
 
-Aliasing is a way of specifying multiple names for one value. Multiple names do not change the combinatorial complexity of the model. No matter how many names a value has, it is treated as one entity. The only difference will be in the output; any test case that would normally have that one value will have one of its names instead. Names are rotated among the test cases. One practical application can be shown by the following example: In most of the cases, the difference between Windows 2000 Server and Windows 2000 Advanced Server can safely be ignored, so a tester may opt to test just one version, thereby reducing the number of test cases. However, for sanity sake, both versions could be tested interchangeably. Specifying one value with two names will result in having either Server or Advanced Server in the output without adding extra test cases.
+Aliasing is a way of specifying multiple names for a single value. Multiple names do not change the combinatorial complexity of the model. No matter how many names a value has, it is treated as one entity. The only difference will be in the output; any test case that would normally have that one value will have one of its names instead. Names are rotated among the test cases. Specifying one value with two names will result in having them both show up in the output without additional test cases.
 
 By default, names should be separated by | character but this can be changed with option **/a**.
 
-    #
-    # Machine 1
-    #
-    OS_1:   Win2000, WinXP
-    SKU_1:  Professional, Server|AdvServer, Datacenter, WinPowered
-    LANG_1: EN, DE
+    OS_1:   Win2008, Win2012, Win2016
+    SKU_1:  Professional, Server | Datacenter
 
-    #
-    # Machine 2
-    #
-    OS_2:   Win2000, WinXP
-    SKU_2:  Professional, Server|AdvServer, Datecenter
-    LANG_2: EN, DE
-
-    #
-    # WinXP is always Professional in our case
-    #
-    if [OS_1] = "WinXP" then [SKU_1] = "Professional";
-    if [OS_2] = "WinXP" then [SKU_2] = "Professional";
-
-    #
-    # No German WinPowered 
-    #
-    if [SKU_1] = "WinPowered" then [LANG_1] = "EN";
-
-    #
-    # Let’s not test the same OS on both sides
-    #
-    [OS_1] <> [OS_2];
-
-Notes:
-
-1. When evaluating constraints, only the first name is evaluated. For instance, **[SKU_1] = "Server"** will match the second value but **[SKU_1] = "AdvServer"** will match nothing. Also, only the first name is used to determine whether a value is negative or a numeric type. 
+Note:
+When evaluating constraints, only the first name counts. For instance, **[SKU_1] = "Server"** will result in a match but **[SKU_1] = "Datacenter"** will not. Also, only the first name is used to determine whether a value is negative or a numeric type.
 
 ##Negative Testing
 
@@ -303,7 +295,7 @@ The generation mechanism can be forced to prefer certain values. This is done by
     Format method:  quick, slow
     File system:    FAT, FAT32, NTFS (10)
 
-Important note:
+Note:
 Weight values have no intuitive meaning. For example, when a parameter is defined like this:
 
     File system:    FAT, FAT32, NTFS (10)
@@ -312,7 +304,7 @@ it does not mean that NTFS will appear in the output ten times more often than F
 
 The reason for this is that we deal with two contradictory requirements:
  1. To cover all combinations in the smallest number of test cases.  
- 2. To choose values according to their weights. 
+ 2. To choose values proportionally to their weights. 
 
 (1) will always take precedence over (2) and weights will only be honored when the choice of a value is not determined by a need of satisfying (1). More specifically, during the test case production, candidate values are evaluated and one that covers most of the still unused combinations is always picked. Sometimes there is a tie among candidate values and really no choice is better than another. In those cases, weights will be used to determine the final choice.
 
@@ -331,9 +323,9 @@ Seeding rows must be defined in a separate file (a seeding file). Use new option
 Seeding files have the same format as any PICT output. First line contains parameter names separated by tab characters and each following line contains one seeding row with values also separated by tabs. This format can easily be prepared from scratch (scenario 1) either in Notepad or in Excel and also allows for quick and direct reuse of any prior results (scenario 2).
 
     Ver      SKU   Lang  Arch
-    Win2k    Pro   EN    x86 
-    Win2k          DE    x86 
-    WinXP    Pro   EN    ia64
+    Win7     Pro   EN    x86 
+    Win7           FR    x86 
+    Win10    Pro   EN    x64
 
 Any seeding row may be complete i.e. with values specified for all parameters, or partial, like the second seeding row above which does not have a value for the SKU parameter. In this case, the generation process will take care of choosing the best value for SKU.
 
@@ -346,12 +338,12 @@ There are a few rules of matching seeding rows with the current model:
 
 PICT will issue warnings if (1) or (2) occurs.
 
-In addition to that, there are a few things that are normally allowed in PICT models buy may lead to ambiguities when seeding is used:
- 1. Blank parameter and value names.  
+In addition, there are a few things that are normally allowed in PICT models but may lead to ambiguities when seeding is used:
+ 1. Blank parameter and value names. 
  2. Parameter and value names containing tab characters. 
- 3. Value names and all their aliases not unique within a parameter. 
+ 3. Values and all their aliases not unique within a parameter. 
 
-When seeding is used, you will be warned if any of those problems exist in your model.
+When seeding is used, you will be warned if any of the above problems are detected in your model.
 
 # Constraints Grammar
 
