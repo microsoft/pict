@@ -232,6 +232,20 @@ wstring charArrToStr( wchar_t* c )
 //
 //
 //
+string wideCharToAnsi( const wstring& text )
+{
+    string ansiText;
+    ansiText.reserve( text.size() );
+    for( auto c : text )
+    {
+        ansiText += static_cast< char > (c);
+    }
+    return( ansiText );
+}
+
+//
+//
+//
 EncodingType getEncodingType( wstring& text )
 {
     // UTF8
@@ -348,15 +362,4 @@ bool stringCaseSensitiveEquals( wstring s1, wstring s2 )
 bool stringCaseInsensitiveEquals( wstring s1, wstring s2 )
 {
     return( stringCompare( s1, s2, false ) == 0 );
-}
-
-string wideCharToAnsi( const wstring& text )
-{
-    string ansiText;
-    ansiText.reserve( text.size() );
-    for( auto c : text )
-    {
-        ansiText += static_cast< char > (c);
-    }
-    return( ansiText );
 }

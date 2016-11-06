@@ -581,7 +581,7 @@ bool CModelData::ReadRowSeedFile( const wstring& filePath )
     // if any parameter equals to ModelData.Parameters.end()
     // this parameter could not be found in the model
 
-    while( readLineFromFile(file, line ))
+    while( readLineFromFile( file, line ))
     {
         if ( trim(line).empty() ) break;
 
