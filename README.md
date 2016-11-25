@@ -18,7 +18,7 @@ There are thousands of possible combinations of these values. It would be  diffi
 
 #More information
 
-See **doc/pict.md** for detailed documentation on PICT and http://pairwise.org has details on this testing methododology. 
+See **[doc/pict.md](https://github.com/Microsoft/pict/blob/master/doc/pict.md)** for detailed documentation on PICT and http://pairwise.org has details on this testing methododology. 
 
 #Contributing
 
