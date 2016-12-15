@@ -202,7 +202,7 @@ For example, sub-modeling is useful when hardware and software parameters are co
     APP:       Word, Excel, Powerpoint
     
     { PLATFORM, CPUS, RAM, HDD } @ 3
-    { OS, IE } @ 2
+    { OS, Browser } @ 2
 
 The test generation for the above model would proceed as follows:
 
@@ -214,7 +214,7 @@ The test generation for the above model would proceed as follows:
                 |                              |                             |
                 | order = 3                    | order = 2                   |
                 |                              |                             |
-    { PLATFORM, CPUS, RAM, HDD }            { OS, IE }                       APP 
+    { PLATFORM, CPUS, RAM, HDD }        { OS, Browser }                     APP 
 
 Notes:
  1. You can define as many sub-models as you want; any parameter can belong to any number of sub-models. Model hierarchy can be just one level deep. 
