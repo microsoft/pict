@@ -16,18 +16,18 @@ For instance, if you wish to create a test suite for partition and volume creati
 
 There are thousands of possible combinations of these values. It would be  difficult to test all of them in a reasonable amount of time. Instead, we settle on testing all possible pairs of values. For example, **{Single, FAT}** is one pair, **{10, Slow}** is another; one test case can cover many pairs. Research shows that testing all pairs is an effective alternative to exhaustive testing and much less costly. It will provide very good coverage and the number of test cases will remain manageable.
 
-#More information
+# More information
 
 See **[doc/pict.md](https://github.com/Microsoft/pict/blob/master/doc/pict.md)** for detailed documentation on PICT and http://pairwise.org has details on this testing methododology. 
 
-#Contributing
+# Contributing
 
 PICT consists of three projects:
  * The generator engine,
  * Console PICT.EXE client of the engine,
  * A sample of how the engine API can be used in other projects.
 
-##Building and testing on Windows with MsBuild
+## Building and testing on Windows with MsBuild
 Use **pict.sln** to open the solution in Visual Studio 2015. You will need VC++ tools installed.
 
 PICT uses MsBuild for building. **_build.cmd** script in the root directory will build both Debug and Release from the command-line (relies on compilers brought in by VS2015).
@@ -38,7 +38,7 @@ The test script produces a log: **dbg.log** or **rel.log** for the Debug and Rel
 
 >There are tests which randomize output which typically make it different on each run. These results should be masked in the baseline but currently aren't.
 
-##Building with clang++ on Linux, OS/X, *BSD, etc
+## Building with clang++ on Linux, OS/X, *BSD, etc
 Install clang through your package manager (most systems), Xcode (OS/X), or from the [LLVM website](http://llvm.org/releases/).
 On Linux, you also need to install recent libstdc++ offered by gcc 5.
 
