@@ -19,7 +19,7 @@ For instance, to create a test suite for disk partition creation, the domain can
 
 For such a model, thousands of possible test cases can be generated. It would be difficult to test all of them in a reasonable amount of time. Instead of attempting to cover all possible combinations, we settle on testing all possible pairs of values. For example, **{Single, FAT}** is one pair, **{10, Slow}** is another. Consequently, one test case can cover many pairs. Research shows that testing all pairs is an effective alternative to exhaustive testing and much less costly. It will provide very good coverage and the number of test cases will remain manageable.
 
-#Usage
+# Usage
 
 PICT is a command-line tool that accepts a plain-text model file as an input and produces a set of test cases.
 
@@ -35,7 +35,7 @@ PICT is a command-line tool that accepts a plain-text model file as an input and
       /c      - Case-sensitive model evaluation
       /s      - Show model statistics
 
-##Model File 
+## Model File 
 
 A model consists of the following sections:
 
@@ -66,13 +66,13 @@ A comma is the default separator but you can specify a different one using **/d*
 
 By default, PICT generates a pair-wise test suite (all pairs covered), but the order can be set by option **/o** to a value larger than two. For example, if **/o:3** is specified, the test suite will cover all triplets of values thereby producing a larger number of tests but potentially making the test suite even more effective. The maximum order for a simple model is equal to the number of parameters, which will result in an exhaustive test suite. Following the same principle, specifying **/o:1** will produce a test suite that merely covers all values (combinations of 1).
 
-##Output Format
+## Output Format
 
 All errors, warning messages, and the randomization seed are printed to the error stream. The test cases are printed to the standard output stream. The first line of the output contains names of the parameters. Each of the following lines represents one generated test case. Values in each line are separated by a tab. This way redirecting the output to a file creates a tab-separated value format.
 
 If a model and options given to the tool do not change, every run will result in the same output. However, the output can be randomized if **/r** option is used. A randomized generation prints out the seed used for that particular execution to the error output stream. Consequently, that seed can be fed into the tool with **/r:seed** option to replay a particular generation.
 
-#Constraints
+# Constraints
 
 Constraints allow you to specify limitations on the domain. In the example with partitions, one of the pairs that will occur in at least one test case is **{FAT, 5000}**. In reality, the FAT file system cannot be applied on volumes larger than 4,096 MB. Note that you cannot simply remove those violating test cases from the result because an offending test case may cover other, possibly valid, pairs that would not otherwise be tested. Instead of losing valid pairs, it is better to eliminate disallowed combinations during the generation process. In PICT, this can be done by specifying constraints, for example:
 
@@ -86,7 +86,7 @@ Constraints allow you to specify limitations on the domain. In the example with 
     IF [File system] = "FAT"   THEN [Size] <= 4096;
     IF [File system] = "FAT32" THEN [Size] <= 32000;
 
-##Conditional Constraints
+## Conditional Constraints
 
 A term **[parameter] relation value** is an atomic part of a constraint expression. The following relations can be used: =, <>, >, >=, <, <=, and LIKE. LIKE is a wildcard-matching operator (* - any character, ? – one character).
 
@@ -128,7 +128,7 @@ Parameters can also be compared to other parameters, like in this example:
     IF [LANG_1] = [LANG_2]
     THEN [OS_1] <> [OS_2] AND [SKU_1] <> [SKU_2];
 
-##Unconditional Constraints (Invariants)
+## Unconditional Constraints (Invariants)
 
 An invariant declares an always valid limitation of a domain:
 
@@ -144,7 +144,7 @@ An invariant declares an always valid limitation of a domain:
 
     [OS_1] <> [OS_2] and [SKU_1] <> [SKU_2] and [LANG_1] <> [LANG_2];
 
-##Types
+## Types
 
 PICT uses the concept of a parameter type. There are two types of parameters: string and numeric. A parameter is considered numeric only when all its values are numeric. If a value has multiple names, only the first one counts. Types are only important when evaluating constraints. A numeric parameter is only comparable to a number, and a string parameter is only comparable to another string. For example:
 
@@ -155,7 +155,7 @@ PICT uses the concept of a parameter type. There are two types of parameters: st
 
 String comparison is lexicographical and case-insensitive by default. Numerical values are compared as numbers.
 
-##Case Sensitiveness
+## Case Sensitiveness
 
 By default, PICT does all its comparisons and checks case-insensitively. For instance, if there are two parameters defined: *OS* and *os*, a duplication of names will be detected (parameter names must be unique). Constraints are also resolved case-insensitively by default:
 
@@ -163,9 +163,9 @@ By default, PICT does all its comparisons and checks case-insensitively. For ins
 
 will match both *Win10* and *win10* values (values of a parameter are not required to be unique). Option **/c** however, makes the model evaluation fully case-sensitive.
 
-#Advanced Modelling Features
+# Advanced Modelling Features
 
-##Re-using Parameter Definitions
+## Re-using Parameter Definitions
 
 Once a parameter is defined, it can help in defining other parameters.
 
@@ -185,7 +185,7 @@ Once a parameter is defined, it can help in defining other parameters.
 
 Less typing and better maintainability. 
     
-##Sub-Models
+## Sub-Models
 
 Sub-models allow the bundling of certain parameters into groups that get their own combinatory orders. This can be useful if combinations of certain parameters need to be tested more thoroughly or must be combined in separation from the other parameters in the model. The sub-model definition has the following format:
 
@@ -221,7 +221,7 @@ Notes:
  2. The combinatory order of a sub-model cannot exceed the number of its parameters. In the example above, an order of the first sub-model can be any value between one and four. 
  3. If you do not specify the order for a sub-model, the default order, as specified by /o option, will be used. 
 
-##Aliasing
+## Aliasing
 
 Aliasing is a way of specifying multiple names for a single value. Multiple names do not change the combinatorial complexity of the model. No matter how many names a value has, it is treated as one entity. The only difference will be in the output; any test case that would normally have that one value will have one of its names instead. Names are rotated among the test cases. Specifying one value with two names will result in having them both show up in the output without additional test cases.
 
@@ -233,7 +233,7 @@ By default, names should be separated by | character but this can be changed wit
 Note:
 When evaluating constraints, only the first name counts. For instance, **[SKU_1] = "Server"** will result in a match but **[SKU_1] = "Datacenter"** will not. Also, only the first name is used to determine whether a value is negative or a numeric type.
 
-##Negative Testing
+## Negative Testing
 
 In addition to testing valid combinations, referred to as “positive testing,” it is often desirable to test using values outside the allowable range to make sure the program handles errors properly. This “negative testing” should be conducted such that only one invalid value is present in any test case. This is due to the way in which typical applications are written: namely, to take some failure action upon the first error detected. For this reason, a problem known as input masking—in which one invalid input prevents another invalid input from being tested—can occur with negative testing.
 
@@ -283,7 +283,7 @@ Notes:
  1. A prefix is not a part of a value when it comes to comparisons therefore in constraints it should appear without it. A valid constraint (although quite artificial in this example) would be: **if [A] = -1 then [B] = 0;**. Also checking for the type of a value is not affected by the prefix. For example, both parameters in the above example are numeric despite having non-numeric “~” in one of their values. The prefix however will show up in the output.  
  2. If a value has multiple names, only prefixing the first name will make the value negative. 
 
-##Weighting
+## Weighting
 
 The generation mechanism can be forced to prefer certain values. This is done by means of weights. A weight can be any positive integer. If it is not specified explicitly it is assumed to be 1:
 
@@ -310,7 +310,7 @@ The reason for this is that we deal with two contradictory requirements:
 
 The bottom-line is that you can use weights to attempt to shift the bias towards some values but whether or not to honor that and to what extent is determined by multiple factors, not weights alone.
 
-##Seeding
+## Seeding
 
 Seeding makes two scenarios possible:
  1. Allows for specifying important e.g. regression-inducing combinations that should end up in any generated test suite. In this case, PICT will initialize the output with combinations you provide and will build up the rest of the suite on top of them, still making sure all n-order combinations get covered. 
