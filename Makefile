@@ -15,7 +15,7 @@ OBJS += cli/pict.o cli/strings.o
 pict: $(OBJS)
 	$(CXX) $(OBJS) -o $(TARGET)
 
-test:
+test: $(TARGET)
 	cd test; perl test.pl ../$(TARGET) rel.log
 
 clean:
