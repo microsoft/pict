@@ -1,6 +1,6 @@
 CXX=clang++
 # suppress all warnings :-(
-CXXFLAGS=-std=c++11 -Iapi -w
+CXXFLAGS=-std=c++11 -Iapi -w -fpermissive
 TARGET=pict
 TEST_OUTPUT = test/rel.log test/rel.log.failures test/dbg.log
 TEST_OUTPUT += test/.stdout test/.stderr
