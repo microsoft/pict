@@ -1,5 +1,8 @@
 # To use another compiler, such clang++, set the CXX variable
 # CXX=clang++
+# variables used to generate a source snapshot of the GIT repo
+COMMIT=$(shell git log --pretty=format:'%H' -n 1)
+SHORT_COMMIT=$(shell git log --pretty=format:'%h' -n 1)
 # suppress all warnings :-(
 CXXFLAGS=-std=c++11 -Iapi -w -fpermissive
 TARGET=pict
@@ -23,4 +26,7 @@ clean:
 
 all: pict
 
-.PHONY: all test clean
+source: clean
+	git archive --prefix="pict-$(COMMIT)/" -o "pict-$(SHORT_COMMIT).tar.gz" $(COMMIT)
+
+.PHONY: all test clean source
