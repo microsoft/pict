@@ -13,7 +13,11 @@
 #define OPT
 #endif
 
+#if defined( __GNUC__ )
+#define API_SPEC
+#else
 #define API_SPEC __stdcall
+#endif
 
 #if defined( __cplusplus )
 extern "C" {
