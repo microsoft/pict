@@ -1,4 +1,5 @@
-CXX=clang++
+# To use another compiler, such clang++, set the CXX variable
+# CXX=clang++
 # suppress all warnings :-(
 CXXFLAGS=-std=c++11 -Iapi -w -fpermissive
 TARGET=pict
