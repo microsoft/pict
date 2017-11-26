@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sstream>
 #include "model.h"
 
 namespace pictcli_gcd
@@ -49,7 +50,7 @@ public:
     wstrings            SingleItemExclusions;
     wstrings            SolverWarnings;
 
-    void PrintOutput( CModelData& modelData );
+    void PrintOutput( CModelData& modelData, std::wostream& wout );
     void PrintConstraintWarnings();
     void PrintStatistics();
 };

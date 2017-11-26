@@ -340,36 +340,36 @@ void CGcdData::PrintGcdExclusions()
 //
 //
 //
-void CResult::PrintOutput( CModelData& modelData )
+void CResult::PrintOutput( CModelData& modelData, wostream& wout )
 {
     wstring encodingPrefix;
     setEncodingType( modelData.GetEncoding(), encodingPrefix );
-    wcout << encodingPrefix;
+    wout << encodingPrefix;
 
-    for( vector< CModelParameter >::iterator i_param = modelData.Parameters.begin();
+    for( vector< CModelParameter >::iterator i_param =  modelData.Parameters.begin();
                                              i_param != modelData.Parameters.end();
                                              i_param++ )
     {
-        if( i_param != modelData.Parameters.begin() ) wcout << RESULT_DELIMITER;
-        wcout << i_param->Name;
+        if( i_param != modelData.Parameters.begin() ) wout << RESULT_DELIMITER;
+        wout << i_param->Name;
     }
-    wcout << endl;
+    wout << endl;
 
-    for( vector< CRow >::iterator i_row = TestCases.begin();
+    for( vector< CRow >::iterator i_row =  TestCases.begin();
                                   i_row != TestCases.end();
                                   i_row++ )
     {
-        for( wstrings::iterator i_value = i_row->DecoratedValues.begin();
+        for( wstrings::iterator i_value =  i_row->DecoratedValues.begin();
                                 i_value != i_row->DecoratedValues.end();
                                 i_value++ )
         {
             if( i_value != i_row->DecoratedValues.begin() )
             {
-                wcout << RESULT_DELIMITER;
+                wout << RESULT_DELIMITER;
             }
-            wcout << *i_value;
+            wout << *i_value;
         }
-        wcout << endl;
+        wout << endl;
     }
 }
 
