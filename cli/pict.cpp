@@ -1,5 +1,5 @@
 /* Define __cdecl for non-Microsoft compilers */
-#if ( !defined(_MSC_VER) && !defined(__cdecl) )
+#if ( !defined( _MSC_VER ) && !defined( __cdecl ))
 #define __cdecl
 #endif
 
@@ -37,10 +37,11 @@ void printTimeDifference( time_t start, time_t end )
 //
 //
 //
-int __cdecl wmain
+int _cdecl execute
     (
-    IN int      argc,
-    IN wchar_t* args[]
+    IN     int      argc,
+    IN     wchar_t* args[],
+    IN OUT wstring& output
     )
 {
     time_t start = time( NULL );
@@ -91,10 +92,29 @@ int __cdecl wmain
     else
     {
         result.PrintConstraintWarnings();
-        result.PrintOutput( modelData );
+
+        wostringstream outputStream;
+        result.PrintOutput( modelData, outputStream );
+        output.append( outputStream.str() );
     }
 
     return( ErrorCode_Success );
+}
+
+//
+//
+//
+int __cdecl wmain
+    (
+    IN int      argc,
+    IN wchar_t* args[]
+    )
+{
+    wstring output;
+    int ret = execute( argc, args, output );
+    wcout << output;
+
+    return ret;
 }
 
 #if !defined(_MSC_VER)
