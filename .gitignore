@@ -17,3 +17,5 @@
 /test/dbg.log
 /pict.VC.db
 /pict.VC.VC.opendb
+*.ipch
+*.VC.*db*
