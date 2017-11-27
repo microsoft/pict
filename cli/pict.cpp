@@ -37,7 +37,7 @@ void printTimeDifference( time_t start, time_t end )
 //
 //
 //
-int _cdecl execute
+int __cdecl execute
     (
     IN     int      argc,
     IN     wchar_t* args[],
