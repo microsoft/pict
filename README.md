@@ -20,6 +20,8 @@ There are thousands of possible combinations of these values. It would be  diffi
 
 See **[doc/pict.md](https://github.com/Microsoft/pict/blob/master/doc/pict.md)** for detailed documentation on PICT and http://pairwise.org has details on this testing methododology. 
 
+The most recent **pict.exe** is available at http://www.pairwise.org/pict/win/pict.exe.
+
 # Contributing
 
 PICT consists of three projects:
@@ -37,6 +39,8 @@ The **test** folder contains all that is necessary to test PICT. You need Perl t
 The test script produces a log: **dbg.log** or **rel.log** for the Debug and Release bits respectively. Compare them with their committed baselines and make sure all the differences can be explained.
 
 >There are tests which randomize output which typically make it different on each run. These results should be masked in the baseline but currently aren't.
+
+
 
 ## Building with clang++ on Linux, OS/X, *BSD, etc
 Install clang through your package manager (most systems), Xcode (OS/X), or from the [LLVM website](http://llvm.org/releases/).
