@@ -51,7 +51,6 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
             }
 
             submodel->Generate();
-            hasChildren = true;
 
             modelData.AddToTotalCombinationsCount( submodel->GetTotalCombinationsCount() );
             modelData.AddToRemainingCombinationsCount( submodel->GetRemainingCombinationsCount() );
