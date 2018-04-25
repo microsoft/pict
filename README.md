@@ -1,4 +1,4 @@
-7Pairwise Independent Combinatorial Testing
+Pairwise Independent Combinatorial Testing
 ==========================================
 
 PICT generates test cases and test configurations. With PICT, you can generate tests that are more effective than manually generated tests and in a fraction of the time required by hands-on test case design.
