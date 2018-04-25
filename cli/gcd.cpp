@@ -14,7 +14,7 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
     // translate all data to gcd-readable format, build exclusions etc.
     CGcdData gcdData( modelData );
     ErrorCode err = gcdData.TranslateToGCD();
-    if( FAILED( err ) ) return( err );
+    if( FAILED( err )) return( err );
 
     // check if we excluded all values of any parameter; generation will return nothing if that's the case
     if( gcdData.CheckEntireParameterExcluded() )
@@ -36,11 +36,10 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
     model->SetRandomSeed( modelData.RandSeed );
     try
     {
-        bool hasChildren = false;
         for( auto & submodel : model->GetSubmodels() )
         {
             // each submodel may assign different order to parameters
-            if( !gcdData.FixParamOrder( submodel ) )
+            if( !gcdData.FixParamOrder( submodel ))
             {
                 return( ErrorCode_BadModel );
             }
@@ -51,13 +50,12 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
             }
 
             submodel->Generate();
-            hasChildren = true;
-
+        
             modelData.AddToTotalCombinationsCount( submodel->GetTotalCombinationsCount() );
             modelData.AddToRemainingCombinationsCount( submodel->GetRemainingCombinationsCount() );
         }
 
-        if( !gcdData.FixParamOrder( model ) )
+        if( !gcdData.FixParamOrder( model ))
         {
             return( ErrorCode_BadModel );
         }
@@ -142,7 +140,7 @@ void GcdRunner::translateResults( IN CModelData&       modelData,
             decoratedRowText.push_back( decoratedName );
         }
 
-        if( !justNegative || ( justNegative && isNegativeTestCase ) )
+        if( !justNegative || ( justNegative && isNegativeTestCase ))
         {
             CRow testCase( rowText, decoratedRowText, isNegativeTestCase );
             _result.TestCases.push_back( testCase );
@@ -167,7 +165,7 @@ ErrorCode GcdRunner::Generate()
     }
 
     ErrorCode err = generateResults( _modelData, false );
-    if( FAILED( err ) ) return( err );
+    if( FAILED( err )) return( err );
 
     // the "negative" run; only if any negative values exist
     if( modelData2.HasNegativeValues() )
@@ -179,7 +177,7 @@ ErrorCode GcdRunner::Generate()
         _result.SingleItemExclusions.clear();
 
         err = generateResults( modelData2, true );
-        if( FAILED( err ) ) return( err );
+        if( FAILED( err )) return( err );
     }
 
     return( ErrorCode_Success );
