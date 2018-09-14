@@ -1,12 +1,8 @@
 *.sdf
 *.opensdf
 *.user
-/api-usage/Debug
-/api/Debug
-/api/Release
-/api-usage/Release
-/cli/Debug
-/cli/Release
+/*/Debug
+/*/Release
 /Debug
 /Release
 /bin
@@ -17,5 +13,6 @@
 /test/dbg.log
 /pict.VC.db
 /pict.VC.VC.opendb
+*.aps
 *.ipch
 *.VC.*db*
