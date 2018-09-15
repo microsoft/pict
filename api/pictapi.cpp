@@ -281,6 +281,7 @@ PictAddParameter
             std::vector<int> weights;
             weights.reserve( valueCount );
             weights.insert( weights.begin(), valueWeights, valueWeights + valueCount );
+            param->SetWeights(move(weights));
         }
     }
     catch( ... )
