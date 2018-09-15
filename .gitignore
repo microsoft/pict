@@ -13,6 +13,7 @@
 /test/dbg.log
 /pict.VC.db
 /pict.VC.VC.opendb
+*.user
 *.aps
 *.ipch
 *.VC.*db*

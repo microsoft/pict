@@ -16,10 +16,10 @@ int main()
     
     wstring output;
 
-    int ret = execute( sizeof( input ) / sizeof(wchar_t*),
+    int ret = execute( sizeof( input ) / sizeof( wchar_t* ),
                        const_cast<wchar_t**>( input ), 
                        output );
     wcout << output;
     
-    return 0;
+    return ret;
 }
