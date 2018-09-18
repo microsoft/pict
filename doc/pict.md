@@ -1,4 +1,4 @@
-PICT 3.5
+PICT
 ========
 Pairwise Independent Combinatorial Testing tool
 ------------------------------------------------
