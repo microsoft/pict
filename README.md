@@ -24,10 +24,12 @@ The most recent **pict.exe** is available at http://www.pairwise.org/pict/win/pi
 
 # Contributing
 
-PICT consists of three projects:
- * The generator engine,
- * Console PICT.EXE client of the engine,
- * A sample of how the engine API can be used in other projects.
+PICT consists of the following projects:
+ * **api**: The core combinatorial engine,
+ * **cli**: PICT.EXE command-line tool,
+ * **clidll**: PICT.EXE client repackaged as a Windows DLL to be used in-proc.
+ * **api-usage**: A sample of how the engine API can be used.
+ * **clidll-usage**: A sample of how the PICT DLL is to be used.
 
 ## Building and testing on Windows with MsBuild
 Use **pict.sln** to open the solution in Visual Studio 2017. You will need VC++ build tools installed. See https://www.visualstudio.com/downloads/ for details.
