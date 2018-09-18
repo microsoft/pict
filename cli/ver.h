@@ -4,7 +4,7 @@
 #define VER_MAKESTR(x)          VER_MAKESTR_1( ##x)
 
 #define VER_PRODBUILD_MAJOR     3
-#define VER_PRODBUILD_MINOR     6
+#define VER_PRODBUILD_MINOR     7
 #define VER_PRODBUILD_BUILD     0
 #define VER_PRODBUILD_REVISION  0
 

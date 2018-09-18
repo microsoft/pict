@@ -258,7 +258,7 @@ void CModelData::PrintStatistics()
 
     if( GenerationMode == Approximate )
     {
-        long covered = m_totalCombinations - m_remainingCombinations;
+        size_t covered = m_totalCombinations - m_remainingCombinations;
         PrintStatisticsCaption( wstring( L"Covered" ) );
         wcout << covered << L" (" << covered * 100 / m_totalCombinations << L"%)" << endl;
     }
