@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata>
+        <id>Microsoft.Test.Pict</id>
+        <version>3.7.0</version>
+        <authors>Jacek Czerwonka</authors>
+        <licenseUrl>https://github.com/Microsoft/pict/blob/master/LICENSE.TXT</licenseUrl>
+        <projectUrl>http://github.com/microsoft/pict</projectUrl>
+        <description>PICT - Combinatorial Testing Tool</description>
+    </metadata>
+    <files>
+        <file src="Release/cli/pict.exe" target="lib/win10-x64" />
+        <file src="Release/cli/pict.pdb" target="lib/win10-x64" />
+
+        <file src="Release/api/pict.lib" target="lib/win10-x64/api" />
+        <file src="api/pictapi.h" target="lib/win10-x64/api" />
+
+        <file src="Release/clidll/pict.dll" target="lib/win10-x64/dll" />
+        <file src="Release/clidll/pict.pdb" target="lib/win10-x64/dll" />
+
+        <file src="doc/pict.md" target="lib" />
+    </files>
+</package>
