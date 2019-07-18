@@ -27,8 +27,8 @@ The most recent **pict.exe** is available at http://www.pairwise.org/pict/win/pi
 PICT consists of the following projects:
  * **api**: The core combinatorial engine,
  * **cli**: PICT.EXE command-line tool,
- * **clidll**: PICT.EXE client repackaged as a Windows DLL to be used in-proc.
- * **api-usage**: A sample of how the engine API can be used.
+ * **clidll**: PICT.EXE client repackaged as a Windows DLL to be used in-proc,
+ * **api-usage**: A sample of how the engine API can be used,
  * **clidll-usage**: A sample of how the PICT DLL is to be used.
 
 ## Building and testing on Windows with MsBuild
@@ -42,12 +42,14 @@ The test script produces a log: **dbg.log** or **rel.log** for the Debug and Rel
 
 >There are tests which randomize output which typically make it different on each run. These results should be masked in the baseline but currently aren't.
 
-
-
-## Building with clang++ on Linux, OS/X, *BSD, etc
+## Building with clang++ on Linux, OS/X, *BSD, etc.
 Install clang through your package manager (most systems), Xcode (OS/X), or from the [LLVM website](http://llvm.org/releases/).
 On Linux, you also need to install recent libstdc++ offered by gcc 5.
 
 Run `make` to build the `pict` binary.
 
 Run `make test` to run the tests as described above (requires Perl).
+
+## Debugging
+
+Most commonly, you will want to debug the command-line tool. Start in the **pictcli** project, **cli/pict.cpp** file. You'll find **wmain** routine there which would be a convenient place to put the very first breakpoint.
