@@ -1,4 +1,4 @@
-﻿AccessModifier: Default,Public,Private,Protected,Internal,InternalProtected
+AccessModifier: Default,Public,Private,Protected,Internal,InternalProtected
 IsStatic: True,False
 NameProperty: m,mhhoy,rhhivpcnyopduqxrtundorucblogjcypoxaxgxvyqykbphvwqu
 Summary: r,mskka,lehjavdwoynvqalvxompgtmtpqpojmvdnylbplxuumlpsygqiu

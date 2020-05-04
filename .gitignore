@@ -9,11 +9,13 @@
 /test/.stderr*
 /test/.stdout*
 *.suo
-/test/rel.log
-/test/dbg.log
+/test/rel.log*
+/test/dbg.log*
 /pict.VC.db
 /pict.VC.VC.opendb
 *.user
 *.aps
 *.ipch
 *.VC.*db*
+pict
+*.o

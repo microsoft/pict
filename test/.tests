@@ -2,8 +2,6 @@
 -??                 -> BAD_MODEL
 "/??"               -> BAD_MODEL
 //?                 -> BAD_MODEL
-/                   -> BAD_MODEL
-//                  -> BAD_MODEL
 nonexisting.txt     -> BAD_MODEL
 -o:1                -> BAD_MODEL
 -d:.                -> BAD_MODEL
