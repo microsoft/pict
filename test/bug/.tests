@@ -33,7 +33,7 @@ bug015.txt /o:1     -> SUCCESS
 bug015.txt /o:3     -> SUCCESS
 bug015.txt /r       -> SUCCESS [NO_SEEDING]
 bug015.txt /r       -> SUCCESS [NO_SEEDING]
-bug020.txt /d:`     -> SUCCESS
+bug020.txt /d:*     -> SUCCESS
 bug021.txt          -> SUCCESS
 bug022.txt          -> SUCCESS
 bug023.txt /o:1     -> SUCCESS
