@@ -282,6 +282,59 @@ The tool guarantees that all possible pairs of valid values will be covered and 
 Notes:
  1. A prefix is not a part of a value when it comes to comparisons therefore in constraints it should appear without it. A valid constraint (although quite artificial in this example) would be: **if [A] = -1 then [B] = 0;**. Also checking for the type of a value is not affected by the prefix. For example, both parameters in the above example are numeric despite having non-numeric “~” in one of their values. The prefix however will show up in the output.  
  2. If a value has multiple names, only prefixing the first name will make the value negative. 
+ 
+### Excluding other parameters
+Sometimes we may want to ignore other parameters for certain values. A negative test is a typical scenario, as a failure may make any other parameters meaningless if it stops the application. In these cases we do not want to 'use up' any testable values for other parameters. A technique to handle this is be to add a dummy value to the parameters to be excluded. Since it is a dummy value, it must in turn be excluded from the other tests, which can be accomplished using the ELSE clause. 
+
+Consider the following example where a `P1` value of `-1` is a negative test where we expect the application to fail. 
+
+    P1: -1, 0, 1
+    P2:  A, B, C
+    P3:  X, Y, Z
+    
+We want to test this independently and not associate any `P2` and `P3` values with it, as it would needlessly increase the amount of tests and use up `P2`/`P3` combinations. So we add a dummy value `NA` to the `P2` and `P3` sets and exclude them from other cases with the ELSE clause:
+
+    P1: -1, 0, 1
+    P2:  A, B, C, NA
+    P3:  X, Y, Z, NA
+    
+    IF [P1] = -1  
+      THEN [P2] =  "NA" AND [P3] =  "NA" 
+      ELSE [P2] <> "NA" AND [P3] <> "NA";
+
+This will result in a single test for `P1 = -1` and no `NA`'s anywhere else; and no `P2` and `P3` combinations are used up for the -1 test:
+
+    P1      P2      P3
+    0       C       Z
+    1       B       Z
+    1       C       Y
+    0       A       X
+    1       C       X
+    0       B       X
+    0       A       Y
+    -1      NA      NA
+    0       B       Y
+    1       A       Z
+
+However it will get progressively more complex if multiple layers of exclusions are needed. For example let's extend the above with an additional negative test where `P2` is `Null`:
+
+    P1: -1, 0, 1
+    P2: A, B, C, Null, NA
+    P3: X, Y, Z, NA
+    
+    IF [P1] = -1
+      THEN [P2] = "NA" AND [P3] = "NA"
+      ELSE [P2] <> "NA" AND 
+         ( [P3] <> "NA" OR [P2] = "Null" );
+      
+    IF [P2] = "Null" OR [P2] = "NA" 
+      THEN [P3] = "NA";
+
+Two additional tests will be added (not all output shown):
+
+    P1      P2      P3
+    0       Null    NA
+    1       Null    NA
 
 ## Weighting
 
