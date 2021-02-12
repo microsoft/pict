@@ -12,6 +12,7 @@ There are many [tools](./tools.md) that adopted and integrated pairwise testing 
 
 ### Links
 * [Pairwise testing tools](./tools.md)
+* [Comparison of tools efficiency](./efficiency.md)
 * [PICT Pairwise Test Generation tool](https://github.com/microsoft/pict)
 * [About this site](./about.md)
 
