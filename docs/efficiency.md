@@ -8,7 +8,7 @@ The basic measure of efficiency of a pairwise test generation tool is the number
 
 Test generation efficiency is one aspect of a tool that a user will want to consider when choosing a tool to use, but numbers are easier to compare than less tangile aspects like "usability", so a standard set of benchmarks emerged over the years. The table below summarizes efficiencies for several tools that happened to publish their numbers.  
 
-| # | Model | 3⁴ | 3<sup>13</sup> | 4<sup>15</sup> 3<sup>17</sup> 2<sup>29</sup> | 4<sup>1</sup> 3<sup>39</sup> 2<sup>35</sup> | 2<sup>100</sup> | 10<sup>20</sup> |
+| # | Model | 3⁴ | 3¹³ | 4¹⁵ 3¹⁷ 2²⁹ | 4¹ 3³⁹ 2³⁵ | 2¹⁰⁰ | 10²⁰ |
 | :---- | :----: | ----: | ----: | ----: | ----: | ----: | ----: | 
 | 1 | AETG  | 9 | 15 | 41 | 28 | 10 | 180 |
 | 2 | IPO  | 9 | 17 | 34 | 26 | 15 | 212 |
