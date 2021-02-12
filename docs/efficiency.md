@@ -25,3 +25,18 @@ Test generation efficiency is one aspect of a tool that a user will want to cons
 | 13 | JCUnit  | 10 | 23 | 49 | 33 | 18 | 245 |
 | 14 | CoverTable  | 9 | 17 | 34 | 26 | 12 | 195 |
 
+### Sources
+1. Y. Lei and K. C. Tai [In-parameter-order: a test generation strategy for pairwise testing](http://www-cse.uta.edu/~ylei/paper/hase.pdf), p. 8.
+2. K. C. Tai and Y. Lei [A Test Generation Strategy for Pairwise Testing](http://ranger.uta.edu/~ylei/paper/ipo-tse.pdf) p. 2.
+3. A. W. Williams [Determination of Test Configurations for Pair-wise Interaction Coverage](http://www.site.uottawa.ca/~awilliam/papers/Testcom2000.pdf), p. 15.
+4. A. Hartman and L. Raskin [Problems and Algorithms for Covering Arrays](http://www.haifa.il.ibm.com/projects/verification/mdt/papers/AlgorithmsForCoveringArraysPublication191203.pdf), p. 11.
+5. Supplied by Bob Jenkins.
+6. Supplied by George Sherwood.
+7. C. J. Colbourn, M. B. Cohen, R. C. Turban [A Deterministic Density Algorithm for Pairwise Interaction Coverage](http://www.public.asu.edu/~rturban/dda.pdf), p. 6.
+8. Supplied by Bob Jenkins.
+9. Supplied by Jacek Czerwonka.
+10. J. Yan, J. Zhang [Backtracking Algorithms and Search Heuristics to Generate Test Suites for Combinatorial Testing](http://doi.ieeecomputersociety.org/10.1109/COMPSAC.2006.33), p. 8.
+11. A. Calvagna, A. Gargantini [IPO-s: Incremental Generation of Combinatorial Interaction Test Data Based on Symmetries of Covering Arrays](http://www2.computer.org/portal/web/csdl/doi/10.1109/ICSTW.2009.7), p. 17.
+12. Supplied by Patryk Chamuczynski.
+13. Supplied by Hiroshi Ukai [link](https://github.com/dakusui/jcunit/blob/0.8.x-develop/src/test/java/com/github/dakusui/jcunit8/experiments/StandardFactorSpaces.java).
+14. CoverTable's [page](https://github.com/walkframe/covertable).
