@@ -20,7 +20,7 @@ There are thousands of possible combinations of these values. It would be  diffi
 
 See **[doc/pict.md](https://github.com/Microsoft/pict/blob/master/doc/pict.md)** for detailed documentation on PICT and http://pairwise.org has details on this testing methododology. 
 
-The most recent **pict.exe** is available at http://www.pairwise.org/pict/win/pict.exe.
+The most recent **pict.exe** is available at https://github.com/microsoft/pict/releases/download/release/pict.exe.
 
 # Contributing
 
