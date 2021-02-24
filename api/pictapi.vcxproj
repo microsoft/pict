@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -11,23 +10,19 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-
   <PropertyGroup Label="Globals">
     <ProjectGuid>{348F928A-B4A7-41FC-A312-76559047BDAF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>pictapi</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
-
   <PropertyGroup>
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-
   <PropertyGroup>
     <TargetName>pict</TargetName>
     <TargetExt>.lib</TargetExt>
@@ -35,7 +30,6 @@
     <OutDir>$(SolutionDir)$(Configuration)\api\</OutDir>
     <DropDir>$(SolutionDir)bin\</DropDir>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -44,7 +38,6 @@
     <LinkIncremental>false</LinkIncremental>
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -58,7 +51,6 @@
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;pictcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -75,23 +67,19 @@
       <AdditionalLibraryDirectories>..\$(Configuration)\</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;pictcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-
     <PostBuildEvent>
       <Command>
         xcopy /Y /I $(OutDir)$(TargetName)$(TargetExt) $(DropDir)
       </Command>
     </PostBuildEvent>
-
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
-
     <Lib>
       <ExportNamedFunctions>
       </ExportNamedFunctions>
     </Lib>
   </ItemDefinitionGroup>
-
   <ItemGroup>
     <ClCompile Include="combination.cpp" />
     <ClCompile Include="parameter.cpp" />
@@ -108,7 +96,5 @@
     <ClCompile Include="pictapi.cpp" />
     <ClCompile Include="task.cpp" />
   </ItemGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-
 </Project>

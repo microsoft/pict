@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pictclidll-usage.cpp">
+    <ClCompile Include="pictclidll-sample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
