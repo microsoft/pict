@@ -1,4 +1,4 @@
-name: CI
+name: Build all platforms
 on:
   push:
   pull_request:
