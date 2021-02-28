@@ -21,8 +21,8 @@ OBJS_CLI += cli/pict.o cli/strings.o
 pict: $(OBJS)
 	$(CXX) $(OBJS) -o $(TARGET)
 
-$(TARGET_LIB_SO): $(OBJS_API)
-	$(CXX) -fPIC -shared $(OBJS_API) -o $(TARGET_LIB_SO)
+$(TARGET_LIB_SO): $(OBJS)
+	$(CXX) -fPIC -shared $(OBJS) -o $(TARGET_LIB_SO)
 
 test: $(TARGET)
 	cd test; perl test.pl ../$(TARGET) rel.log
