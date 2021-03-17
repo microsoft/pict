@@ -32,7 +32,7 @@ PICT consists of the following projects:
  * **clidll-usage**: A sample of how the PICT DLL is to be used.
 
 ## Building and testing on Windows with MsBuild
-Use **pict.sln** to open the solution in Visual Studio 2017. You will need VC++ build tools installed. See https://www.visualstudio.com/downloads/ for details.
+Use **pict.sln** to open the solution in Visual Studio 2019. You will need VC++ build tools installed. See https://www.visualstudio.com/downloads/ for details.
 
 PICT uses MsBuild for building. **_build.cmd** script in the root directory will build both Debug and Release from the command-line.
 
