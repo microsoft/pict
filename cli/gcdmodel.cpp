@@ -1,5 +1,3 @@
-#pragma once
-
 #include "cmdline.h"
 #include "gcdexcl.h"
 #include "gcdmodel.h"
