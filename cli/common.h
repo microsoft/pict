@@ -36,9 +36,9 @@ enum MsgType
 void PrintMessage
     (
     IN MsgType  type,
-    IN wchar_t* text1,
-    IN wchar_t* text2 = 0,
-    IN wchar_t* text3 = 0
+    IN const wchar_t* text1,
+    IN const wchar_t* text2 = 0,
+    IN const wchar_t* text3 = 0
     );
 
 //

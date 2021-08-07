@@ -224,7 +224,7 @@ wstring charToStr( wchar_t c )
 //
 //
 //
-wstring charArrToStr( wchar_t* c )
+wstring charArrToStr( const wchar_t* c )
 {
     return( wstring( c ) );
 }
