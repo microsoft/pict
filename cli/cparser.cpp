@@ -254,6 +254,7 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
             delete( (CSyntaxTreeItem*) operands.top() );
             operands.pop();
         }
+        return nullptr;
     }
 }
 
