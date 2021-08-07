@@ -100,7 +100,7 @@ public:
     CValue( IN std::wstring text ) : DataType( DataType_String ), Text( text ) {}
     CValue( IN double number )     : DataType( DataType_Number ), Number( number ) {}
 
-    DataType     DataType;
+    pictcli_constraints::DataType     DataType;
     std::wstring Text;
     double       Number;
 };
@@ -147,7 +147,7 @@ public:
     CTerm
         (
         IN CParameter*   parameter, // what parameter the term relates to
-        IN Relation      relation,  // what is the relation
+        IN pictcli_constraints::Relation      relation,  // what is the relation
         IN TermDataType  dataType,  // type of the right side of the relation
         IN void*         data,      // data of the right side of the relation
         IN std::wstring  rawText    // raw text of the term, useful for warnings
@@ -204,7 +204,7 @@ public:
 
     CParameter*   Parameter;
     TermDataType  DataType;
-    Relation      Relation;
+    pictcli_constraints::Relation      Relation;
     void*         Data;
     std::wstring  RawText;
 };
@@ -323,7 +323,7 @@ public:
         Term          ( NULL ),
         Function      ( NULL ) {}
 
-    CToken( IN LogicalOper logicalOper, IN std::wstring::iterator positionInText ) :
+    CToken( IN pictcli_constraints::LogicalOper logicalOper, IN std::wstring::iterator positionInText ) :
         Type          ( TokenType_LogicalOper ),
         PositionInText( positionInText ),
         LogicalOper   ( logicalOper ),
@@ -352,7 +352,7 @@ public:
 
     TokenType              Type;
     std::wstring::iterator PositionInText;
-    LogicalOper            LogicalOper;
+    pictcli_constraints::LogicalOper            LogicalOper;
     CTerm*                 Term;
     CFunction*             Function;
 };
@@ -435,7 +435,7 @@ public:
 class CSyntaxTreeNode
 {
 public:
-    LogicalOper      Oper;
+    pictcli_constraints::LogicalOper      Oper;
     CSyntaxTreeItem* LLink;
     CSyntaxTreeItem* RLink;
 
