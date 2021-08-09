@@ -129,8 +129,8 @@ int main
     IN char* args[]
     )
 {
-    // Use UTF-8 for multi-byte character I/O everywhare
-    std::locale::global(std::locale("C.UTF-8"));
+    // Use current locale name for multi-byte character I/O everywhare
+    std::locale::global(std::locale(""));
 
     // convert all args to wchar_t's
     wchar_t** wargs = new wchar_t*[ argc ];
