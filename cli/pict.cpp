@@ -5,6 +5,7 @@
 
 #include <ctime>
 #include <cstring>
+#include <locale>
 using namespace std;
 
 #include "cmdline.h"
@@ -128,6 +129,9 @@ int main
     IN char* args[]
     )
 {
+    // Use UTF-8 for multi-byte character I/O everywhare
+    std::locale::global(std::locale("C.UTF-8"));
+
     // convert all args to wchar_t's
     wchar_t** wargs = new wchar_t*[ argc ];
     for ( int ii = 0; ii < argc; ++ii )
