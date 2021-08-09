@@ -66,6 +66,12 @@ A comma is the default separator but you can specify a different one using **/d*
 
 By default, PICT generates a pair-wise test suite (all pairs covered), but the order can be set by option **/o** to a value larger than two. For example, if **/o:3** is specified, the test suite will cover all triplets of values thereby producing a larger number of tests but potentially making the test suite even more effective. The maximum order for a simple model is equal to the number of parameters, which will result in an exhaustive test suite. Following the same principle, specifying **/o:1** will produce a test suite that merely covers all values (combinations of 1).
 
+Note: On Unix/Linux environment, input/output file encoding depends on your locale settings. For example, if you want to use UTF-8 encoding, set environment variable **LANG** or **LC_CTYPE** to UTF-8 capable locale like **C.UTF-8**.
+
+Example:
+
+    $ LC_CTYPE="C.UTF-8" pict utf8-input.txt
+
 ## Output Format
 
 All errors, warning messages, and the randomization seed are printed to the error stream. The test cases are printed to the standard output stream. The first line of the output contains names of the parameters. Each of the following lines represents one generated test case. Values in each line are separated by a tab. This way redirecting the output to a file creates a tab-separated value format.
