@@ -1,7 +1,9 @@
 #pragma once
+#ifdef _MSC_VER
 #pragma warning(disable:4511)
 #pragma warning(disable:4512)
 #pragma warning(disable:4239)
+#endif
 
 #include <vector>
 #include <string>
