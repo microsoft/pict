@@ -196,9 +196,19 @@ public:
 
     ~CTerm()
     {
-        if( SyntaxTermDataType_ParameterName != DataType )
+        switch( DataType )
         {
-            delete( Data );
+        case SyntaxTermDataType_ParameterName:
+            break;
+        case SyntaxTermDataType_Value:
+            delete( reinterpret_cast<CValue*>(Data) );
+            break;
+        case SyntaxTermDataType_ValueSet:
+            delete( reinterpret_cast<CValueSet*>(Data) );
+            break;
+        default:
+            assert(false);
+            break;
         }
     }
 
@@ -261,9 +271,13 @@ public:
     {
         // we don't have to delete Data for FunctionDataType_Parameter
         // as it's merely a pointer to an existing data set
-        if( FunctionDataType_Parameter != DataType )
+        switch( DataType )
         {
-            delete( Data );
+        case FunctionDataType_Parameter:
+            break;
+        default:
+            assert(false);
+            break;
         }
     }
 
@@ -422,7 +436,20 @@ public:
 
     ~CSyntaxTreeItem()
     {
-        if( NULL != Data ) delete( Data );
+        switch( Type )
+        {
+        case ItemType_Term:
+            delete( reinterpret_cast<CTerm*>(Data) );
+            break;
+        case ItemType_Function:
+            delete( reinterpret_cast<CFunction*>(Data) );
+            break;
+        case ItemType_Node:
+            break;
+        default:
+            assert(false);
+            break;
+        }
     }
 
     SyntaxTreeItemType Type;
