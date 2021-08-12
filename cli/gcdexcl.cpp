@@ -288,8 +288,8 @@ void ConstraintsInterpreter::interpretFunction( IN CFunction* function, IN OUT C
             for( unsigned int idx = 0; idx < modelParam.Values.size(); ++idx )
             {
                 bool positive = modelParam.Values[ idx ].IsPositive();
-                if( function->Type == FunctionTypeIsNegativeParam && ! positive
-                 || function->Type == FunctionTypeIsPositiveParam &&   positive )
+                if( (function->Type == FunctionTypeIsNegativeParam && ! positive)
+                 || (function->Type == FunctionTypeIsPositiveParam &&   positive) )
                 {
                     Exclusion newExcl;
                     newExcl.insert( make_pair( _gcdParameters[ paramIdx ], idx ));
