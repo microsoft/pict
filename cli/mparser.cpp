@@ -193,7 +193,7 @@ bool CModelData::readParameter( wstring& line )
             size_t weightEnd   = i_val->find_last_of( WEIGHT_END );
             
             // '(' must exist, ')' must be the last character
-            if ( weightBegin != -1 && weightEnd == i_val->length() - 1 ) 
+            if ( weightBegin != wstring::npos && weightEnd == i_val->length() - 1 )
             {
                 wstring weightStr = trim( i_val->substr( weightBegin + 1, weightEnd - weightBegin - 1 ));
                 double weightDbl = 0;
