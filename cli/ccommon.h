@@ -100,9 +100,9 @@ public:
     CValue( IN std::wstring text ) : DataType( DataType_String ), Text( text ) {}
     CValue( IN double number )     : DataType( DataType_Number ), Number( number ) {}
 
-    pictcli_constraints::DataType     DataType;
-    std::wstring Text;
-    double       Number;
+    pictcli_constraints::DataType  DataType;
+    std::wstring                   Text;
+    double                         Number;
 };
 
 typedef std::list<CValue> CValueSet;
@@ -146,11 +146,11 @@ class CTerm
 public:
     CTerm
         (
-        IN CParameter*   parameter, // what parameter the term relates to
-        IN pictcli_constraints::Relation      relation,  // what is the relation
-        IN TermDataType  dataType,  // type of the right side of the relation
-        IN void*         data,      // data of the right side of the relation
-        IN std::wstring  rawText    // raw text of the term, useful for warnings
+        IN CParameter*                    parameter, // what parameter the term relates to
+        IN pictcli_constraints::Relation  relation,  // what is the relation
+        IN TermDataType                   dataType,  // type of the right side of the relation
+        IN void*                          data,      // data of the right side of the relation
+        IN std::wstring                   rawText    // raw text of the term, useful for warnings
         ) :
             Parameter( parameter ),
             Relation ( relation ),
@@ -202,11 +202,11 @@ public:
         }
     }
 
-    CParameter*   Parameter;
-    TermDataType  DataType;
-    pictcli_constraints::Relation      Relation;
-    void*         Data;
-    std::wstring  RawText;
+    CParameter*                    Parameter;
+    TermDataType                   DataType;
+    pictcli_constraints::Relation  Relation;
+    void*                          Data;
+    std::wstring                   RawText;
 };
 
 //
@@ -350,11 +350,11 @@ public:
         if( NULL != Function ) delete( Function );
     }
 
-    TokenType              Type;
-    std::wstring::iterator PositionInText;
-    pictcli_constraints::LogicalOper            LogicalOper;
-    CTerm*                 Term;
-    CFunction*             Function;
+    TokenType                         Type;
+    std::wstring::iterator            PositionInText;
+    pictcli_constraints::LogicalOper  LogicalOper;
+    CTerm*                            Term;
+    CFunction*                        Function;
 };
 
 //
@@ -435,9 +435,9 @@ public:
 class CSyntaxTreeNode
 {
 public:
-    pictcli_constraints::LogicalOper      Oper;
-    CSyntaxTreeItem* LLink;
-    CSyntaxTreeItem* RLink;
+    pictcli_constraints::LogicalOper  Oper;
+    CSyntaxTreeItem*                  LLink;
+    CSyntaxTreeItem*                  RLink;
 
     CSyntaxTreeNode() : Oper( LogicalOper_Unknown ), LLink( NULL ), RLink( NULL ) {}
 
