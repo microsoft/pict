@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <functional> 
 #include <cctype>
-#include <wchar.h>
-#include <assert.h>
+#include <cwchar>
+#include <cassert>
 #include "strings.h"
 using namespace std;
 

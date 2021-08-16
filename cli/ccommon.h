@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <list>
-#include <assert.h>
+#include <cassert>
 #include "strings.h"
 
 namespace pictcli_constraints
