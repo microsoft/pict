@@ -271,9 +271,9 @@ PictAddParameter
                                       false );
     try
     {
-        if( NULL != param )
+        if( nullptr != param )
         {
-            if( NULL != valueWeights )
+            if( nullptr != valueWeights )
             {
                 std::vector<int> weights;
                 weights.reserve( valueCount );
@@ -286,7 +286,7 @@ PictAddParameter
     }
     catch( ... )
     {
-        param = NULL;
+        param = nullptr;
     }
 
     return( param );

@@ -598,13 +598,13 @@ bool Model::excludeConflictingParamValues()
     {
         Parameter* s1 = GetParameters()[ pseudo1 ];
         assert( s1 );
-        if( NULL == s1 || NULL == s1->GetComponents() ) continue;
+        if( nullptr == s1 || nullptr == s1->GetComponents() ) continue;
 
         for( size_t pseudo2 = pseudo1 + 1; pseudo2 < GetParameters().size(); ++pseudo2 )
         {
             Parameter* s2 = GetParameters()[ pseudo2 ];
             assert( s2 );
-            if( NULL == s2 || NULL == s2->GetComponents() ) continue;
+            if( nullptr == s2 || nullptr == s2->GetComponents() ) continue;
 
             // for each param p1 in s1
             ParamCollection::iterator p1;

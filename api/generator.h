@@ -449,8 +449,8 @@ public:
     size_t GetLast()  { return  m_currentValue; }
     ParamResult& GetTempResults() { return m_result; }
 
-    virtual Model*           GetModel()      { return NULL; }
-    virtual ParamCollection* GetComponents() { return NULL; }
+    virtual Model*           GetModel()      { return nullptr; }
+    virtual ParamCollection* GetComponents() { return nullptr; }
 
     void CleanUp();
 
@@ -698,7 +698,7 @@ public:
     ExclusionCollection& GetExclusions() { return( m_exclusions ); }
     RowSeedCollection&   GetRowSeeds()   { return( m_rowSeeds ); }
 
-    bool AbortGeneration() { return( ( NULL == m_abortCallback ) ? false : m_abortCallback() ); }
+    bool AbortGeneration() { return( ( nullptr == m_abortCallback ) ? false : m_abortCallback() ); }
 
     void SetGenerationMode( GenerationMode mode ) { m_generationMode = mode; }
     GenerationMode GetGenerationMode() { return( m_generationMode ); }
@@ -730,7 +730,7 @@ private:
     void deriveExclusions();
 
     // a global workspace shared by multiple objects
-    int* m_workbuf = NULL;
+    int* m_workbuf = nullptr;
 
     // result row pointer allows C-style API to implement GetNextResultRow function
     // i.e. get one result row at a time

@@ -10,11 +10,11 @@ const size_t DefaultMaxRandomTries = 1000;
 //
 //
 Task::Task() :
-      m_rootModel     (NULL),
-      m_abortCallback (NULL),
+      m_rootModel     (nullptr),
+      m_abortCallback (nullptr),
       m_generationMode(Regular),
       m_maxRandomTries(DefaultMaxRandomTries),
-      m_workbuf       (NULL)
+      m_workbuf       (nullptr)
 {
     Combination::ResetId();
 
@@ -53,10 +53,10 @@ void Task::AllocWorkbuf( int size )
 //
 void Task::DeallocWorkbuf()
 {
-    if( NULL != m_workbuf )
+    if( nullptr != m_workbuf )
     {
         delete[] m_workbuf;
-        m_workbuf = NULL;
+        m_workbuf = nullptr;
     }
 }
 
@@ -80,7 +80,7 @@ void Task::PrepareForGeneration()
     for ( auto & excl : m_exclusions )
     {
         Model* found = findMatchingNode(const_cast<Exclusion&>( excl ), m_rootModel);
-        assert( NULL != found );
+        assert( nullptr != found );
         found->AddExclusion( const_cast<Exclusion&>( excl ));
     }
 
@@ -120,7 +120,7 @@ Model* Task::findMatchingNode( Exclusion& exclusion, Model* root )
     for( auto & submodel : root->GetSubmodels() )
     {
         Model* foundNode = findMatchingNode( exclusion, submodel );
-        if ( NULL != foundNode ) return( foundNode );
+        if ( nullptr != foundNode ) return( foundNode );
     }
 
     // none of the subnodes matches the exclusion so let's try the current one
@@ -136,7 +136,7 @@ Model* Task::findMatchingNode( Exclusion& exclusion, Model* root )
     }
     else
     {
-        return( NULL );
+        return( nullptr );
     }
 }
 
