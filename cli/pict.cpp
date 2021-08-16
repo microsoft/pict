@@ -6,6 +6,7 @@
 #include <ctime>
 #include <cstring>
 #include <locale>
+#include <stdexcept>
 using namespace std;
 
 #include "cmdline.h"
@@ -129,8 +130,18 @@ int main
     IN char* args[]
     )
 {
-    // Use UTF-8 for multi-byte character I/O everywhare
-    std::locale::global(std::locale("C.UTF-8"));
+    // Use "C.UTF-8" locale for multi-byte character I/O everywhare
+    // If "C.UTF-8" locale is not supported, use classic "C" locale as fallback.
+    std::locale loc;
+    try
+    {
+        loc = std::locale("C.UTF-8");
+    }
+    catch ( std::runtime_error )
+    {
+        loc = std::locale::classic();
+    }
+    std::locale::global(loc);
 
     // convert all args to wchar_t's
     wchar_t** wargs = new wchar_t*[ argc ];
