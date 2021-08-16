@@ -37,8 +37,8 @@ void PrintMessage
     (
     IN MsgType  type,
     IN const wchar_t* text1,
-    IN const wchar_t* text2 = 0,
-    IN const wchar_t* text3 = 0
+    IN const wchar_t* text2 = nullptr,
+    IN const wchar_t* text3 = nullptr
     );
 
 //
