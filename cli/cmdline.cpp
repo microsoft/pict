@@ -175,7 +175,7 @@ bool parseArg( wchar_t* text, CModelData& modelData )
         // /r
         if( wcslen( text ) == 2 )
         {
-            modelData.RandSeed = (unsigned short) ( time( NULL ) );
+            modelData.RandSeed = (unsigned short) ( time( nullptr ) );
         }
         // /r:
         else if( wcslen( text ) == 3 )

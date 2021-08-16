@@ -311,7 +311,7 @@ void ConstraintsInterpreter::interpretFunction( IN CFunction* function, IN OUT C
 //
 void ConstraintsInterpreter::interpretSyntaxTreeItem( IN CSyntaxTreeItem* item, IN OUT CGcdExclusions& gcdExclusions )
 {
-    if ( NULL == item ) return;
+    if ( nullptr == item ) return;
 
     // a case where where there is no condition
     if ( ItemType_Term == item->Type )
@@ -368,7 +368,7 @@ void ConstraintsInterpreter::interpretSyntaxTreeItem( IN CSyntaxTreeItem* item, 
 void ConstraintsInterpreter::interpretConstraint( IN const CConstraint& constraint, IN OUT CGcdExclusions& gcdExclusions )
 {
     // if there's no condition, look at the term only
-    if ( NULL == constraint.Condition )
+    if ( nullptr == constraint.Condition )
     {
         interpretSyntaxTreeItem( constraint.Term, gcdExclusions );
     }

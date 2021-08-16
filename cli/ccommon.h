@@ -334,34 +334,34 @@ public:
         Type          ( type ),
         PositionInText( positionInText ),
         LogicalOper   ( LogicalOper_Unknown ),
-        Term          ( NULL ),
-        Function      ( NULL ) {}
+        Term          ( nullptr ),
+        Function      ( nullptr ) {}
 
     CToken( IN pictcli_constraints::LogicalOper logicalOper, IN std::wstring::iterator positionInText ) :
         Type          ( TokenType_LogicalOper ),
         PositionInText( positionInText ),
         LogicalOper   ( logicalOper ),
-        Term          ( NULL ),
-        Function      ( NULL ) {}
+        Term          ( nullptr ),
+        Function      ( nullptr ) {}
 
     CToken( IN CTerm *term, IN std::wstring::iterator positionInText ) :
         Type          ( TokenType_Term ),
         PositionInText( positionInText ),
         LogicalOper   ( LogicalOper_Unknown ),
         Term          ( term ),
-        Function      ( NULL ) {}
+        Function      ( nullptr ) {}
 
     CToken( IN CFunction *function, IN std::wstring::iterator positionInText ) :
         Type          ( TokenType_Function ),
         PositionInText( positionInText ),
         LogicalOper   ( LogicalOper_Unknown ),
-        Term          ( NULL ),
+        Term          ( nullptr ),
         Function      ( function ) {}
 
     ~CToken()
     {
-        if( NULL != Term )     delete( Term );
-        if( NULL != Function ) delete( Function );
+        if( nullptr != Term )     delete( Term );
+        if( nullptr != Function ) delete( Function );
     }
 
     TokenType                         Type;
@@ -453,7 +453,7 @@ public:
     }
 
     SyntaxTreeItemType Type;
-    void*              Data = NULL;
+    void*              Data = nullptr;
 };
 
 //
@@ -466,12 +466,12 @@ public:
     CSyntaxTreeItem*                  LLink;
     CSyntaxTreeItem*                  RLink;
 
-    CSyntaxTreeNode() : Oper( LogicalOper_Unknown ), LLink( NULL ), RLink( NULL ) {}
+    CSyntaxTreeNode() : Oper( LogicalOper_Unknown ), LLink( nullptr ), RLink( nullptr ) {}
 
     ~CSyntaxTreeNode()
     {
-        if( NULL != LLink ) delete( (CSyntaxTreeItem*) LLink );
-        if( NULL != RLink ) delete( RLink );
+        if( nullptr != LLink ) delete( (CSyntaxTreeItem*) LLink );
+        if( nullptr != RLink ) delete( RLink );
     }
 };
 
@@ -484,7 +484,7 @@ public:
 class CConstraint
 {
 public:
-    CConstraint() : Condition( NULL ), Term( NULL ) {}
+    CConstraint() : Condition( nullptr ), Term( nullptr ) {}
 
     CSyntaxTreeItem* Condition;
     CSyntaxTreeItem* Term;

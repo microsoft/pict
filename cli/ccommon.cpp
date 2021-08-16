@@ -195,8 +195,8 @@ void CSyntaxTreeItem::Print( unsigned int indent )
             break;
         }
 
-        if( NULL != node->LLink ) node->LLink->Print( indent + 1 );
-        if( NULL != node->RLink ) node->RLink->Print( indent + 1 );
+        if( nullptr != node->LLink ) node->LLink->Print( indent + 1 );
+        if( nullptr != node->RLink ) node->RLink->Print( indent + 1 );
     }
 }
 
@@ -206,7 +206,7 @@ void CSyntaxTreeItem::Print( unsigned int indent )
 void CConstraint::Print() const
 {
     wcerr << L"Condition:\n";
-    if( NULL == Condition )
+    if( nullptr == Condition )
     {
         wcerr << L" -\n";
     }
@@ -216,7 +216,7 @@ void CConstraint::Print() const
     }
 
     wcerr << L"Term:\n";
-    if( NULL == Term )
+    if( nullptr == Term )
     {
         wcerr << L" -\n";
     }

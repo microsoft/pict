@@ -278,7 +278,7 @@ void CModelData::PrintModelContents( wstring title )
     for( auto & param : Parameters )
     {
         wcerr << L" " << param.Name << L":\t" << (unsigned int) param.Values.size() << L" values, order: ";
-        if( NULL == param.GcdPointer )
+        if( nullptr == param.GcdPointer )
             wcerr << L"?" << endl;
         else
             wcerr << param.Order << L" : " << param.GcdPointer->GetOrder() << endl;

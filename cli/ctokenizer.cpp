@@ -261,7 +261,7 @@ void ConstraintsTokenizer::parseTerm( IN OUT CTokenList& tokens )
 
     // check whether it's one of the functions
     CFunction *function = getFunction();
-    if( NULL != function )
+    if( nullptr != function )
     {
         CToken* token;
         try
@@ -282,7 +282,7 @@ void ConstraintsTokenizer::parseTerm( IN OUT CTokenList& tokens )
         wstring paramName = getParameterName();
         CParameters::iterator found = _model.findParamByName( paramName );
         
-        CParameter* param = NULL;
+        CParameter* param = nullptr;
         if ( found != _model.Parameters.end() )
         {
             param = &*found;
@@ -293,7 +293,7 @@ void ConstraintsTokenizer::parseTerm( IN OUT CTokenList& tokens )
 
         skipWhiteChars();
 
-        CTerm* term = NULL;
+        CTerm* term = nullptr;
         switch( relation )
         {
             case Relation_IN:
@@ -350,7 +350,7 @@ void ConstraintsTokenizer::parseTerm( IN OUT CTokenList& tokens )
                     //
                     // look up parameters by their names and return references
                     //
-                    CParameter *param2 = NULL;
+                    CParameter *param2 = nullptr;
                     found = _model.findParamByName( paramName2 );
                     if ( found != _model.Parameters.end() )
                     {
@@ -405,7 +405,7 @@ void ConstraintsTokenizer::parseTerm( IN OUT CTokenList& tokens )
 // <term> ::= IsNegative(<parameter_name>)
 //
 // Returns a CFunction object if in fact a function was parsed
-// or NULL otherwise
+// or "nullptr" otherwise
 //
 CFunction *ConstraintsTokenizer::getFunction()
 {
@@ -424,7 +424,7 @@ CFunction *ConstraintsTokenizer::getFunction()
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 
     // opening bracket
@@ -438,7 +438,7 @@ CFunction *ConstraintsTokenizer::getFunction()
     wstring paramName = getString( charArrToStr( TEXT_TokenParenthesisClose ));
     CParameters::iterator found = _model.findParamByName( paramName );
 
-    CParameter* param = NULL;
+    CParameter* param = nullptr;
     if ( found != _model.Parameters.end() )
     {
         param = &*found;
@@ -759,8 +759,8 @@ void ConstraintsTokenizer::doPostParseExpansions( IN OUT CTokenList& tokens )
               && function->DataText.empty() )
             {
                 // deallocate the current token
-                // we don't have to deallocate Data because in this case it is always NULL
-                assert( function->Data == NULL );
+                // we don't have to deallocate Data because in this case it is always "nullptr"
+                assert( function->Data == nullptr );
 
                 // save positionInText and rawText and reuse it in all new tokens
                 wstring::iterator oldPosInText = (*i_token)->PositionInText;

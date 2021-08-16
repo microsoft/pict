@@ -46,7 +46,7 @@ int __cdecl execute
     IN OUT wstring& output
     )
 {
-    time_t start = time( NULL );
+    time_t start = time( nullptr );
 
     CModelData modelData;
 
@@ -73,7 +73,7 @@ int __cdecl execute
         return err;
     }
 
-    time_t end = time( NULL );
+    time_t end = time( nullptr );
 
     // if r has been provided then print out the seed
     // TODO: change to not use SWITCH_RANDOMIZE const
