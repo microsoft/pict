@@ -199,6 +199,8 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
                         case TokenType_ParenthesisClose:
                             --parenthesesCount;
                             break;
+                        default:
+                            break;
                         }
 
                         ++token;
@@ -208,6 +210,8 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
                     operands.push( constructSyntaxTreeItem( tokenBegin, token, false ));
                     break;
                 }
+                default:
+                    break;
             }
         }
 
@@ -576,6 +580,8 @@ void ConstraintsParser::verifyFunction( CFunction *function )
             }
             break;
         }
+    default:
+        break;
     }
 }
 

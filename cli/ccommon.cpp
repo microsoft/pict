@@ -64,6 +64,8 @@ void CTerm::Print()
     case Relation_NOT_LIKE:
         wcerr << L"{not like}";
         break;
+    default:
+        break;
     }
 
     wcerr << L" ";
@@ -144,6 +146,8 @@ void CTokenList::Print()
             wcerr << L"\n";
             break;
         }
+        default:
+            break;
         }
     }
 }
