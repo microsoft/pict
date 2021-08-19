@@ -249,7 +249,7 @@ void ConstraintsInterpreter::interpretTerm( IN CTerm* term, OUT CGcdExclusions& 
         if ( ! oneSatifies || allSatisfy )
         {
             wstring s = L"All or no values satisfy relation ";
-            s += (wchar_t*) (term->RawText).c_str();
+            s += (term->RawText).c_str();
             _warnings.push_back( s );
         }
 
@@ -508,7 +508,7 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
         catch( CSyntaxError e )
         {
             wstring text = getConstraintTextForContext( _modelData.ConstraintPredicates, e.ErrAtPosition );
-            wchar_t* failureContext = (wchar_t*) text.c_str();
+            const wchar_t* failureContext = text.c_str();
 
             // print message
             switch( (SyntaxErrorType) e.Type )
@@ -577,7 +577,7 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
                 case ValidationWarnType_UnknownParameter:
                     {
                     wstring constraintText = _modelData.GetConstraintText( warning.ErrInConstraint );
-                    wchar_t* failureContext = (wchar_t*) ( constraintText.c_str() );
+                    const wchar_t* failureContext = constraintText.c_str();
                     PrintMessage( ConstraintsWarning, L"Constraint", failureContext, L"contains unknown parameter. Skipping..." );
                     break;
                     }
@@ -592,7 +592,7 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
         catch( CErrValidation e )
         {
             wstring constraintText = _modelData.GetConstraintText( e.ErrInConstraint );
-            wchar_t* failureContext = (wchar_t*) ( constraintText.c_str() );
+            const wchar_t* failureContext = constraintText.c_str();
             
             switch( e.Type )
             {

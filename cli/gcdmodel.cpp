@@ -39,7 +39,7 @@ bool CGcdData::CheckEntireParameterExcluded()
 
             wstring param = L"'" + found->Name + L"'";
             PrintMessage( InputDataError, L"Too restrictive constraints. All values of parameter",
-                          (wchar_t*) param.c_str(), L"got excluded." );
+                          param.c_str(), L"got excluded." );
             return( true );
         }
     }
@@ -383,12 +383,12 @@ void CResult::PrintConstraintWarnings()
         {
             text += L"\n  " + item;
         }
-        PrintMessage( ConstraintsWarning, (wchar_t*) text.c_str() );
+        PrintMessage( ConstraintsWarning, text.c_str() );
     }
 
     for( auto & warn : SolverWarnings )
     {
-        PrintMessage( ConstraintsWarning, (wchar_t*) warn.c_str() );
+        PrintMessage( ConstraintsWarning, warn.c_str() );
     }
 }
 

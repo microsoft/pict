@@ -220,7 +220,7 @@ bool CModelData::ValidateRowSeeds()
         if( ( param.Name ).empty() || ( param.Name ).find( RESULT_DELIMITER ) != wstring::npos )
         {
             PrintMessage( RowSeedsWarning, L"Name of parameter",
-                          (wchar_t*) param.Name.data(),
+                          param.Name.data(),
                           L"is blank or contains a tab character. Seeding may not work properly." );
         }
 
@@ -231,7 +231,7 @@ bool CModelData::ValidateRowSeeds()
                 if( name.empty() || name.find( RESULT_DELIMITER ) != wstring::npos )
                 {
                     PrintMessage( RowSeedsWarning, L"Value",
-                                  (wchar_t*) value.GetPrimaryName().data(),
+                                  value.GetPrimaryName().data(),
                                   L"or one of its names is blank or contains a tab character. Seeding may not work properly." );
                 }
             }
@@ -240,7 +240,7 @@ bool CModelData::ValidateRowSeeds()
         if( !param.ValueNamesUnique( this->CaseSensitive ) )
         {
             PrintMessage( RowSeedsWarning, L"Values of the parameter",
-                          (wchar_t*) param.Name.data(),
+                          param.Name.data(),
                           L"are not unique. Seeding may not work properly." );
         }
     }

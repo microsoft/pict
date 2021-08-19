@@ -89,7 +89,7 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
             wstring msg = L"Internal error\n";
             msg += L"As a workaround run the tool with parameter /r a few times and see if any of the iterations produces a result.\n";
             msg += L"If the result is produced, it is guaranteed to be valid and it is safe to use.";
-            PrintMessage( GcdError, (wchar_t*) msg.data() );
+            PrintMessage( GcdError, msg.data() );
             break;
         }
 #ifdef _DEBUG

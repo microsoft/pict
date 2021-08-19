@@ -127,7 +127,7 @@ bool CModelData::readParameter( wstring& line )
         paramSep = line.find( ValuesDelim );
         if( paramSep == wstring::npos )
         {
-            PrintMessage( InputDataError, L"Parameter", (wchar_t*) line.c_str(), L"should have at least one value defined" );
+            PrintMessage( InputDataError, L"Parameter", line.c_str(), L"should have at least one value defined" );
             return( false );
         }
     }
@@ -286,7 +286,7 @@ bool CModelData::readParamSet( wstring& line )
     wstring::iterator begin = findFirstNonWhitespace( next, line.end() );
     if( begin == line.end() || *begin != SET_BEGIN )
     {
-        PrintMessage( InputDataError, (wchar_t*) STD_MSG.data() );
+        PrintMessage( InputDataError, STD_MSG.data() );
         return( false );
     }
     ++begin;
@@ -296,7 +296,7 @@ bool CModelData::readParamSet( wstring& line )
     end = find( begin, line.end(), SET_END );
     if ( end == line.end() )
     {
-        PrintMessage( InputDataError, (wchar_t*) STD_MSG.data() );
+        PrintMessage( InputDataError, STD_MSG.data() );
         return( false );
     }
 
@@ -306,7 +306,7 @@ bool CModelData::readParamSet( wstring& line )
     setp = trim( setp );
     if ( setp.empty() )
     {
-        PrintMessage( InputDataError, (wchar_t*) STD_MSG.data() );
+        PrintMessage( InputDataError, STD_MSG.data() );
         return( false );
     }
 
@@ -335,7 +335,7 @@ bool CModelData::readParamSet( wstring& line )
         getUnmatchedParameterNames( setParams, unmatched );
         if( !unmatched.empty() )
         {
-            PrintMessage( InputDataWarning, L"Submodel defintion", (wchar_t*) trim( line ).data(), L"contains unknown parameter. Skipping..." );
+            PrintMessage( InputDataWarning, L"Submodel defintion", trim( line ).data(), L"contains unknown parameter. Skipping..." );
             return( true ); // just a warning so don't exit
         }
     }
@@ -345,7 +345,7 @@ bool CModelData::readParamSet( wstring& line )
     wstrings::iterator newEnd = unique( setParams.begin(), setParams.end(), stringCaseInsensitiveEquals );
     if( setParams.end() != newEnd )
     {
-        PrintMessage( InputDataWarning, L"Submodel defintion", (wchar_t*) trim( line ).data(), L"contains duplicate parameters. Removing duplicates..." );
+        PrintMessage( InputDataWarning, L"Submodel defintion", trim( line ).data(), L"contains duplicate parameters. Removing duplicates..." );
         setParams.erase( newEnd, setParams.end() );
     }
 
@@ -378,7 +378,7 @@ bool CModelData::readParamSet( wstring& line )
     // anything other than @, quit
     if ( at != line.end() && *at != SET_ORDER )
     {
-        PrintMessage( InputDataError, (wchar_t*) STD_MSG.data() );
+        PrintMessage( InputDataError, STD_MSG.data() );
         return( false );
     }
 
@@ -410,7 +410,7 @@ bool CModelData::readParamSet( wstring& line )
         }
         if ( !ret )
         {
-            PrintMessage( InputDataError, (wchar_t*) STD_MSG.data() );
+            PrintMessage( InputDataError, STD_MSG.data() );
             return( false );
         }
 
@@ -432,7 +432,7 @@ bool CModelData::readModel( const wstring& filePath )
     wifstream file( ansiFilePath.c_str() );
     if ( !file )
     {
-        PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*)filePath.data() );
+        PrintMessage( InputDataError, L"Couldn't open file:", filePath.data() );
         return( false );
     }
 
@@ -532,7 +532,7 @@ bool CModelData::ReadRowSeedFile( const wstring& filePath )
     wifstream file( ansiFilePath.c_str() );
     if ( !file )
     {
-        PrintMessage( InputDataError, L"Couldn't open file:", (wchar_t*)filePath.data() );
+        PrintMessage( InputDataError, L"Couldn't open file:", filePath.data() );
         return( false );
     }
     wstring line;
@@ -572,7 +572,7 @@ bool CModelData::ReadRowSeedFile( const wstring& filePath )
         if ( found == Parameters.end())
         {
             PrintMessage( RowSeedsWarning, L"Parameter", 
-                                           (wchar_t*) param.data(),
+                                           param.data(),
                                            L"not found in the model. Skipping..." );
         }
         parameters.push_back( found );
@@ -617,7 +617,7 @@ bool CModelData::ReadRowSeedFile( const wstring& filePath )
                     if ( ! i_value->empty() )
                     {
                         PrintMessage( RowSeedsWarning, L"Value", 
-                                                    (wchar_t*) i_value->data(),
+                                                    i_value->data(),
                                                     L"not found in the model. Skipping this value..." );
                     }
                 }
