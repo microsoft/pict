@@ -429,7 +429,7 @@ bool CModelData::readModel( const wstring& filePath )
 {
     // Some implementations of wifstream only allow ANSI strings as file names so converting before using
     string ansiFilePath = wideCharToAnsi( filePath );
-    wifstream file( ansiFilePath.c_str() );
+    wifstream file( ansiFilePath );
     if ( !file )
     {
         PrintMessage( InputDataError, L"Couldn't open file:", filePath.data() );
