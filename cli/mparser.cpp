@@ -106,7 +106,7 @@ bool readLineFromFile( wifstream& file, wstring& line )
         file.get( c );
         if( file.eof()
          || c == L'\n'
-         || c == 0 ) return( true );
+         || c == L'\0' ) return( true );
         line += c;
     }
     return( true );
