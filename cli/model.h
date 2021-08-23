@@ -59,7 +59,7 @@ public:
 
     CModelParameter() :
         IsResultParameter( false ),
-        GcdPointer( NULL ) {}
+        GcdPointer( nullptr ) {}
 
     int GetValueOrdinal( IN std::wstring& name, IN bool caseSensitive );
     bool ValueNamesUnique( IN bool CaseSensitive );

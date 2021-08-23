@@ -10,9 +10,9 @@ using namespace std;
 void PrintMessage
     (
     IN MsgType  type,
-    IN wchar_t* text1,
-    IN wchar_t* text2,
-    IN wchar_t* text3
+    IN const wchar_t* text1,
+    IN const wchar_t* text2,
+    IN const wchar_t* text3
     )
 {
     switch ( type )

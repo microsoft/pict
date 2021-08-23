@@ -259,7 +259,7 @@ void Combination::SetOpen( int index )
 //
 //
 Combination::Combination( Model *M ) :
-    m_bitvec( NULL ), m_openCount( 0 ), m_boundCount( 0 ), m_range( 0 ), m_model( M )
+    m_bitvec( nullptr ), m_openCount( 0 ), m_boundCount( 0 ), m_range( 0 ), m_model( M )
 {
     m_id = ++m_lastUsedId;
     DOUT( L"Combination created: " << m_id << endl );
@@ -271,7 +271,7 @@ Combination::Combination( Model *M ) :
 Combination::~Combination()
 {
     DOUT( L"Combination deleted: " << m_id << endl );
-    if( NULL != m_bitvec ) delete[] m_bitvec;
+    if( nullptr != m_bitvec ) delete[] m_bitvec;
 }
 
 //

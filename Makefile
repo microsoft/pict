@@ -3,8 +3,7 @@
 # variables used to generate a source snapshot of the GIT repo
 COMMIT=$(shell git log --pretty=format:'%H' -n 1)
 SHORT_COMMIT=$(shell git log --pretty=format:'%h' -n 1)
-# suppress all warnings :-(
-CXXFLAGS=-fPIC -std=c++11 -Iapi -w -fpermissive
+CXXFLAGS=-fPIC -pipe -std=c++11 -O2 -Iapi
 TARGET=pict
 TARGET_LIB_SO=libpict.so
 TEST_OUTPUT = test/rel.log test/rel.log.failures test/dbg.log

@@ -73,8 +73,8 @@ typedef struct _PICT_SEED_ITEM
 //   None
 //
 // Returns:
-//   Non-NULL   Allocation succeeded (a handle is returned)
-//   NULL       Allocation failed
+//   Non-nullptr   Allocation succeeded (a handle is returned)
+//   nullptr       Allocation failed
 //
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -189,8 +189,8 @@ PictGenerate
 //   task      Valid handle to a task
 // 
 // Returns:
-//   Non-NULL  Allocation succeeded (a handle is returned)
-//   NULL      Allocation failed
+//   Non-nullptr  Allocation succeeded (a handle is returned)
+//   nullptr      Allocation failed
 //
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -297,8 +297,8 @@ PictDeleteTask
 //   randomSeed  A seed used to randomize the engine
 //   
 // Returns:
-//   Non-NULL    Allocation succeeded (a handle is returned)
-//   NULL        Allocation failed
+//   Non-nullptr    Allocation succeeded (a handle is returned)
+//   nullptr        Allocation failed
 //
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -320,8 +320,8 @@ PictCreateModel
 //   valueWeights   Array of weights, one per value, must be of ValueCount size
 // 
 // Returns:
-//   Non-NULL       Allocation succeeded (a handle is returned)
-//   NULL           Allocation failed
+//   Non-nullptr       Allocation succeeded (a handle is returned)
+//   nullptr           Allocation failed
 //
 // ////////////////////////////////////////////////////////////////////////////
 
@@ -332,7 +332,7 @@ PictAddParameter
     IN     const PICT_HANDLE model,
     IN     size_t            valueCount,
     IN OPT unsigned int      order          = PICT_PAIRWISE_GENERATION,
-    IN OPT unsigned int      valueWeights[] = NULL
+    IN OPT unsigned int      valueWeights[] = nullptr
     );
 
 //

@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <list>
-#include <assert.h>
+#include <cassert>
 #include "strings.h"
 
 namespace pictcli_constraints
@@ -100,9 +100,9 @@ public:
     CValue( IN std::wstring text ) : DataType( DataType_String ), Text( text ) {}
     CValue( IN double number )     : DataType( DataType_Number ), Number( number ) {}
 
-    DataType     DataType;
-    std::wstring Text;
-    double       Number;
+    pictcli_constraints::DataType  DataType;
+    std::wstring                   Text;
+    double                         Number;
 };
 
 typedef std::list<CValue> CValueSet;
@@ -146,11 +146,11 @@ class CTerm
 public:
     CTerm
         (
-        IN CParameter*   parameter, // what parameter the term relates to
-        IN Relation      relation,  // what is the relation
-        IN TermDataType  dataType,  // type of the right side of the relation
-        IN void*         data,      // data of the right side of the relation
-        IN std::wstring  rawText    // raw text of the term, useful for warnings
+        IN CParameter*                    parameter, // what parameter the term relates to
+        IN pictcli_constraints::Relation  relation,  // what is the relation
+        IN TermDataType                   dataType,  // type of the right side of the relation
+        IN void*                          data,      // data of the right side of the relation
+        IN std::wstring                   rawText    // raw text of the term, useful for warnings
         ) :
             Parameter( parameter ),
             Relation ( relation ),
@@ -196,17 +196,27 @@ public:
 
     ~CTerm()
     {
-        if( SyntaxTermDataType_ParameterName != DataType )
+        switch( DataType )
         {
-            delete( Data );
+        case SyntaxTermDataType_ParameterName:
+            break;
+        case SyntaxTermDataType_Value:
+            delete( reinterpret_cast<CValue*>(Data) );
+            break;
+        case SyntaxTermDataType_ValueSet:
+            delete( reinterpret_cast<CValueSet*>(Data) );
+            break;
+        default:
+            assert(false);
+            break;
         }
     }
 
-    CParameter*   Parameter;
-    TermDataType  DataType;
-    Relation      Relation;
-    void*         Data;
-    std::wstring  RawText;
+    CParameter*                    Parameter;
+    TermDataType                   DataType;
+    pictcli_constraints::Relation  Relation;
+    void*                          Data;
+    std::wstring                   RawText;
 };
 
 //
@@ -261,9 +271,13 @@ public:
     {
         // we don't have to delete Data for FunctionDataType_Parameter
         // as it's merely a pointer to an existing data set
-        if( FunctionDataType_Parameter != DataType )
+        switch( DataType )
         {
-            delete( Data );
+        case FunctionDataType_Parameter:
+            break;
+        default:
+            assert(false);
+            break;
         }
     }
 
@@ -320,41 +334,41 @@ public:
         Type          ( type ),
         PositionInText( positionInText ),
         LogicalOper   ( LogicalOper_Unknown ),
-        Term          ( NULL ),
-        Function      ( NULL ) {}
+        Term          ( nullptr ),
+        Function      ( nullptr ) {}
 
-    CToken( IN LogicalOper logicalOper, IN std::wstring::iterator positionInText ) :
+    CToken( IN pictcli_constraints::LogicalOper logicalOper, IN std::wstring::iterator positionInText ) :
         Type          ( TokenType_LogicalOper ),
         PositionInText( positionInText ),
         LogicalOper   ( logicalOper ),
-        Term          ( NULL ),
-        Function      ( NULL ) {}
+        Term          ( nullptr ),
+        Function      ( nullptr ) {}
 
     CToken( IN CTerm *term, IN std::wstring::iterator positionInText ) :
         Type          ( TokenType_Term ),
         PositionInText( positionInText ),
         LogicalOper   ( LogicalOper_Unknown ),
         Term          ( term ),
-        Function      ( NULL ) {}
+        Function      ( nullptr ) {}
 
     CToken( IN CFunction *function, IN std::wstring::iterator positionInText ) :
         Type          ( TokenType_Function ),
         PositionInText( positionInText ),
         LogicalOper   ( LogicalOper_Unknown ),
-        Term          ( NULL ),
+        Term          ( nullptr ),
         Function      ( function ) {}
 
     ~CToken()
     {
-        if( NULL != Term )     delete( Term );
-        if( NULL != Function ) delete( Function );
+        if( nullptr != Term )     delete( Term );
+        if( nullptr != Function ) delete( Function );
     }
 
-    TokenType              Type;
-    std::wstring::iterator PositionInText;
-    LogicalOper            LogicalOper;
-    CTerm*                 Term;
-    CFunction*             Function;
+    TokenType                         Type;
+    std::wstring::iterator            PositionInText;
+    pictcli_constraints::LogicalOper  LogicalOper;
+    CTerm*                            Term;
+    CFunction*                        Function;
 };
 
 //
@@ -422,11 +436,24 @@ public:
 
     ~CSyntaxTreeItem()
     {
-        if( NULL != Data ) delete( Data );
+        switch( Type )
+        {
+        case ItemType_Term:
+            delete( reinterpret_cast<CTerm*>(Data) );
+            break;
+        case ItemType_Function:
+            delete( reinterpret_cast<CFunction*>(Data) );
+            break;
+        case ItemType_Node:
+            break;
+        default:
+            assert(false);
+            break;
+        }
     }
 
     SyntaxTreeItemType Type;
-    void*              Data = NULL;
+    void*              Data = nullptr;
 };
 
 //
@@ -435,16 +462,16 @@ public:
 class CSyntaxTreeNode
 {
 public:
-    LogicalOper      Oper;
-    CSyntaxTreeItem* LLink;
-    CSyntaxTreeItem* RLink;
+    pictcli_constraints::LogicalOper  Oper;
+    CSyntaxTreeItem*                  LLink;
+    CSyntaxTreeItem*                  RLink;
 
-    CSyntaxTreeNode() : Oper( LogicalOper_Unknown ), LLink( NULL ), RLink( NULL ) {}
+    CSyntaxTreeNode() : Oper( LogicalOper_Unknown ), LLink( nullptr ), RLink( nullptr ) {}
 
     ~CSyntaxTreeNode()
     {
-        if( NULL != LLink ) delete( (CSyntaxTreeItem*) LLink );
-        if( NULL != RLink ) delete( RLink );
+        if( nullptr != LLink ) delete( (CSyntaxTreeItem*) LLink );
+        if( nullptr != RLink ) delete( RLink );
     }
 };
 
@@ -457,7 +484,7 @@ public:
 class CConstraint
 {
 public:
-    CConstraint() : Condition( NULL ), Term( NULL ) {}
+    CConstraint() : Condition( nullptr ), Term( nullptr ) {}
 
     CSyntaxTreeItem* Condition;
     CSyntaxTreeItem* Term;

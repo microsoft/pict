@@ -70,7 +70,7 @@ public:
             found = current->children.find( *ic );
             if( found == current->children.end() )
             {
-                trienode< typename Col::value_type > *node = NULL;
+                trienode< typename Col::value_type > *node = nullptr;
 
                 try
                 {
@@ -101,7 +101,7 @@ public:
     void erase( Col& t )
     {
         trienode<typename Col::value_type>* node = pfind( t );
-        if( NULL == node ) return;
+        if( nullptr == node ) return;
         node->valid = false;
     }
 
@@ -110,7 +110,7 @@ public:
     //
     bool find_prefix( Col &t )
     {
-        return( pfind_prefix( t ) != NULL );
+        return( pfind_prefix( t ) != nullptr );
     }
 
 private:
@@ -125,11 +125,11 @@ private:
         for( typename Col::iterator ic = t.begin(); ic != t.end(); ++ic )
         {
             typename TNodeCol::iterator found = current->children.find( *ic );
-            if( found == current->children.end() ) return( NULL );
+            if( found == current->children.end() ) return( nullptr );
 
             current = found->second;
         }
-        return( current->valid ? current : NULL );
+        return( current->valid ? current : nullptr );
     }
 
     //
@@ -141,14 +141,14 @@ private:
         for( typename Col::iterator ic = t.begin(); ic != t.end(); ++ic )
         {
             typename TNodeCol::iterator found = current->children.find( *ic );
-            if( found == current->children.end() ) return( NULL );
+            if( found == current->children.end() ) return( nullptr );
 
             current = found->second;
 
             if( current->valid ) return( current );
         }
 
-        return( current->valid ? current : NULL );
+        return( current->valid ? current : nullptr );
     }
 };
 

@@ -199,6 +199,8 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
                         case TokenType_ParenthesisClose:
                             --parenthesesCount;
                             break;
+                        default:
+                            break;
                         }
 
                         ++token;
@@ -208,6 +210,8 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
                     operands.push( constructSyntaxTreeItem( tokenBegin, token, false ));
                     break;
                 }
+                default:
+                    break;
             }
         }
 
@@ -254,6 +258,7 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
             delete( (CSyntaxTreeItem*) operands.top() );
             operands.pop();
         }
+        return nullptr;
     }
 }
 
@@ -280,7 +285,7 @@ CSyntaxTreeItem* ConstraintsParser::processOneLogicalOper( IN COperators& operat
         break;
     case LogicalOper_NOT:
         node->LLink = operands.top();
-        // the right node remains NULL
+        // the right node remains "nullptr"
         operands.pop();
         break;
     default:
@@ -338,7 +343,7 @@ void ConstraintsParser::removeNOTs()
 //
 void ConstraintsParser::removeBranchNOTs( IN CSyntaxTreeItem* item, IN bool carryOver )
 {
-    if ( NULL == item) return;
+    if ( nullptr == item) return;
 
     switch( item->Type )
     {
@@ -394,7 +399,7 @@ void ConstraintsParser::removeBranchNOTs( IN CSyntaxTreeItem* item, IN bool carr
 
                 // zero out the data pointer of LLink so during clean-up we don't
                 // delete the data that was just assigned to current item
-                node->LLink->Data = NULL;
+                node->LLink->Data = nullptr;
                 delete( node );
                 break;
             default:
@@ -463,7 +468,7 @@ void ConstraintsParser::verifyConstraint( CConstraint& constraint )
 //
 void ConstraintsParser::verifySyntaxTreeItem( CSyntaxTreeItem* item )
 {
-    if ( NULL == item ) return;
+    if ( nullptr == item ) return;
 
     if ( ItemType_Term == item->Type )
     {
@@ -488,7 +493,7 @@ void ConstraintsParser::verifySyntaxTreeItem( CSyntaxTreeItem* item )
 void ConstraintsParser::verifyTerm( CTerm* term )
 {
     // Is Parameter defined in the model?
-    if ( term->Parameter == NULL )
+    if ( term->Parameter == nullptr )
     {
         throw CSemanticWarning( ValidationWarnType_UnknownParameter );
     }
@@ -521,7 +526,7 @@ void ConstraintsParser::verifyTerm( CTerm* term )
     // Is second parameter defined?
     if ( term->DataType == SyntaxTermDataType_ParameterName )
     {
-        if ( term->Data == NULL )
+        if ( term->Data == nullptr )
         {
             throw CSemanticWarning( ValidationWarnType_UnknownParameter );
         }
@@ -569,12 +574,14 @@ void ConstraintsParser::verifyFunction( CFunction *function )
     case FunctionTypeIsNegativeParam:
     case FunctionTypeIsPositiveParam:
         {
-            if ( function->Data == NULL && ! function->DataText.empty() )
+            if ( function->Data == nullptr && ! function->DataText.empty() )
             {
                 throw CSemanticWarning( ValidationWarnType_UnknownParameter );
             }
             break;
         }
+    default:
+        break;
     }
 }
 

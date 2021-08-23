@@ -14,7 +14,7 @@
 
 // TODO: move these two somewhere else
 #define TEXT_TokenConstraintEnd  L";"
-const wchar_t RESULT_DELIMITER = '\t';
+const wchar_t RESULT_DELIMITER = L'\t';
 
 //
 // Types of messages
@@ -36,9 +36,9 @@ enum MsgType
 void PrintMessage
     (
     IN MsgType  type,
-    IN wchar_t* text1,
-    IN wchar_t* text2 = 0,
-    IN wchar_t* text3 = 0
+    IN const wchar_t* text1,
+    IN const wchar_t* text2 = nullptr,
+    IN const wchar_t* text3 = nullptr
     );
 
 //

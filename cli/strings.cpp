@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <functional> 
 #include <cctype>
-#include <wchar.h>
-#include <assert.h>
+#include <cwchar>
+#include <cassert>
 #include "strings.h"
 using namespace std;
 
@@ -224,7 +224,7 @@ wstring charToStr( wchar_t c )
 //
 //
 //
-wstring charArrToStr( wchar_t* c )
+wstring charArrToStr( const wchar_t* c )
 {
     return( wstring( c ) );
 }
