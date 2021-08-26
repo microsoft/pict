@@ -128,12 +128,12 @@ int Parameter::PickValue()
 
     // What if bestValueCount is 0 here due to exclusions?
     // That would be a bug, but better put in a check.
-    if( m_task->GetGenerationMode() != Preview )
+    if( m_task->GetGenerationMode() != GenerationMode::Preview )
     {
         assert( bestValueCount > 0 );
         if( bestValueCount <= 0 )
         {
-            throw GenerationError( __FILE__, __LINE__, GenerationFailure );
+            throw GenerationError( __FILE__, __LINE__, ErrorType::GenerationFailure );
         }
     }
 

@@ -133,12 +133,12 @@ PictGenerate
     {
         switch( e.GetErrorType() )
         {
-        case OutOfMemory:
+        case ErrorType::OutOfMemory:
             return( PICT_OUT_OF_MEMORY );
-        case GenerationCancelled:
-        case TooManyRows:        
-        case Unknown:
-        case GenerationFailure:
+        case ErrorType::GenerationCancelled:
+        case ErrorType::TooManyRows:
+        case ErrorType::Unknown:
+        case ErrorType::GenerationFailure:
         default:
             return( PICT_GENERATION_ERROR );
         }
@@ -242,7 +242,7 @@ PictCreateModel
     )
 {
     Model* modelObj = new Model( L"",
-                                 MixedOrder, 
+                                 GenerationType::MixedOrder,
                                  0,
                                  randomSeed );
     

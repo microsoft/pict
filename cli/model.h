@@ -121,7 +121,7 @@ public:
         Verbose(false),
         Statistics(false),
         RowSeedsFile(L""),
-        GenerationMode(Regular),
+        GenerationMode(GenerationMode::Regular),
         MaxApproxTries(1000),
         ConstraintPredicates(L""),
         m_hasNegativeValues(false),

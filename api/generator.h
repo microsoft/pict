@@ -134,7 +134,7 @@ enum ComboStatus
     Excluded
 };
 
-enum GenerationType
+enum class GenerationType
 {
     MixedOrder,
     FixedOrder,
@@ -143,14 +143,14 @@ enum GenerationType
     Random
 };
 
-enum GenerationMode
+enum class GenerationMode
 {
     Regular,      // regular, no shortcuts, all pairs covered, can be slow
     Preview,      // only a few test cases, most pairs *not* covered, very fast
     Approximate   // most pairs covered, can return no results
 };
 
-enum ErrorType
+enum class ErrorType
 {
     GenerationCancelled,
     TooManyRows,
@@ -163,7 +163,7 @@ class GenerationError
 {
 public:
 
-    GenerationError( std::string file, int line, ErrorType err = Unknown ) :
+    GenerationError( std::string file, int line, ErrorType err = ErrorType::Unknown ) :
         _file( file ), _line( line ), _err( err ){}
 
     ErrorType GetErrorType() { return (ErrorType) _err; }

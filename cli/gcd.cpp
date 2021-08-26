@@ -79,13 +79,13 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
     {
         switch( e.GetErrorType() )
         {
-        case OutOfMemory:
+        case ErrorType::OutOfMemory:
             PrintMessage( GcdError, L"Out of memory. Use smaller /o or simplify your model." );
             break;
-        case GenerationCancelled: // not used in PICT.EXE
-        case TooManyRows:         // not used in PICT.EXE
-        case Unknown:
-        case GenerationFailure:
+        case ErrorType::GenerationCancelled: // not used in PICT.EXE
+        case ErrorType::TooManyRows:         // not used in PICT.EXE
+        case ErrorType::Unknown:
+        case ErrorType::GenerationFailure:
             wstring msg = L"Internal error\n";
             msg += L"As a workaround run the tool with parameter /r a few times and see if any of the iterations produces a result.\n";
             msg += L"If the result is produced, it is guaranteed to be valid and it is safe to use.";

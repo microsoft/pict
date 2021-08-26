@@ -256,7 +256,7 @@ void CModelData::PrintStatistics()
     PrintStatisticsCaption( wstring( L"Combinations" ) );
     wcout << m_totalCombinations << endl;
 
-    if( GenerationMode == Approximate )
+    if( GenerationMode == GenerationMode::Approximate )
     {
         size_t covered = m_totalCombinations - m_remainingCombinations;
         PrintStatisticsCaption( wstring( L"Covered" ) );

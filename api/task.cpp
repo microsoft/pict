@@ -12,7 +12,7 @@ const size_t DefaultMaxRandomTries = 1000;
 Task::Task() :
       m_rootModel     (nullptr),
       m_abortCallback (nullptr),
-      m_generationMode(Regular),
+      m_generationMode(GenerationMode::Regular),
       m_maxRandomTries(DefaultMaxRandomTries),
       m_workbuf       (nullptr)
 {

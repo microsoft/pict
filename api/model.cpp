@@ -124,7 +124,7 @@ void Model::gcd( ComboCollection &vecCombo )
                 delete *i;
             }
 
-            throw GenerationError( __FILE__, __LINE__, GenerationCancelled );
+            throw GenerationError( __FILE__, __LINE__, ErrorType::GenerationCancelled );
         }
 
         // initialize all parameters to unbound, not on work list
@@ -173,7 +173,7 @@ void Model::gcd( ComboCollection &vecCombo )
         }
 
         // Approximate mode must be handled differently from the other modes
-        if( m_task->GetGenerationMode() == Approximate )
+        if( m_task->GetGenerationMode() == GenerationMode::Approximate )
         {
             // it's a row not an exclusion but Exclusion is a perfect data structure for it
             typedef Exclusion CandidateRow;
@@ -238,11 +238,11 @@ void Model::gcd( ComboCollection &vecCombo )
                             for( int vidx = 0; vidx < vecCombo[ cidx ]->GetRange(); ++vidx )
                             {
                                 ComboStatus status = vecCombo[ cidx ]->Feasible( vidx );
-                                if( Open == status )
+                                if( ComboStatus::Open == status )
                                 {
                                     ++open;
                                 }
-                                else if( CoveredMatch == status )
+                                else if( ComboStatus::CoveredMatch == status )
                                 {
                                     ++match;
                                 }
@@ -283,7 +283,7 @@ void Model::gcd( ComboCollection &vecCombo )
                     assert( choice != -1 );
                     if( -1 == choice )
                     {
-                        throw GenerationError( __FILE__, __LINE__, GenerationFailure );
+                        throw GenerationError( __FILE__, __LINE__, ErrorType::GenerationFailure );
                     }
 
                     // no combo had any uncovered combinations in it
@@ -294,7 +294,7 @@ void Model::gcd( ComboCollection &vecCombo )
                         // For each non-excluded value in the bitvec, find total weight
                         for( int vidx = 0; vidx < vecCombo[ choice ]->GetRange(); ++vidx )
                         {
-                            if( Excluded != vecCombo[ choice ]->Feasible( vidx ) )
+                            if( ComboStatus::Excluded != vecCombo[ choice ]->Feasible( vidx ) )
                             {
                                 // Pick a value using weighted random choice
                                 int weight = vecCombo[ choice ]->Weight( vidx );
@@ -313,7 +313,7 @@ void Model::gcd( ComboCollection &vecCombo )
                         vector<int> candidates;
                         for( int vidx = 0; vidx < vecCombo[ choice ]->GetRange(); ++vidx )
                         {
-                            if( Open == vecCombo[ choice ]->Feasible( vidx ) )
+                            if( ComboStatus::Open == vecCombo[ choice ]->Feasible( vidx ) )
                             {
                                 candidates.push_back( vidx );
                             }
@@ -391,7 +391,7 @@ void Model::gcd( ComboCollection &vecCombo )
         //   generation as in that mode, m_result contains some invalid cases
         bool violatesExclusion = false;
 
-        if( GetTask()->GetGenerationMode() == Preview )
+        if( GetTask()->GetGenerationMode() == GenerationMode::Preview )
         {
             violatesExclusion = rowViolatesExclusion( resultRow );
         }
@@ -671,19 +671,19 @@ void Model::Generate()
 
     switch( m_generationType )
     {
-    case MixedOrder:
+    case GenerationType::MixedOrder:
         generateMixedOrder();
         break;
-    case FixedOrder:
+    case GenerationType::FixedOrder:
         generateFixedOrder();
         break;
-    case Full:
+    case GenerationType::Full:
         generateFull();
         break;
-    case Flat:
+    case GenerationType::Flat:
         generateFlat();
         break;
-    case Random:
+    case GenerationType::Random:
         generateRandom();
         break;
     }
@@ -869,7 +869,7 @@ void Model::generateFull()
         rows *= ( *ip )->GetValueCount();
         if( rows > MaxRowsToGenerate )
         {
-            throw GenerationError( __FILE__, __LINE__, TooManyRows );
+            throw GenerationError( __FILE__, __LINE__, ErrorType::TooManyRows );
         }
     }
     bool r1 = mapExclusionsToPseudoParameters();

@@ -91,7 +91,7 @@ int Combination::Feasible()
     int zeros = 0;
     for( int i = 0; i < nWorkVals; ++i )
     {
-        if( Open == m_bitvec[ workbuf[ i ] ] )
+        if( ComboStatus::Open == m_bitvec[ workbuf[ i ] ] )
         {
             ++zeros;
         }
@@ -107,14 +107,14 @@ ComboStatus Combination::Feasible( int value )
 {
     if( EXCLUDED == m_bitvec[ value ] )
     {
-        return Excluded;
+        return ComboStatus::Excluded;
     }
-    ComboStatus retval = ( COVERED == m_bitvec[ value ] ) ? CoveredMatch : Open;
+    ComboStatus retval = ( COVERED == m_bitvec[ value ] ) ? ComboStatus::CoveredMatch : ComboStatus::Open;
     for( ParamCollection::reverse_iterator iter = m_params.rbegin(); iter != m_params.rend(); ++iter )
     {
         if( ( *iter )->GetBoundCount() && ( *iter )->GetLast() != value % ( *iter )->GetValueCount() )
         {
-            return Excluded;
+            return ComboStatus::Excluded;
         }
         value /= ( *iter )->GetValueCount();
     }
