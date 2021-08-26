@@ -11,14 +11,14 @@ namespace pictcli_constraints
 //
 //
 //
-enum ValidationErrType
+enum class ValidationErrType
 {
-    ValidationErrType_ParameterComparedToValueOfDifferentType,
-    ValidationErrType_ParametersOfDifferentTypesCompared,
-    ValidationErrType_ParameterComparedToItself,
-    ValidationErrType_ParameterValueSetTypeMismatch,
-    ValidationErrType_LIKECannotBeUsedForNumericParameters,
-    ValidationErrType_LIKECannotBeUsedWithNumericValues
+    ParameterComparedToValueOfDifferentType,
+    ParametersOfDifferentTypesCompared,
+    ParameterComparedToItself,
+    ParameterValueSetTypeMismatch,
+    LIKECannotBeUsedForNumericParameters,
+    LIKECannotBeUsedWithNumericValues
 };
 
 //
@@ -40,9 +40,9 @@ public:
 //
 //
 //
-enum ValidationWarnType 
+enum class ValidationWarnType 
 {
-    ValidationWarnType_UnknownParameter,
+    UnknownParameter,
 };
 
 //
@@ -103,8 +103,8 @@ private:
     void removeNOTs();
     void removeBranchNOTs( IN CSyntaxTreeItem* item, IN bool carryOver );
 
-    Relation     getOppositeRelation( IN Relation relation );
-    FunctionType getOppositeFunction( IN FunctionType functionType );
+    RelationType getOppositeRelationType( IN RelationType relationType );
+    FunctionType getOppositeFunction    ( IN FunctionType functionType );
 
     void verifyTerm          ( CTerm* term  );
     void verifyFunction      ( CFunction* function );

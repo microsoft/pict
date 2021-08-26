@@ -23,14 +23,14 @@ void ConstraintsParser::GenerateSyntaxTrees()
         CTokenList::iterator token = tokenList.begin();
         CTokenList::iterator tokenFirst, tokenLast;
 
-        if ( (*token)->Type == TokenType_KeywordIf )
+        if ( (*token)->Type == TokenType::KeywordIf )
         {
             CConstraint constraintThen;
             CConstraint constraintElse;
 
             // parse from first item past IF to last before THEN
             tokenFirst = ++token;
-            while( TokenType_KeywordThen != (*token)->Type )
+            while( TokenType::KeywordThen != (*token)->Type )
             {
                 ++token;
             }
@@ -45,7 +45,7 @@ void ConstraintsParser::GenerateSyntaxTrees()
             CTokenList::iterator elseKeyword = token;
             while( elseKeyword != tokenList.end() )
             {
-                if ( TokenType_KeywordElse == (*elseKeyword)->Type ) break;
+                if ( TokenType::KeywordElse == (*elseKeyword)->Type ) break;
                 ++elseKeyword;
             }
 
@@ -140,7 +140,7 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
             {
 
             // pointer to the term is just put onto operands stack.
-            case TokenType_Term:
+            case TokenType::Term:
                 {
                     CSyntaxTreeItem* item = new CSyntaxTreeItem( ( *token )->Term );
                     operands.push( item );
@@ -148,7 +148,7 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
                 }
 
             // pointer to the function goes directly onto operands stack.
-            case TokenType_Function:
+            case TokenType::Function:
                 {
                     CSyntaxTreeItem* item = new CSyntaxTreeItem( ( *token )->Function );
                     operands.push( item );
@@ -157,7 +157,7 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
             
             // logical operator will go directly onto the stack if its priority
             //   is not less than priority of last operator, otherwise process it first.
-            case TokenType_LogicalOper:
+            case TokenType::LogicalOper:
                 {
                     LogicalOper logicalOper = (*token)->LogicalOper;
                     unsigned int currentPriority = getLogicalOperPriority( logicalOper );
@@ -182,21 +182,21 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
             
                 
             // for open parethesis, evaluate the contants recursively
-            case TokenType_ParenthesisOpen:
+            case TokenType::ParenthesisOpen:
                 {
                     ++token;
                     tokenBegin = token;
 
                     // Find matching closing parenthesis
                     unsigned int parenthesesCount = 0;
-                    while( parenthesesCount != 0 || (*token)->Type != TokenType_ParenthesisClose )
+                    while( parenthesesCount != 0 || (*token)->Type != TokenType::ParenthesisClose )
                     {
                         switch ( (*token)->Type )
                         {
-                        case TokenType_ParenthesisOpen:
+                        case TokenType::ParenthesisOpen:
                             ++parenthesesCount;
                             break;
-                        case TokenType_ParenthesisClose:
+                        case TokenType::ParenthesisClose:
                             --parenthesesCount;
                             break;
                         default:
@@ -236,7 +236,7 @@ CSyntaxTreeItem* ConstraintsParser::constructSyntaxTreeItem
         {
             CSyntaxTreeNode* node = new CSyntaxTreeNode();
 
-            node->Oper  = LogicalOper_NOT;
+            node->Oper  = LogicalOper::Not;
             node->LLink = operands.top();
 
             CSyntaxTreeItem* item = new CSyntaxTreeItem( node );
@@ -276,14 +276,14 @@ CSyntaxTreeItem* ConstraintsParser::processOneLogicalOper( IN COperators& operat
 
     switch( node->Oper )
     {
-    case LogicalOper_AND:
-    case LogicalOper_OR:
+    case LogicalOper::And:
+    case LogicalOper::Or:
         node->RLink = operands.top();
         operands.pop();
         node->LLink = operands.top();
         operands.pop();
         break;
-    case LogicalOper_NOT:
+    case LogicalOper::Not:
         node->LLink = operands.top();
         // the right node remains "nullptr"
         operands.pop();
@@ -313,9 +313,9 @@ unsigned int ConstraintsParser::getLogicalOperPriority( IN LogicalOper logicalOp
 {
     switch( logicalOper )
     {
-    case LogicalOper_OR:  return( LogicalOperPriority_OR  );
-    case LogicalOper_AND: return( LogicalOperPriority_AND );
-    case LogicalOper_NOT: return( LogicalOperPriority_NOT );
+    case LogicalOper::Or:  return( LogicalOperPriority_OR  );
+    case LogicalOper::And: return( LogicalOperPriority_AND );
+    case LogicalOper::Not: return( LogicalOperPriority_NOT );
     default:
         assert( false );
         return( LogicalOperPriority_BASE );
@@ -349,16 +349,16 @@ void ConstraintsParser::removeBranchNOTs( IN CSyntaxTreeItem* item, IN bool carr
     {
 
     // For a term or a function, flip the relation if negation is carried over
-    case ItemType_Term:
+    case SyntaxTreeItemType::Term:
         {
             if( carryOver )
             {
                 CTerm* term = (CTerm*) item->Data;
-                term->Relation = getOppositeRelation( term->Relation );
+                term->RelationType = getOppositeRelationType( term->RelationType );
             }
         }
         break;
-    case ItemType_Function:
+    case SyntaxTreeItemType::Function:
         {
             if ( carryOver )
             {
@@ -371,28 +371,28 @@ void ConstraintsParser::removeBranchNOTs( IN CSyntaxTreeItem* item, IN bool carr
     // What to do with node depends on a logical operator:
     // 1. AND or OR will be changed swapped and the underlying branches will get negated
     // 2. NOT will disappear and the branch will get negated
-    case ItemType_Node:
+    case SyntaxTreeItemType::Node:
         {
             CSyntaxTreeNode* node = (CSyntaxTreeNode*) item->Data;
             switch( node->Oper )
             {
-            case LogicalOper_AND:
+            case LogicalOper::And:
                 if ( carryOver )
                 {
-                    node->Oper = LogicalOper_OR;
+                    node->Oper = LogicalOper::Or;
                 }
                 removeBranchNOTs( node->LLink, carryOver );
                 removeBranchNOTs( node->RLink, carryOver );
                 break;
-            case LogicalOper_OR:
+            case LogicalOper::Or:
                 if ( carryOver )
                 {
-                    node->Oper = LogicalOper_AND;
+                    node->Oper = LogicalOper::And;
                 }
                 removeBranchNOTs( node->LLink, carryOver );
                 removeBranchNOTs( node->RLink, carryOver );
                 break;
-            case LogicalOper_NOT:
+            case LogicalOper::Not:
                 removeBranchNOTs( node->LLink, ! carryOver );
                 item->Type = node->LLink->Type;
                 item->Data = node->LLink->Data;
@@ -415,26 +415,26 @@ void ConstraintsParser::removeBranchNOTs( IN CSyntaxTreeItem* item, IN bool carr
 //
 //
 //
-Relation ConstraintsParser::getOppositeRelation( IN Relation relation )
+RelationType ConstraintsParser::getOppositeRelationType( IN RelationType relationType )
 {
-    Relation newRelation = Relation_Unknown;
+    RelationType newRelationType = RelationType::Unknown;
 
-    switch( relation )
+    switch( relationType )
     {
-    case Relation_EQ:       newRelation = Relation_NE;       break;
-    case Relation_NE:       newRelation = Relation_EQ;       break;
-    case Relation_LT:       newRelation = Relation_GE;       break;
-    case Relation_LE:       newRelation = Relation_GT;       break;
-    case Relation_GT:       newRelation = Relation_LE;       break;
-    case Relation_GE:       newRelation = Relation_LT;       break;
-    case Relation_IN:       newRelation = Relation_NOT_IN;   break;
-    case Relation_NOT_IN:   newRelation = Relation_IN;       break;
-    case Relation_LIKE:     newRelation = Relation_NOT_LIKE; break;
-    case Relation_NOT_LIKE: newRelation = Relation_LIKE;     break;
+    case RelationType::Eq:      newRelationType = RelationType::Ne;      break;
+    case RelationType::Ne:      newRelationType = RelationType::Eq;      break;
+    case RelationType::Lt:      newRelationType = RelationType::Ge;      break;
+    case RelationType::Le:      newRelationType = RelationType::Gt;      break;
+    case RelationType::Gt:      newRelationType = RelationType::Le;      break;
+    case RelationType::Ge:      newRelationType = RelationType::Lt;      break;
+    case RelationType::In:      newRelationType = RelationType::NotIn;   break;
+    case RelationType::NotIn:   newRelationType = RelationType::In;      break;
+    case RelationType::Like:    newRelationType = RelationType::NotLike; break;
+    case RelationType::NotLike: newRelationType = RelationType::Like;    break;
     default: assert( false );
     }
 
-    return( newRelation );
+    return(newRelationType);
 }
 
 //
@@ -442,12 +442,12 @@ Relation ConstraintsParser::getOppositeRelation( IN Relation relation )
 //
 FunctionType ConstraintsParser::getOppositeFunction( IN FunctionType functionType )
 {
-    FunctionType newFunctionType = FunctionTypeUnknown;
+    FunctionType newFunctionType = FunctionType::Unknown;
     
     switch( functionType )
     {
-    case FunctionTypeIsNegativeParam: newFunctionType = FunctionTypeIsPositiveParam; break;
-    case FunctionTypeIsPositiveParam: newFunctionType = FunctionTypeIsNegativeParam; break;
+    case FunctionType::IsNegativeParam: newFunctionType = FunctionType::IsPositiveParam; break;
+    case FunctionType::IsPositiveParam: newFunctionType = FunctionType::IsNegativeParam; break;
     default: assert( false ); break;
     }
 
@@ -470,11 +470,11 @@ void ConstraintsParser::verifySyntaxTreeItem( CSyntaxTreeItem* item )
 {
     if ( nullptr == item ) return;
 
-    if ( ItemType_Term == item->Type )
+    if ( SyntaxTreeItemType::Term == item->Type )
     {
         verifyTerm( (CTerm*) item->Data );
     }
-    else if ( ItemType_Function == item->Type )
+    else if ( SyntaxTreeItemType::Function == item->Type )
     {
         verifyFunction( (CFunction*) item->Data );
     }
@@ -495,60 +495,60 @@ void ConstraintsParser::verifyTerm( CTerm* term )
     // Is Parameter defined in the model?
     if ( term->Parameter == nullptr )
     {
-        throw CSemanticWarning( ValidationWarnType_UnknownParameter );
+        throw CSemanticWarning( ValidationWarnType::UnknownParameter );
     }
     
     // LIKE is only for string parameters and should have a string value
-    if ( term->Relation == Relation_LIKE 
-      || term->Relation == Relation_NOT_LIKE )
+    if ( term->RelationType == RelationType::Like
+      || term->RelationType == RelationType::NotLike )
     {
         if ( term->Parameter->Type == DataType::Number )
         {
-            throw CErrValidation( ValidationErrType_LIKECannotBeUsedForNumericParameters );
+            throw CErrValidation( ValidationErrType::LIKECannotBeUsedForNumericParameters );
         }
         
-        if ( term->DataType == SyntaxTermDataType_Value
+        if ( term->DataType == TermDataType::Value
         && ( (CValue*) term->Data )->DataType == DataType::Number )
         {
-            throw CErrValidation( ValidationErrType_LIKECannotBeUsedWithNumericValues );
+            throw CErrValidation( ValidationErrType::LIKECannotBeUsedWithNumericValues );
         }
     }
 
     // Parameter can only be compared to a value of the same type
-    if ( term->DataType == SyntaxTermDataType_Value )
+    if ( term->DataType == TermDataType::Value )
     {
         if ( term->Parameter->Type != ((CValue*) term->Data )->DataType )
         {
-            throw CErrValidation( ValidationErrType_ParameterComparedToValueOfDifferentType );
+            throw CErrValidation( ValidationErrType::ParameterComparedToValueOfDifferentType );
         }    
     }
 
     // Is second parameter defined?
-    if ( term->DataType == SyntaxTermDataType_ParameterName )
+    if ( term->DataType == TermDataType::ParameterName )
     {
         if ( term->Data == nullptr )
         {
-            throw CSemanticWarning( ValidationWarnType_UnknownParameter );
+            throw CSemanticWarning( ValidationWarnType::UnknownParameter );
         }
     }
 
     // 1. Two parameters to be comparable must be of the same type
     // 2. A parameter shouldn't be compared to itself
-    if ( term->DataType == SyntaxTermDataType_ParameterName )
+    if ( term->DataType == TermDataType::ParameterName )
     {
         if ( term->Parameter->Type != ((CParameter*) term->Data )->Type )
         {
-            throw CErrValidation( ValidationErrType_ParametersOfDifferentTypesCompared );
+            throw CErrValidation( ValidationErrType::ParametersOfDifferentTypesCompared );
         }    
 
         if ( term->Parameter->Name == ((CParameter*) term->Data )->Name )
         {
-            throw CErrValidation( ValidationErrType_ParameterComparedToItself );
+            throw CErrValidation( ValidationErrType::ParameterComparedToItself );
         }
     }
 
     // IN has a value set on the right side; all values should be of the type of the bound parameter
-    if ( term->DataType == SyntaxTermDataType_ValueSet )
+    if ( term->DataType == TermDataType::ValueSet )
     {
         CValueSet* valueSet = (CValueSet*) term->Data;
         for ( CValueSet::iterator i_val =  valueSet->begin();
@@ -557,7 +557,7 @@ void ConstraintsParser::verifyTerm( CTerm* term )
         {
             if ( term->Parameter->Type != i_val->DataType )
             {
-                throw CErrValidation( ValidationErrType_ParameterValueSetTypeMismatch );
+                throw CErrValidation( ValidationErrType::ParameterValueSetTypeMismatch );
             }
         }
     }
@@ -571,12 +571,12 @@ void ConstraintsParser::verifyFunction( CFunction *function )
     switch( function->Type )
     {
     // functions must have a parameter to operate on
-    case FunctionTypeIsNegativeParam:
-    case FunctionTypeIsPositiveParam:
+    case FunctionType::IsNegativeParam:
+    case FunctionType::IsPositiveParam:
         {
             if ( function->Data == nullptr && ! function->DataText.empty() )
             {
-                throw CSemanticWarning( ValidationWarnType_UnknownParameter );
+                throw CSemanticWarning( ValidationWarnType::UnknownParameter );
             }
             break;
         }
