@@ -124,7 +124,7 @@ std::string wideCharToAnsi
 //
 //
 //
-enum EncodingType
+enum class EncodingType
 {
     ANSI,
     UTF8,
