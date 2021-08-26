@@ -12,10 +12,10 @@ void CFunction::Print()
 {
     switch( Type )
     {
-    case FunctionTypeIsNegativeParam:
+    case FunctionType::IsNegativeParam:
         wcerr << L"IsNegative(";
         break;
-    case FunctionTypeIsPositiveParam:
+    case FunctionType::IsPositiveParam:
         wcerr << L"IsPositive(";
         break;
     default:
@@ -32,36 +32,36 @@ void CFunction::Print()
 void CTerm::Print()
 {
     wcerr << L"[" << Parameter->Name << L"] ";
-    switch( Relation )
+    switch( RelationType )
     {
-    case Relation_EQ:
+    case RelationType::Eq:
         wcerr << L"=";
         break;
-    case Relation_GE:
+    case RelationType::Ge:
         wcerr << L">=";
         break;
-    case Relation_GT:
+    case RelationType::Gt:
         wcerr << L">";
         break;
-    case Relation_IN:
+    case RelationType::In:
         wcerr << L"in";
         break;
-    case Relation_LE:
+    case RelationType::Le:
         wcerr << L"<=";
         break;
-    case Relation_LIKE:
+    case RelationType::Like:
         wcerr << L"like";
         break;
-    case Relation_LT:
+    case RelationType::Lt:
         wcerr << L"<";
         break;
-    case Relation_NE:
+    case RelationType::Ne:
         wcerr << L"<>";
         break;
-    case Relation_NOT_IN:
+    case RelationType::NotIn:
         wcerr << L"{not in}";
         break;
-    case Relation_NOT_LIKE:
+    case RelationType::NotLike:
         wcerr << L"{not like}";
         break;
     default:
@@ -71,27 +71,27 @@ void CTerm::Print()
     wcerr << L" ";
     switch( DataType )
     {
-    case SyntaxTermDataType_ParameterName:
+    case TermDataType::ParameterName:
     {
         CParameter* param = (CParameter*) Data;
         wcerr << L"[" << param->Name << L"]";
         break;
     }
-    case SyntaxTermDataType_Value:
+    case TermDataType::Value:
     {
         CValue* value = (CValue*) Data;
         switch( value->DataType )
         {
-        case DataType_Number:
+        case DataType::Number:
             wcerr << value->Number;
             break;
-        case DataType_String:
+        case DataType::String:
             wcerr << L"\"" << value->Text << L"\"";
             break;
         }
         break;
     }
-    case SyntaxTermDataType_ValueSet:
+    case TermDataType::ValueSet:
         wcerr << L"{...}";
         break;
     }
@@ -107,29 +107,29 @@ void CTokenList::Print()
     {
         switch( token->Type )
         {
-        case TokenType_KeywordIf:
+        case TokenType::KeywordIf:
             wcerr << L"IF\n";
             break;
-        case TokenType_KeywordThen:
+        case TokenType::KeywordThen:
             wcerr << L"THEN\n";
             break;
-        case TokenType_ParenthesisOpen:
+        case TokenType::ParenthesisOpen:
             wcerr << L"(\n";
             break;
-        case TokenType_ParenthesisClose:
+        case TokenType::ParenthesisClose:
             wcerr << L")\n";
             break;
-        case TokenType_LogicalOper:
+        case TokenType::LogicalOper:
             wcerr << L"LOG: ";
             switch( token->LogicalOper )
             {
-            case LogicalOper_AND:
+            case LogicalOper::And:
                 wcerr << L"AND";
                 break;
-            case LogicalOper_OR:
+            case LogicalOper::Or:
                 wcerr << L"OR";
                 break;
-            case LogicalOper_NOT:
+            case LogicalOper::Not:
                 wcerr << L"NOT";
                 break;
             default:
@@ -138,7 +138,7 @@ void CTokenList::Print()
             }
             wcerr << L"\n";
             break;
-        case TokenType_Term:
+        case TokenType::Term:
         {
             wcerr << L"TERM ";
             CTerm* term = (CTerm*) token->Term;
@@ -168,11 +168,11 @@ void pindent( unsigned int indent )
 //
 void CSyntaxTreeItem::Print( unsigned int indent )
 {
-    if( ItemType_Term == Type )
+    if( SyntaxTreeItemType::Term == Type )
     {
         pindent( indent ); (static_cast<CTerm*>( Data ))->Print();
     }
-    else if( ItemType_Function == Type )
+    else if( SyntaxTreeItemType::Function == Type )
     {
         pindent( indent ); (static_cast<CFunction*>( Data ))->Print();
     }
@@ -181,13 +181,13 @@ void CSyntaxTreeItem::Print( unsigned int indent )
         CSyntaxTreeNode* node = static_cast<CSyntaxTreeNode*>( Data );
         switch( node->Oper )
         {
-        case LogicalOper_AND:
+        case LogicalOper::And:
             pindent( indent ); wcerr << L"AND\n";
             break;
-        case LogicalOper_OR:
+        case LogicalOper::Or:
             pindent( indent ); wcerr << L"OR\n";
             break;
-        case LogicalOper_NOT:
+        case LogicalOper::Not:
             pindent( indent ); wcerr << L"NOT\n";
             break;
         default:

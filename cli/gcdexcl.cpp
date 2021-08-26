@@ -11,20 +11,20 @@ namespace pictcli_gcd
 // Determines whether a relation is satisfied
 // Doesn't interpret INs and LIKEs, though
 //
-bool ConstraintsInterpreter::isRelationSatisfied( IN double diff, IN Relation relation )
+bool ConstraintsInterpreter::isRelationSatisfied( IN double diff, IN RelationType relationType )
 {
-    switch( relation )
+    switch( relationType )
     {
-    case Relation_EQ: return( diff == 0 ); break;
-    case Relation_GE: return( diff >= 0 ); break;
-    case Relation_GT: return( diff >  0 ); break;
-    case Relation_LE: return( diff <= 0 ); break;
-    case Relation_LT: return( diff <  0 ); break;
-    case Relation_NE: return( diff != 0 ); break;
-    case Relation_IN:
-    case Relation_NOT_IN:
-    case Relation_LIKE:
-    case Relation_NOT_LIKE:
+    case RelationType::Eq: return( diff == 0 ); break;
+    case RelationType::Ge: return( diff >= 0 ); break;
+    case RelationType::Gt: return( diff >  0 ); break;
+    case RelationType::Le: return( diff <= 0 ); break;
+    case RelationType::Lt: return( diff <  0 ); break;
+    case RelationType::Ne: return( diff != 0 ); break;
+    case RelationType::In:
+    case RelationType::NotIn:
+    case RelationType::Like:
+    case RelationType::NotLike:
     default:
         assert( false );
         return( 0 );
@@ -34,24 +34,24 @@ bool ConstraintsInterpreter::isRelationSatisfied( IN double diff, IN Relation re
 //
 //
 //
-bool ConstraintsInterpreter::isNumericRelationSatisfied( IN double   value,
-                                                         IN Relation relation,
-                                                         IN double   valueToCompareWith )
+bool ConstraintsInterpreter::isNumericRelationSatisfied( IN double       value,
+                                                         IN RelationType relationType,
+                                                         IN double       valueToCompareWith )
 {
     double diff = value - valueToCompareWith;
-    return( isRelationSatisfied( diff, relation ));
+    return( isRelationSatisfied( diff, relationType ));
 }
 
 //
 //
 //
-bool ConstraintsInterpreter::isStringRelationSatisfied( IN wstring& value,
-                                                        IN Relation relation,
-                                                        IN wstring& valueToCompareWith )
+bool ConstraintsInterpreter::isStringRelationSatisfied( IN wstring&     value,
+                                                        IN RelationType relationType,
+                                                        IN wstring&     valueToCompareWith )
 {
     // take care of LIKEs
-    if ( Relation_LIKE     == relation
-      || Relation_NOT_LIKE == relation )
+    if ( RelationType::Like    == relationType
+      || RelationType::NotLike == relationType )
     {
         wstring text    = value;
         wstring pattern = valueToCompareWith;
@@ -62,7 +62,7 @@ bool ConstraintsInterpreter::isStringRelationSatisfied( IN wstring& value,
         }
 
         bool ret = patternMatch( pattern, text );
-        if ( Relation_NOT_LIKE == relation ) 
+        if ( RelationType::NotLike == relationType )
         {
             ret = ! ret;
         }
@@ -72,7 +72,7 @@ bool ConstraintsInterpreter::isStringRelationSatisfied( IN wstring& value,
     else
     {
         double diff = (double) stringCompare( value, valueToCompareWith, _modelData.CaseSensitive );
-        return( isRelationSatisfied( diff, relation ));
+        return( isRelationSatisfied( diff, relationType ));
     }
 }
 
@@ -81,20 +81,20 @@ bool ConstraintsInterpreter::isStringRelationSatisfied( IN wstring& value,
 //
 bool ConstraintsInterpreter::valueSatisfiesRelation( IN CParameter&  parameter,
                                                      IN CModelValue& value,
-                                                     IN Relation     relation,
+                                                     IN RelationType relationType,
                                                      IN CValue*      data )
 {
     wstrings names = value.GetNamesForComparisons();
     for( auto & name : names )
     {
         bool relSatisfied = false;
-        if ( parameter.Type == DataType_Number )
+        if ( parameter.Type == DataType::Number )
         {
-            relSatisfied = isNumericRelationSatisfied( stringToNumber( name ), relation, data->Number );
+            relSatisfied = isNumericRelationSatisfied( stringToNumber( name ), relationType, data->Number );
         }
-        else if ( parameter.Type == DataType_String )
+        else if ( parameter.Type == DataType::String )
         {
-            relSatisfied = isStringRelationSatisfied( name, relation, data->Text );
+            relSatisfied = isStringRelationSatisfied( name, relationType, data->Text );
         }
         else
         {
@@ -132,12 +132,12 @@ void ConstraintsInterpreter::interpretTerm( IN CTerm* term, OUT CGcdExclusions& 
     switch( term->DataType )
     {
     // everything except INs
-    case SyntaxTermDataType_Value:
+    case TermDataType::Value:
         {
             for( size_t valueIdx = 0; valueIdx < modelParam.Values.size(); ++valueIdx )
             {
                 CModelValue& value = modelParam.Values[ valueIdx ];
-                if( valueSatisfiesRelation( parameter, value, term->Relation, (CValue*) term->Data ) )
+                if( valueSatisfiesRelation( parameter, value, term->RelationType, (CValue*) term->Data ) )
                 {
                     satisfyingValues[ valueIdx ] = true;
                 }
@@ -145,10 +145,10 @@ void ConstraintsInterpreter::interpretTerm( IN CTerm* term, OUT CGcdExclusions& 
             break;
         }
     // INs
-    case SyntaxTermDataType_ValueSet:
+    case TermDataType::ValueSet:
         {
-            assert( term->Relation == Relation_IN 
-                 || term->Relation == Relation_NOT_IN );
+            assert( term->RelationType == RelationType::In 
+                 || term->RelationType == RelationType::NotIn );
 
             for( size_t valueIdx = 0; valueIdx < modelParam.Values.size(); ++valueIdx )
             {
@@ -159,15 +159,15 @@ void ConstraintsInterpreter::interpretTerm( IN CTerm* term, OUT CGcdExclusions& 
                 CValueSet* valueSet = (CValueSet*) term->Data;
                 for( auto & vset : *valueSet )
                 {
-                    if ( valueSatisfiesRelation( parameter, value, Relation_EQ, &vset ))
+                    if ( valueSatisfiesRelation( parameter, value, RelationType::Eq, &vset ))
                     {
                         satisfied = true;
                         break;
                     }
                 }
 
-                if (( Relation_IN     == term->Relation &&   satisfied )
-                 || ( Relation_NOT_IN == term->Relation && ! satisfied ))
+                if (( RelationType::In    == term->RelationType &&   satisfied )
+                 || ( RelationType::NotIn == term->RelationType && ! satisfied ))
                 {
                     satisfyingValues[ valueIdx ] = true;
                 }
@@ -175,7 +175,7 @@ void ConstraintsInterpreter::interpretTerm( IN CTerm* term, OUT CGcdExclusions& 
             break;
         }
 
-    case SyntaxTermDataType_ParameterName:
+    case TermDataType::ParameterName:
         {
             // find the param in modelData
             vector< CModelParameter >::iterator found1 = _modelData.FindParameterByName( term->Parameter->Name );
@@ -202,7 +202,7 @@ void ConstraintsInterpreter::interpretTerm( IN CTerm* term, OUT CGcdExclusions& 
                     {
                         // create temp CValue to use compare function
                         CValue* v2;
-                        if ( DataType_Number == parameter2.Type )
+                        if ( DataType::Number == parameter2.Type )
                         {
                             v2 = new CValue( stringToNumber( name2 ));
                         }
@@ -211,7 +211,7 @@ void ConstraintsInterpreter::interpretTerm( IN CTerm* term, OUT CGcdExclusions& 
                             v2 = new CValue( name2 );
                         }
 
-                        if( valueSatisfiesRelation( parameter1, value1, term->Relation, v2 ))
+                        if( valueSatisfiesRelation( parameter1, value1, term->RelationType, v2 ))
                         {
                             Exclusion newExcl;
 
@@ -229,7 +229,7 @@ void ConstraintsInterpreter::interpretTerm( IN CTerm* term, OUT CGcdExclusions& 
 
     // satisfying values for Value and ValueSet must be now converted into exclusions
     // for ParameterName terms this has been done already
-    if ( term->DataType != SyntaxTermDataType_ParameterName )
+    if ( term->DataType != TermDataType::ParameterName )
     {
         // warn if no value or all values satisfy the relation
         bool oneSatifies = false;
@@ -273,8 +273,8 @@ void ConstraintsInterpreter::interpretFunction( IN CFunction* function, IN OUT C
 {
     switch( function->Type )
     {
-    case FunctionTypeIsNegativeParam:
-    case FunctionTypeIsPositiveParam:
+    case FunctionType::IsNegativeParam:
+    case FunctionType::IsPositiveParam:
         {
             // a useful simplification: gcdData.Parameters, constrModel.Parameters, and modelData.Parameters
             // have elements in the same order thus indexes correspond to the same parameters
@@ -288,8 +288,8 @@ void ConstraintsInterpreter::interpretFunction( IN CFunction* function, IN OUT C
             for( unsigned int idx = 0; idx < modelParam.Values.size(); ++idx )
             {
                 bool positive = modelParam.Values[ idx ].IsPositive();
-                if( (function->Type == FunctionTypeIsNegativeParam && ! positive)
-                 || (function->Type == FunctionTypeIsPositiveParam &&   positive) )
+                if( (function->Type == FunctionType::IsNegativeParam && ! positive)
+                 || (function->Type == FunctionType::IsPositiveParam &&   positive) )
                 {
                     Exclusion newExcl;
                     newExcl.insert( make_pair( _gcdParameters[ paramIdx ], idx ));
@@ -314,17 +314,17 @@ void ConstraintsInterpreter::interpretSyntaxTreeItem( IN CSyntaxTreeItem* item, 
     if ( nullptr == item ) return;
 
     // a case where where there is no condition
-    if ( ItemType_Term == item->Type )
+    if ( SyntaxTreeItemType::Term == item->Type )
     {
         interpretTerm( (CTerm*)item->Data, gcdExclusions );
     }
     // a function call to intepret
-    else if ( ItemType_Function == item->Type )
+    else if ( SyntaxTreeItemType::Function == item->Type )
     {
         interpretFunction( (CFunction*)item->Data, gcdExclusions );
     }
     // otherwise it is a cross-product or a union
-    else if ( ItemType_Node == item->Type )
+    else if ( SyntaxTreeItemType::Node == item->Type )
     {
         CSyntaxTreeNode* node = (CSyntaxTreeNode*) item->Data;
 
@@ -333,7 +333,7 @@ void ConstraintsInterpreter::interpretSyntaxTreeItem( IN CSyntaxTreeItem* item, 
         CGcdExclusions rightExclusions;
         interpretSyntaxTreeItem( node->RLink, rightExclusions );
 
-        if ( LogicalOper_AND == node->Oper )
+        if ( LogicalOper::And == node->Oper )
         {
             for( auto & left : leftExclusions )
             {
@@ -346,7 +346,7 @@ void ConstraintsInterpreter::interpretSyntaxTreeItem( IN CSyntaxTreeItem* item, 
                 }
             }
         }
-        else if ( LogicalOper_OR == node->Oper )
+        else if ( LogicalOper::Or == node->Oper )
         {
             __insert( gcdExclusions, leftExclusions.begin(),  leftExclusions.end() );
             __insert( gcdExclusions, rightExclusions.begin(), rightExclusions.end() );
@@ -435,14 +435,14 @@ void ConstraintsInterpreter::removeContradictingExclusions( IN OUT CGcdExclusion
 DataType ConstraintsInterpreter::getParameterDataType( CModelParameter& parameter )
 {
     // assume numeric until proven otherwise
-    DataType parameterType = DataType_Number;
+    DataType parameterType = DataType::Number;
     for( auto & value : parameter.Values )
     {
         for( auto & name : value.GetNamesForComparisons() )
         {
             if( !textContainsNumber( name ) )
             {
-                parameterType = DataType_String;
+                parameterType = DataType::String;
                 break;
             }
         }
@@ -513,46 +513,46 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
             // print message
             switch( (SyntaxErrorType) e.Type )
             {
-            case SyntaxErrType_UnexpectedEndOfString:
+            case SyntaxErrorType::UnexpectedEndOfString:
                 PrintMessage( InputDataError, L"Constraint ended unexpectedly:", failureContext );
                 break;
-            case SyntaxErrType_UnknownSpecialChar:
+            case SyntaxErrorType::UnknownSpecialChar:
                 PrintMessage( InputDataError, L"Non-special character was escaped:", failureContext );
                 break;
-            case SyntaxErrType_UnknownRelation:
+            case SyntaxErrorType::UnknownRelation:
                 PrintMessage( InputDataError, L"Missing or incorrect relation:", failureContext );
                 break;
-            case SyntaxErrType_NoParameterNameOpen:
+            case SyntaxErrorType::NoParameterNameOpen:
                 PrintMessage( InputDataError, L"Missing opening bracket or misplaced keyword:", failureContext );
                 break;
-            case SyntaxErrType_NoParameterNameClose:
+            case SyntaxErrorType::NoParameterNameClose:
                 PrintMessage( InputDataError, L"Missing closing bracket after parameter name:", failureContext );
                 break;
-            case SyntaxErrType_NoValueSetOpen:
+            case SyntaxErrorType::NoValueSetOpen:
                 PrintMessage( InputDataError, L"Set of values should start with '{':", failureContext );
                 break;
-            case SyntaxErrType_NoValueSetClose:
+            case SyntaxErrorType::NoValueSetClose:
                 PrintMessage( InputDataError, L"Set of values should end with '}':", failureContext );
                 break;
-            case SyntaxErrType_NotNumericValue:
+            case SyntaxErrorType::NotNumericValue:
                 PrintMessage( InputDataError, L"Incorrect numeric value:", failureContext );
                 break;
-            case SyntaxErrType_NoKeywordThen:
+            case SyntaxErrorType::NoKeywordThen:
                 PrintMessage( InputDataError, L"Misplaced THEN keyword or missing logical operator:", failureContext );
                 break;
-            case SyntaxErrType_NotAConstraint:
+            case SyntaxErrorType::NotAConstraint:
                 PrintMessage( InputDataError, L"Constraint definition is incorrect:", failureContext );
                 break;
-            case SyntaxErrType_NoConstraintEnd:
+            case SyntaxErrorType::NoConstraintEnd:
                 PrintMessage( InputDataError, L"Constraint terminated incorectly:", failureContext );
                 break;
-            case SyntaxErrType_NoEndParenthesis:
+            case SyntaxErrorType::NoEndParenthesis:
                 PrintMessage( InputDataError, L"Missing closing parenthesis:", failureContext );
                 break;
-            case SyntaxErrType_FunctionNoParenthesisOpen:
+            case SyntaxErrorType::FunctionNoParenthesisOpen:
                 PrintMessage( InputDataError, L"Missing opening parenthesis in function:", failureContext );
                 break;
-            case SyntaxErrType_FunctionNoParenthesisClose:
+            case SyntaxErrorType::FunctionNoParenthesisClose:
                 PrintMessage( InputDataError, L"Missing closing parenthesis in function:", failureContext );
                 break;
             default:
@@ -574,7 +574,7 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
             {
                 switch( warning.Type )
                 {
-                case ValidationWarnType_UnknownParameter:
+                case ValidationWarnType::UnknownParameter:
                     {
                     wstring constraintText = _modelData.GetConstraintText( warning.ErrInConstraint );
                     wchar_t* failureContext = (wchar_t*) ( constraintText.c_str() );
@@ -596,22 +596,22 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
             
             switch( e.Type )
             {
-            case ValidationErrType_ParameterComparedToValueOfDifferentType:
+            case ValidationErrType::ParameterComparedToValueOfDifferentType:
                 PrintMessage( InputDataError, L"Parameter/value type mismatch:", failureContext );
                 break;
-            case ValidationErrType_ParametersOfDifferentTypesCompared:
+            case ValidationErrType::ParametersOfDifferentTypesCompared:
                 PrintMessage( InputDataError, L"Parameters are of different types:", failureContext );
                 break;
-            case ValidationErrType_ParameterComparedToItself:
+            case ValidationErrType::ParameterComparedToItself:
                 PrintMessage( InputDataError, L"Parameter cannot be compared to itself:", failureContext );
                 break;
-            case ValidationErrType_ParameterValueSetTypeMismatch:
+            case ValidationErrType::ParameterValueSetTypeMismatch:
                 PrintMessage( InputDataError, L"Parameter/value type mismatch:", failureContext );
                 break;
-            case ValidationErrType_LIKECannotBeUsedForNumericParameters:
+            case ValidationErrType::LIKECannotBeUsedForNumericParameters:
                 PrintMessage( InputDataError, L"LIKE operator cannot be used for numeric parameters:", failureContext );
                 break;
-            case ValidationErrType_LIKECannotBeUsedWithNumericValues:
+            case ValidationErrType::LIKECannotBeUsedWithNumericValues:
                 PrintMessage( InputDataError, L"LIKE operator cannot be used for numeric values:", failureContext );
                 break;
             default:

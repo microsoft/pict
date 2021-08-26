@@ -34,7 +34,7 @@ private:
     void doPostParseExpansions( IN OUT CTokenList& tokens );
 
     CFunction*   getFunction();
-    Relation     getRelation();
+    RelationType getRelationType();
     LogicalOper  getLogicalOper();
     CValue*      getValue();
     double       getNumber();
