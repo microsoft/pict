@@ -125,7 +125,7 @@ public:
         MaxApproxTries(1000),
         ConstraintPredicates(L""),
         m_hasNegativeValues(false),
-        m_encoding(ANSI),
+        m_encoding(EncodingType::ANSI),
         m_totalCombinations(0),
         m_remainingCombinations(0) {}
 

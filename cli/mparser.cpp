@@ -452,7 +452,8 @@ bool CModelData::readModel( const wstring& filePath )
         if ( firstLine )
         {
             m_encoding = getEncodingType( line );
-            if ( m_encoding != ANSI && m_encoding != UTF8 )
+            if ( m_encoding != EncodingType::ANSI
+              && m_encoding != EncodingType::UTF8 )
             {
                 PrintMessage( InputDataError, L"Only ANSI and UTF-8 are supported" );
                 return( false );
@@ -556,7 +557,8 @@ bool CModelData::ReadRowSeedFile( const wstring& filePath )
     }
 
     EncodingType encoding = getEncodingType( line );
-    if ( encoding != ANSI && encoding != UTF8 )
+    if ( encoding != EncodingType::ANSI
+      && encoding != EncodingType::UTF8 )
     {
         PrintMessage( RowSeedsError, L"Only ANSI and UTF-8 are supported" );
         return( false );
