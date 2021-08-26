@@ -5,7 +5,6 @@
 #include <cctype>
 #include <cwchar>
 #include <cassert>
-#include <cstdlib>
 #include "strings.h"
 using namespace std;
 
@@ -235,14 +234,12 @@ wstring charArrToStr( const wchar_t* c )
 //
 string wideCharToAnsi( const wstring& text )
 {
-    auto ansiLen = std::wcstombs(nullptr, text.c_str(), 0);
-    char ansiBuf[ ansiLen + 1 ];
-
-    std::wcstombs(ansiBuf, text.c_str(), ansiLen);
-    ansiBuf[ ansiLen ] = '\0';
-
-    string ansiText(ansiBuf);
-
+    string ansiText;
+    ansiText.reserve( text.size() );
+    for( auto c : text )
+    {
+        ansiText += static_cast< char > (c);
+    }
     return( ansiText );
 }
 

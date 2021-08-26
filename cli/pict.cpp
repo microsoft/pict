@@ -4,7 +4,6 @@
 #endif
 
 #include <ctime>
-#include <cstdlib>
 #include <cstring>
 #include <locale>
 #include <stdexcept>
@@ -148,11 +147,14 @@ int main
     wchar_t** wargs = new wchar_t*[ argc ];
     for ( int ii = 0; ii < argc; ++ii )
     {
-        auto len = std::mbstowcs( nullptr, args[ ii ], 0 );
+        size_t len = strlen( args[ ii ] );
         wargs[ ii ] = new wchar_t[ len + 1 ];
-
-        std::mbstowcs( wargs[ ii ], args[ ii ], len );
-        wargs[ ii ][ len ] = L'\0';
+        size_t jj;
+        for( jj = 0; jj < len; ++jj )
+        {
+            wargs[ ii ][ jj ] = (wchar_t) args[ ii ][ jj ];
+        }
+        wargs[ ii ][ jj ] = L'\0';
     }
 
     // invoke wmain
