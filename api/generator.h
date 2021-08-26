@@ -376,7 +376,8 @@ class Parameter
 public:
     Parameter( int order, int sequence, int valueCount, std::wstring name, bool expectedResultParam ) :
         m_order( order ), m_sequence( sequence ), m_valueCount( valueCount ),
-        m_name( name ), m_expResultParam( expectedResultParam ), m_valueWeights( 0 )
+        m_name( name ), m_expResultParam( expectedResultParam ), m_valueWeights( 0 ),
+        m_bound( false ), m_pending( false ), m_avgExclusionSize( 0 )
     {
          // result params must have order = 1
         if ( m_expResultParam ) m_order = 1;

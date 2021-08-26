@@ -52,25 +52,25 @@ int __cdecl execute
 
     if( !ParseArgs( argc, args, modelData ) )
     {
-        return( ErrorCode_BadOption );
+        return( (int)ErrorCode::ErrorCode_BadOption );
     }
 
     if( !modelData.ReadModel( wstring( args[ 1 ] )))
     {
-        return( ErrorCode_BadModel );
+        return( (int)ErrorCode::ErrorCode_BadModel );
     }
 
     if( !modelData.ReadRowSeedFile( modelData.RowSeedsFile ))
     {
-        return( ErrorCode_BadRowSeedFile );
+        return( (int)ErrorCode::ErrorCode_BadRowSeedFile );
     }
 
     GcdRunner gcdRunner( modelData );
 
     ErrorCode err = gcdRunner.Generate();
-    if( err != ErrorCode_Success )
+    if( err != ErrorCode::ErrorCode_Success )
     {
-        return err;
+        return (int)err;
     }
 
     time_t end = time( nullptr );
@@ -100,7 +100,7 @@ int __cdecl execute
         output.append( outputStream.str() );
     }
 
-    return( ErrorCode_Success );
+    return( (int)ErrorCode::ErrorCode_Success );
 }
 
 //
@@ -165,7 +165,7 @@ int main
     {
         delete wargs[ ii ];
     }
-    delete wargs;
+    delete[] wargs;
 
     return( ret );
 }

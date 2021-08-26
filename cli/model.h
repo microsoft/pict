@@ -58,8 +58,10 @@ public:
     Parameter*                 GcdPointer;
 
     CModelParameter() :
-        IsResultParameter( false ),
-        GcdPointer( nullptr ) {}
+        Name(nullptr),
+        IsResultParameter(false),
+        Order(UNDEFINED_ORDER),
+        GcdPointer(nullptr){}
 
     int GetValueOrdinal( IN std::wstring& name, IN bool caseSensitive );
     bool ValueNamesUnique( IN bool CaseSensitive );
