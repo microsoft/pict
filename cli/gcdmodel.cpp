@@ -266,7 +266,7 @@ ErrorCode CGcdData::TranslateToGCD()
     // make sure all order fields in models are set appropriately
     if( !fixModelAndSubmodelOrder() )
     {
-        return( ErrorCode_BadModel );
+        return( ErrorCode::ErrorCode_BadModel );
     }
     
     // add exclusions for negative values
@@ -278,7 +278,7 @@ ErrorCode CGcdData::TranslateToGCD()
     ConstraintsInterpreter interpreter( _modelData, Parameters );
     if( !interpreter.ConvertToExclusions( Exclusions ) )
     {
-        return( ErrorCode_BadConstraints );
+        return( ErrorCode::ErrorCode_BadConstraints );
     }
     _constraintWarnings.assign( interpreter.GetWarnings().begin(), interpreter.GetWarnings().end() );
 
@@ -308,7 +308,7 @@ ErrorCode CGcdData::TranslateToGCD()
         PrintGcdExclusions();
     }
 
-    return( ErrorCode_Success );
+    return( ErrorCode::ErrorCode_Success );
 }
 
 //

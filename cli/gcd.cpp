@@ -1,7 +1,7 @@
 #include "gcd.h"
 using namespace std;
 
-#define FAILED(err) (ErrorCode_Success != (err))
+#define FAILED(err) (ErrorCode::ErrorCode_Success != (err))
 
 namespace pictcli_gcd
 {
@@ -19,7 +19,7 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
     // check if we excluded all values of any parameter; generation will return nothing if that's the case
     if( gcdData.CheckEntireParameterExcluded() )
     {
-        return( ErrorCode_BadConstraints );
+        return( ErrorCode::ErrorCode_BadConstraints );
     }
 
     // save all one-element exclusions, they'll be used for warnings later
@@ -41,7 +41,7 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
             // each submodel may assign different order to parameters
             if( !gcdData.FixParamOrder( submodel ))
             {
-                return( ErrorCode_BadModel );
+                return( ErrorCode::ErrorCode_BadModel );
             }
 
             if( modelData.Verbose )
@@ -57,7 +57,7 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
 
         if( !gcdData.FixParamOrder( model ))
         {
-            return( ErrorCode_BadModel );
+            return( ErrorCode::ErrorCode_BadModel );
         }
 
         if( modelData.Verbose )
@@ -96,12 +96,12 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
         assert( false );
         throw;
 #endif
-        return( ErrorCode_GenerationError );
+        return( ErrorCode::ErrorCode_GenerationError );
     }
 
     translateResults( modelData, model->GetResults(), justNegative );
 
-    return( ErrorCode_Success );
+    return( ErrorCode::ErrorCode_Success );
 }
 
 //
@@ -180,7 +180,7 @@ ErrorCode GcdRunner::Generate()
         if( FAILED( err )) return( err );
     }
 
-    return( ErrorCode_Success );
+    return( ErrorCode::ErrorCode_Success );
 }
 
 }
