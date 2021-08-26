@@ -212,11 +212,11 @@ public:
         }
     }
 
-    CParameter*  Parameter;
-    TermDataType DataType;
-    RelationType RelationType;
-    void*        Data;
-    std::wstring RawText;
+    CParameter*                       Parameter;
+    TermDataType                      DataType;
+    pictcli_constraints::RelationType RelationType;
+    void*                             Data;
+    std::wstring                      RawText;
 };
 
 //
