@@ -88,7 +88,7 @@ bool parseArg( wchar_t* text, CModelData& modelData )
     // every argument is at least two char long and first character is '/' or '-'
     if( wcslen( text ) < 2 || ( text[ 0 ] != L'/' && text[ 0 ] != L'-' ) )
     {
-        PrintMessage( InputDataError, (wchar_t*) UNKNOWN_OPTION_MSG, text );
+        PrintMessage( InputDataError, UNKNOWN_OPTION_MSG, text );
         return( false );
     }
 
@@ -100,7 +100,7 @@ bool parseArg( wchar_t* text, CModelData& modelData )
         wstring opt = L"'";
         opt += currentArg;
         opt += L"'";
-        PrintMessage( InputDataError, L"Option", (wchar_t*) opt.c_str(), L"was provided more than once" );
+        PrintMessage( InputDataError, L"Option", opt.c_str(), L"was provided more than once" );
         return( false );
     }
 
@@ -274,7 +274,7 @@ bool parseArg( wchar_t* text, CModelData& modelData )
 
     if( unknownOption )
     {
-        PrintMessage( InputDataError, (wchar_t*) UNKNOWN_OPTION_MSG, text );
+        PrintMessage( InputDataError, UNKNOWN_OPTION_MSG, text );
         return( false );
     }
     else
