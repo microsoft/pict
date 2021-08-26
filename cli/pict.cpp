@@ -165,7 +165,7 @@ int main
     {
         delete wargs[ ii ];
     }
-    delete wargs;
+    delete[] wargs;
 
     return( ret );
 }
