@@ -11,10 +11,10 @@ namespace pictcli_constraints
 //
 //
 //
-enum DataType
+enum class DataType
 {
-    DataType_String,
-    DataType_Number
+    String,
+    Number
 };
 
 //
@@ -97,8 +97,8 @@ const LogicalOperPriority LogicalOperPriority_OR   = 1;
 class CValue
 {
 public:
-    CValue( IN std::wstring text ) : DataType( DataType_String ), Text( text ), Number( 0 ) {}
-    CValue( IN double number )     : DataType( DataType_Number ), Text( L"" ),  Number( number ) {}
+    CValue( IN std::wstring text ) : DataType( DataType::String ), Text( text ), Number( 0 ) {}
+    CValue( IN double number )     : DataType( DataType::Number ), Text( L"" ),  Number( number ) {}
 
     pictcli_constraints::DataType  DataType;
     std::wstring                   Text;

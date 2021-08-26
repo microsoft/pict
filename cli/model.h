@@ -58,7 +58,7 @@ public:
     Parameter*                 GcdPointer;
 
     CModelParameter() :
-        Name(nullptr),
+        Name(L""),
         IsResultParameter(false),
         Order(UNDEFINED_ORDER),
         GcdPointer(nullptr){}

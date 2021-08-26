@@ -88,11 +88,11 @@ bool ConstraintsInterpreter::valueSatisfiesRelation( IN CParameter&  parameter,
     for( auto & name : names )
     {
         bool relSatisfied = false;
-        if ( parameter.Type == DataType_Number )
+        if ( parameter.Type == DataType::Number )
         {
             relSatisfied = isNumericRelationSatisfied( stringToNumber( name ), relation, data->Number );
         }
-        else if ( parameter.Type == DataType_String )
+        else if ( parameter.Type == DataType::String )
         {
             relSatisfied = isStringRelationSatisfied( name, relation, data->Text );
         }
@@ -202,7 +202,7 @@ void ConstraintsInterpreter::interpretTerm( IN CTerm* term, OUT CGcdExclusions& 
                     {
                         // create temp CValue to use compare function
                         CValue* v2;
-                        if ( DataType_Number == parameter2.Type )
+                        if ( DataType::Number == parameter2.Type )
                         {
                             v2 = new CValue( stringToNumber( name2 ));
                         }
@@ -435,14 +435,14 @@ void ConstraintsInterpreter::removeContradictingExclusions( IN OUT CGcdExclusion
 DataType ConstraintsInterpreter::getParameterDataType( CModelParameter& parameter )
 {
     // assume numeric until proven otherwise
-    DataType parameterType = DataType_Number;
+    DataType parameterType = DataType::Number;
     for( auto & value : parameter.Values )
     {
         for( auto & name : value.GetNamesForComparisons() )
         {
             if( !textContainsNumber( name ) )
             {
-                parameterType = DataType_String;
+                parameterType = DataType::String;
                 break;
             }
         }

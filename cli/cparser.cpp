@@ -502,13 +502,13 @@ void ConstraintsParser::verifyTerm( CTerm* term )
     if ( term->Relation == Relation_LIKE 
       || term->Relation == Relation_NOT_LIKE )
     {
-        if ( term->Parameter->Type == DataType_Number )
+        if ( term->Parameter->Type == DataType::Number )
         {
             throw CErrValidation( ValidationErrType_LIKECannotBeUsedForNumericParameters );
         }
         
         if ( term->DataType == SyntaxTermDataType_Value
-        && ( (CValue*) term->Data )->DataType == DataType_Number )
+        && ( (CValue*) term->Data )->DataType == DataType::Number )
         {
             throw CErrValidation( ValidationErrType_LIKECannotBeUsedWithNumericValues );
         }

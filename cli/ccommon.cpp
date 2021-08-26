@@ -82,10 +82,10 @@ void CTerm::Print()
         CValue* value = (CValue*) Data;
         switch( value->DataType )
         {
-        case DataType_Number:
+        case DataType::Number:
             wcerr << value->Number;
             break;
-        case DataType_String:
+        case DataType::String:
             wcerr << L"\"" << value->Text << L"\"";
             break;
         }
