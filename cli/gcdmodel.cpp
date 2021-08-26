@@ -141,12 +141,12 @@ typedef map< CModelParameter*, Parameter* > CParamMap;
 //
 ErrorCode CGcdData::TranslateToGCD()
 {
-    Model* rootModel = new Model( L"", MixedOrder, _modelData.Order, _modelData.RandSeed );
+    Model* rootModel = new Model( L"", GenerationType::MixedOrder, _modelData.Order, _modelData.RandSeed );
     Models.push_back( rootModel );
 
     _task.SetRootModel( rootModel );
     _task.SetGenerationMode( _modelData.GenerationMode );
-    if( _modelData.GenerationMode == Approximate )
+    if( _modelData.GenerationMode == GenerationMode::Approximate )
     {
         _task.SetMaxRandomTries( _modelData.MaxApproxTries );
     }
@@ -188,7 +188,7 @@ ErrorCode CGcdData::TranslateToGCD()
     // now go through all the submodels and wire up parameters to models
     for( auto & submodel : _modelData.Submodels )
     {
-        Model* gcdModel = new Model( L"", MixedOrder, submodel.Order, _modelData.RandSeed );
+        Model* gcdModel = new Model( L"", GenerationType::MixedOrder, submodel.Order, _modelData.RandSeed );
         Models.push_back( gcdModel );
 
         for( auto & idx_param : submodel.Parameters )
@@ -229,7 +229,7 @@ ErrorCode CGcdData::TranslateToGCD()
                     continue;
                 }
 
-                Model* subModel = new Model( L"", MixedOrder, 1, _modelData.RandSeed );
+                Model* subModel = new Model( L"", GenerationType::MixedOrder, 1, _modelData.RandSeed );
                 Models.push_back( subModel );
                 rootModel->AddSubmodel( subModel );
 

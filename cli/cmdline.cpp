@@ -234,7 +234,7 @@ bool parseArg( wchar_t* text, CModelData& modelData )
     {
         if( wcslen( text ) == 2 )
         {
-            modelData.GenerationMode = Preview;
+            modelData.GenerationMode = GenerationMode::Preview;
         }
         else
         {
@@ -248,7 +248,7 @@ bool parseArg( wchar_t* text, CModelData& modelData )
         // /x
         if( wcslen( text ) == 2 )
         {
-            modelData.GenerationMode = Approximate;
+            modelData.GenerationMode = GenerationMode::Approximate;
         }
         // /x:
         else if( wcslen( text ) == 3 )
@@ -260,7 +260,7 @@ bool parseArg( wchar_t* text, CModelData& modelData )
         else
         {
             unsigned int i = getUIntFromArg( text );
-            modelData.GenerationMode = Approximate;
+            modelData.GenerationMode = GenerationMode::Approximate;
             modelData.MaxApproxTries = (unsigned short) i;
         }
         break;

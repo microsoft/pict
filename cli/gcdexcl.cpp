@@ -644,7 +644,7 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
     }
     catch( std::bad_alloc e )
     { 
-        throw new GenerationError( __FILE__, __LINE__, OutOfMemory );
+        throw new GenerationError( __FILE__, __LINE__, ErrorType::OutOfMemory );
     }
 
     return( true );
