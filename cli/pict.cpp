@@ -163,7 +163,7 @@ int main
     // clean up
     for ( int ii = 0; ii < argc; ++ii )
     {
-        delete wargs[ ii ];
+        delete[] wargs[ ii ];
     }
     delete[] wargs;
 
