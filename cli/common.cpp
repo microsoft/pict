@@ -51,8 +51,8 @@ void PrintMessage
     }
 
     wcerr << text1;
-    if ( text2 != NULL ) wcerr << L" " << text2;
-    if ( text3 != NULL ) wcerr << L" " << text3;
+    if ( text2 != nullptr ) wcerr << L" " << text2;
+    if ( text3 != nullptr ) wcerr << L" " << text3;
     wcerr << endl;
 }
 
