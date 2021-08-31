@@ -332,7 +332,7 @@ void ExclusionDeriver::DeriveExclusions()
             // put ref to each exclusion in appropriate value-relative bucket
             // find this parameter in the exclusion
             Exclusion::iterator iExcl = find_if( ( *ie )->begin(), ( *ie )->end(),
-                                                 bind2nd( MatchParameterPointer(), m_currentParam ) );
+                                                 [this](const ExclusionTerm et){ return et.first == m_currentParam; } );
 
             // put the exclusion in the right bucket
             assert( iExcl != ( *ie )->end() );
