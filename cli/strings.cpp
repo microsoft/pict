@@ -56,7 +56,7 @@ int stringCompare( const wstring& s1, const wstring& s2, bool caseSensitive )
 //
 //
 //
-wstring trim( wstring text)
+wstring trim( wstring text )
 {
     text.erase( text.begin(), find_if( text.begin(), text.end(), not1( ptr_fun<wint_t, int>( iswspace ) ) ) );
     text.erase( find_if( text.rbegin(), text.rend(), not1( ptr_fun<wint_t, int>( iswspace ) )).base(), text.end() );
