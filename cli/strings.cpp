@@ -13,7 +13,10 @@ using namespace std;
 //
 wstring::iterator findFirstNonWhitespace( const wstring::iterator begin, const wstring::iterator end )
 {
-    return( find_if( begin, end, [](const wint_t c){ return ! std::iswspace(c); } ) );
+    return( find_if( begin, end,
+                     [](const wint_t c) {
+                         return ! std::iswspace(c);
+                     } ) );
 }
 
 //
@@ -58,8 +61,16 @@ int stringCompare( const wstring& s1, const wstring& s2, bool caseSensitive )
 //
 wstring trim( wstring text )
 {
-    text.erase( text.begin(), find_if( text.begin(), text.end(), [](const wint_t c){ return ! std::iswspace(c); } ) );
-    text.erase( find_if( text.rbegin(), text.rend(), [](const wint_t c){ return ! std::iswspace(c); } ).base(), text.end() );
+    text.erase( text.begin(),
+                find_if( text.begin(), text.end(),
+                         [](const wint_t c) {
+                             return ! std::iswspace(c);
+                         } ) );
+    text.erase( find_if( text.rbegin(), text.rend(),
+                         [](const wint_t c) {
+                             return ! std::iswspace(c);
+                         } ).base(),
+                text.end() );
     return text;
 }
 
