@@ -499,17 +499,6 @@ private:
 //
 //
 //
-struct MatchParameterPointer : public std::binary_function<ExclusionTerm, Parameter*, bool>
-{
-    bool operator()( const ExclusionTerm excl, Parameter* pParam ) const
-    {
-        return excl.first == pParam;
-    }
-};
-
-//
-//
-//
 class Model
 {
 public:

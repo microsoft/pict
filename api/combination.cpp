@@ -190,7 +190,9 @@ void Combination::applyExclusion( Exclusion& excl, int index, ParamCollection::i
         // Is *pos a parameter in the exclusion?
         Exclusion::iterator ie = find_if( excl.begin(),
                                           excl.end(),
-                                          bind2nd( MatchParameterPointer(), *pos ) );
+                                          [pos](const ExclusionTerm et) {
+                                              return et.first == *pos;
+                                          } );
         // parameter is bound to a value in the exclusion
         if( excl.end() != ie )
         {

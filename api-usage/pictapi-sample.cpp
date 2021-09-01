@@ -7,7 +7,7 @@ using namespace std;
 #define PAIRWISE 2
 
 #define checkNull( x )                                    \
-    if( NULL == x )                                       \
+    if( nullptr == x )                                    \
     {                                                     \
         wcout << L"Error: Out of memory" << endl;         \
         goto cleanup;                                     \
@@ -229,12 +229,12 @@ void __cdecl wmain()
 
 cleanup:
 
-    if( model != NULL )    
+    if( model != nullptr )
     {
         PictDeleteModel( model );
     }
 
-    if( task != NULL )    
+    if( task != nullptr )
     {
         PictDeleteTask( task );
     }
