@@ -4,6 +4,7 @@
 #include <functional> 
 #include <cctype>
 #include <cwchar>
+#include <cwctype>
 #include <cassert>
 #include "strings.h"
 using namespace std;
