@@ -1,0 +1,40 @@
+name: MSBuild
+
+on: [push]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: .
+
+  # Configuration type to build.
+  # You can convert this to a build matrix if you need coverage of multiple configuration types.
+  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+  BUILD_CONFIGURATION: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Add NUGET to PATH
+      uses: NuGet/setup-nuget@v1.0.5
+
+    - name: Create a package
+      run: nuget pack
+
+    - name: Authenticate to GitHub packages
+      run: dotnet nuget add source --username PICT --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/PICT/index.json"
+     
+    - name: Publish the package
+      run: dotnet nuget push "Microsoft.Test.Pict.3.7.0.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
