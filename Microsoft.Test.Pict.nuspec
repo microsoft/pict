@@ -20,5 +20,6 @@
         <file src="Release/clidll/pict.pdb" target="lib/win10-x64/dll" />
 
         <file src="doc/pict.md" target="lib" />
+        <file src="LICENSE.txt" target="" />
     </files>
 </package>
