@@ -4,8 +4,9 @@
         <id>Microsoft.Test.Pict</id>
         <version>3.7.0</version>
         <authors>Jacek Czerwonka</authors>
-        <licenseUrl>https://github.com/Microsoft/pict/blob/master/LICENSE.TXT</licenseUrl>
+        <license type="file">LICENSE.TXT</license>
         <projectUrl>http://github.com/microsoft/pict</projectUrl>
+        <repository>type="git" url="https://github.com/microsoft/pict.git"</repository>
         <description>PICT - Combinatorial Testing Tool</description>
     </metadata>
     <files>
