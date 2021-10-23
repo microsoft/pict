@@ -34,7 +34,7 @@ jobs:
       run: nuget pack
 
     - name: Authenticate to GitHub packages
-      run: dotnet nuget add source --username jaccz --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name PICT "https://nuget.pkg.github.com/microsoft/index.json"
+      run: dotnet nuget add source --username jaccz --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name pict "https://nuget.pkg.github.com/microsoft/index.json"
      
     - name: Publish the package
-      run: dotnet nuget push "Microsoft.Test.Pict.3.7.0.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+      run: dotnet nuget push "Microsoft.Test.Pict.3.7.0.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "pict"
