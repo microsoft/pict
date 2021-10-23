@@ -1,4 +1,4 @@
-name: MSBuild
+name: Publish a NuGet package
 
 on: [push]
 
@@ -37,4 +37,4 @@ jobs:
       run: dotnet nuget add source --username jaccz --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name pict "https://nuget.pkg.github.com/microsoft/index.json"
      
     - name: Publish the package
-      run: dotnet nuget push "Microsoft.Test.Pict.3.7.0.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "pict"
+      run: dotnet nuget push "Microsoft.Test.Pict.*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "pict" --skip-duplicate
