@@ -6,7 +6,7 @@
         <authors>Jacek Czerwonka</authors>
         <license type="file">LICENSE.TXT</license>
         <projectUrl>http://github.com/microsoft/pict</projectUrl>
-        <repository>type="git" url="https://github.com/microsoft/pict.git"</repository>
+        <repository type="git" url="https://github.com/microsoft/pict.git" />
         <description>PICT - Combinatorial Testing Tool</description>
     </metadata>
     <files>
