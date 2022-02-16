@@ -407,7 +407,8 @@ void CResult::PrintStatistics()
 //
 bool CGcdData::fixModelAndSubmodelOrder()
 {
-    if( _modelData.Order < 1 and _modelData.Order != UNDEFINED_ORDER )
+    if( _modelData.Order < 1 
+     && _modelData.Order != UNDEFINED_ORDER )
     {
         PrintMessage( InputDataError, L"Order cannot be smaller than 1" );
         return( false );
