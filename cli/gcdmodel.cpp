@@ -117,7 +117,7 @@ bool CGcdData::FixParamOrder( IN Model* submodel )
                 if( p->Order != UNDEFINED_ORDER )
                 {
                     // TODO: add verification of Order
-                    // if p->Order > model->parmeters.count - model.ResultParameters.count then error out
+                    // if p->Order > model->parameters.count - model.ResultParameters.count then error out
                     param->SetOrder( p->Order );
                 }
                 else
@@ -416,12 +416,12 @@ bool CGcdData::fixModelAndSubmodelOrder()
 
     // If the order given as arg to the program has not been explicitely defined it defaults to 2
     // If there's only one parameter or submodel in the model, the order of 2 will fail to execute
-    // To aviod this, must switch to lower order behind the scenes
+    // To avoid this, must switch to lower order behind the scenes
     size_t inputParamCount = _modelData.TotalParameterCount() - _modelData.ResultParameterCount();
 
     if( _modelData.ProvidedArguments.find( SWITCH_ORDER ) == _modelData.ProvidedArguments.end() )
     {
-        // if submidels were defined, don't need any params, otherwise order = params without submodels
+        // if submodels were defined, don't need any params, otherwise order = params without submodels
         if( _modelData.Submodels.size() > 0 )
         {
             if( _modelData.Order > static_cast<int>( rootModel->GetSubmodelCount() ) )
