@@ -109,6 +109,12 @@ bool parseArg( wchar_t* text, CModelData& modelData )
     {
     case SWITCH_ORDER:
     {
+        // Handle the "max" special case.
+        if ( getStringFromArg( text ) == L"max" )
+        {
+            modelData.Order = MAXIMUM_ORDER;
+            break;
+        }
         unsigned int i = getUIntFromArg( text );
         if( i == 0 )
         {
@@ -293,14 +299,14 @@ void showUsage()
     wcout << L"Pairwise Independent Combinatorial Testing" << endl << endl;
     wcout << L"Usage: pict model [options]"                << endl << endl;
     wcout << L"Options:" << endl;
-    wcout << L" /" << charToStr( SWITCH_ORDER )             << L":N    - Order of combinations (default: 2)" << endl;
-    wcout << L" /" << charToStr( SWITCH_DELIMITER )         << L":C    - Separator for values  (default: ,)" << endl;
-    wcout << L" /" << charToStr( SWITCH_ALIAS_DELIMITER )   << L":C    - Separator for aliases (default: |)" << endl;
-    wcout << L" /" << charToStr( SWITCH_NEGATIVE_VALUES )   << L":C    - Negative value prefix (default: ~)" << endl;
-    wcout << L" /" << charToStr( SWITCH_SEED_FILE )         << L":file - File with seeding rows"             << endl;
-    wcout << L" /" << charToStr( SWITCH_RANDOMIZE )         << L"[:N]  - Randomize generation, N - seed"     << endl;
-    wcout << L" /" << charToStr( SWITCH_CASE_SENSITIVE )    << L"      - Case-sensitive model evaluation"    << endl;
-    wcout << L" /" << charToStr( SWITCH_STATISTICS )        << L"      - Show model statistics"              << endl;
+    wcout << L" /" << charToStr( SWITCH_ORDER )             << L":N|max - Order of combinations (default: 2)" << endl;
+    wcout << L" /" << charToStr( SWITCH_DELIMITER )         << L":C     - Separator for values  (default: ,)" << endl;
+    wcout << L" /" << charToStr( SWITCH_ALIAS_DELIMITER )   << L":C     - Separator for aliases (default: |)" << endl;
+    wcout << L" /" << charToStr( SWITCH_NEGATIVE_VALUES )   << L":C     - Negative value prefix (default: ~)" << endl;
+    wcout << L" /" << charToStr( SWITCH_SEED_FILE )         << L":file  - File with seeding rows"             << endl;
+    wcout << L" /" << charToStr( SWITCH_RANDOMIZE )         << L"[:N]   - Randomize generation, N - seed"     << endl;
+    wcout << L" /" << charToStr( SWITCH_CASE_SENSITIVE )    << L"       - Case-sensitive model evaluation"    << endl;
+    wcout << L" /" << charToStr( SWITCH_STATISTICS )        << L"       - Show model statistics"              << endl;
     // there are hidden parameters:
     // wcout << L" /x  - Approximate generation (best effort, might not cover all combinations)" << endl;
     // wcout << L" /p  - Preview generation (only a few test cases)"                             << endl;
