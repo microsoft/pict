@@ -424,7 +424,7 @@ bool CGcdData::fixModelAndSubmodelOrder()
     size_t inputParamCount = _modelData.TotalParameterCount() - _modelData.ResultParameterCount();
 
     if( _modelData.ProvidedArguments.find( SWITCH_ORDER ) == _modelData.ProvidedArguments.end()
-        or _modelData.Order == MAXIMUM_ORDER )
+     || _modelData.Order == MAXIMUM_ORDER )
     {
         // if submodels were defined, don't need any params, otherwise order = params without submodels
         if( _modelData.Submodels.size() > 0 )
