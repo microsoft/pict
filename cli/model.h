@@ -8,7 +8,8 @@
 #include "strings.h"
 using namespace pictcore;
 
-const int UNDEFINED_ORDER = std::numeric_limits<int>::max();
+const int UNDEFINED_ORDER = std::numeric_limits<int>::min();
+const int MAXIMUM_ORDER = std::numeric_limits<int>::max();
 
 //
 //

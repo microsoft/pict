@@ -14,6 +14,7 @@ arg001.txt /o:3             -> SUCCESS
 arg001.txt -o:3             -> SUCCESS
 arg001.txt -O:3             -> SUCCESS
 arg001.txt /O:2.5           -> SUCCESS
+arg001.txt /o:max           -> SUCCESS
 
 arg001.txt /o:a             -> BAD_OPTION
 arg001.txt /o:" "           -> BAD_OPTION
