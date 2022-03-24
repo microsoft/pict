@@ -42,13 +42,14 @@ The test script produces a log: **dbg.log** or **rel.log** for the Debug and Rel
 
 >There are tests which randomize output which typically make it different on each run. These results should be masked in the baseline but currently aren't.
 
-## Building with clang++ on Linux, OS/X, *BSD, etc.
-Install clang through your package manager (most systems), Xcode (OS/X), or from the [LLVM website](http://llvm.org/releases/).
-On Linux, you also need to install recent GNU's "libstdc++" or LLVM's "libc++".
-
-Run `make` to build the `pict` binary.
-
-Run `make test` to run the tests as described above (requires Perl).
+## Building on Linux, OS/X, *BSD, etc.
+PICT uses CMake to build on Linux.
+Assuming installation of CMake and C++ toolchain, following set of commands will build and run tests in the directory `build`
+```
+> cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
+> cmake --build build
+> pushd build && ctest -v && popd
+```
 
 ## Debugging
 
