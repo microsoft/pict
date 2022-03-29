@@ -532,9 +532,6 @@ RelationType ConstraintsTokenizer::getRelationType()
         else throw CSyntaxError( SyntaxErrorType::UnknownRelation, _currentPosition );
     }
     else throw CSyntaxError( SyntaxErrorType::UnknownRelation, _currentPosition );
-
-    assert( false );
-    return ( RelationType::Unknown );
 }
 
 //

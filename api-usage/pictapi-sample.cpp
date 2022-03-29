@@ -34,7 +34,6 @@ void __cdecl wmain()
     PICT_RET_CODE ret = PICT_SUCCESS;
 
     PICT_HANDLE task = PictCreateTask();
-    checkNull( task );
 
     //
     // In a general case,  models might form a tree-like hierarchy
@@ -42,6 +41,7 @@ void __cdecl wmain()
     //
 
     PICT_HANDLE model = PictCreateModel();
+    checkNull( task );
     checkNull( model );
 
     //

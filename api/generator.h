@@ -270,7 +270,7 @@ public:
     }
 
     // for inserter() to work we need two-param insert
-    iterator insert( iterator pos, const ExclusionTerm& Term )
+    iterator insert( iterator, const ExclusionTerm& Term )
     {
         return insert( Term ).first;
     }

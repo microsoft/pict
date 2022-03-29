@@ -47,7 +47,8 @@ if (MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
   target_compile_options(${PICT_BUILD_OPTIONS}
     INTERFACE
-      /W3
+      /W4 /WX
+      /wd4189 # DOUT(arg) has unused parameters. Suppressing the warning here.
   )
 
   target_compile_definitions(${PICT_BUILD_OPTIONS}
