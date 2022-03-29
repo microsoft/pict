@@ -41,6 +41,10 @@ void __cdecl wmain()
     //
 
     PICT_HANDLE model = PictCreateModel();
+
+    // We call this null check after calling PictCreateModel() to
+    // instantiate model. Otherwise, compiler flags that model
+    // might not be defined in checknull.
     checkNull( task );
     checkNull( model );
 
