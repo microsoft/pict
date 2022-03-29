@@ -63,6 +63,7 @@ else()
       -fno-omit-frame-pointer
       -fvisibility=hidden # By default, hide symbols on ELF binaries
       -g # add debug symbols for build pdb
+      -pedantic
   )
 
   # AppleClang is not accepting -flto as linker option
