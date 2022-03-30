@@ -23,8 +23,8 @@ public:
         unsigned int weight,
         bool         positive
         ) : _names           ( names ),
-            _weight          ( weight ),
             _positive        ( positive ),
+            _weight          ( weight ),
             _currentNameIndex( 0 ) {}
 
     wstrings& GetAllNames()       { return( _names ); }
@@ -60,8 +60,8 @@ public:
 
     CModelParameter() :
         Name(L""),
-        IsResultParameter(false),
         Order(static_cast<unsigned int>(UNDEFINED_ORDER)),
+        IsResultParameter(false),
         GcdPointer(nullptr){}
 
     int GetValueOrdinal( IN std::wstring& name, IN bool caseSensitive );
@@ -123,9 +123,9 @@ public:
         CaseSensitive(false),
         Verbose(false),
         Statistics(false),
-        RowSeedsFile(L""),
         GenerationMode(GenerationMode::Regular),
         MaxApproxTries(1000),
+        RowSeedsFile(L""),
         ConstraintPredicates(L""),
         m_hasNegativeValues(false),
         m_encoding(EncodingType::ANSI),

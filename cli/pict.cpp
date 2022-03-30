@@ -137,7 +137,7 @@ int main
     {
         loc = std::locale("C.UTF-8");
     }
-    catch ( std::runtime_error )
+    catch ( const std::runtime_error&)
     {
         loc = std::locale::classic();
     }

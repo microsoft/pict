@@ -65,6 +65,10 @@ else()
       -fvisibility=hidden # By default, hide symbols on ELF binaries
       -g # add debug symbols for build pdb
       -pedantic
+      -Wall
+      -Werror
+      $<$<CXX_COMPILER_ID:GNU>:-Wno-unused-but-set-variable>
+      -Wno-unused-variable
   )
 
   # AppleClang is not accepting -flto as linker option

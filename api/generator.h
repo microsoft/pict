@@ -163,15 +163,13 @@ class GenerationError
 {
 public:
 
-    GenerationError( std::string file, int line, ErrorType err = ErrorType::Unknown ) :
-        _file( file ), _line( line ), _err( err ){}
+    GenerationError( std::string, int, ErrorType err = ErrorType::Unknown ) :
+        _err( err ){}
 
     ErrorType GetErrorType() { return (ErrorType) _err; }
 
 private:
     ErrorType    _err;
-    std::string  _file;
-    int          _line;
 };
 
 //
@@ -316,7 +314,7 @@ public:
     int  Bind( int val, WorkList& worklist );
     int  AddBinding();
     int  GetBoundCount() const { return m_boundCount; }
-    bool IsFullyBound()  const { return m_boundCount == m_params.size(); }
+    bool IsFullyBound()  const { return m_boundCount == static_cast<int>(m_params.size()); }
 
     void        SetOpen   ( int n );
     bool        IsOpen    ( int n ) const { return OPEN     == m_bitvec[ n ]; }
@@ -375,9 +373,9 @@ class Parameter
 {
 public:
     Parameter( int order, int sequence, int valueCount, std::wstring name, bool expectedResultParam ) :
-        m_order( order ), m_sequence( sequence ), m_valueCount( valueCount ),
-        m_name( name ), m_expResultParam( expectedResultParam ), m_valueWeights( 0 ),
-        m_bound( false ), m_pending( false ), m_avgExclusionSize( 0 )
+        m_name( name ), m_order( order ), m_sequence( sequence ), m_valueCount( valueCount ),
+        m_expResultParam( expectedResultParam ), m_bound( false ),
+        m_pending( false ), m_valueWeights( 0 ), m_avgExclusionSize( 0 )
     {
          // result params must have order = 1
         if ( m_expResultParam ) m_order = 1;
@@ -503,7 +501,7 @@ class Model
 {
 public:
     Model( const std::wstring& id, GenerationType type, int order, long seed = 0 ) :
-        m_id( id ), m_generationType( type ), m_order( order ), m_maxRows( 0 ), m_lastParamId( UNDEFINED_ID + 1000 * 1000 ) {
+        m_id( id ), m_order( order ), m_maxRows( 0 ), m_generationType( type ), m_lastParamId( UNDEFINED_ID + 1000 * 1000 ) {
         SetRandomSeed( seed );
     }
     ~Model();
@@ -613,7 +611,6 @@ private:
 
     GenerationType m_generationType;
 
-    Parameter*   m_currentParam;
     unsigned int m_lastParamId;
     long         m_totalCombinations;
     long         m_remainingCombinations;

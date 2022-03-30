@@ -114,7 +114,7 @@ bool CGcdData::FixParamOrder( IN Model* submodel )
             {
                 auto p = _modelData.FindParameterByGcdPointer( param );
                 assert( p != _modelData.Parameters.end() );
-                if( p->Order != UNDEFINED_ORDER )
+                if( p->Order != static_cast<unsigned int>(UNDEFINED_ORDER) )
                 {
                     // TODO: add verification of Order
                     // if p->Order > model->parameters.count - model.ResultParameters.count then error out
