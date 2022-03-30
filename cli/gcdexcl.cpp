@@ -642,7 +642,7 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
         // last-minute cleanup
         removeContradictingExclusions( gcdExclusions );
     }
-    catch( std::bad_alloc e )
+    catch( const std::bad_alloc& )
     { 
         throw new GenerationError( __FILE__, __LINE__, ErrorType::OutOfMemory );
     }

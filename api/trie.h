@@ -76,7 +76,7 @@ public:
                 {
                     node = new trienode < typename Col::value_type >;
                 }
-                catch( std::bad_alloc e )
+                catch(const std::bad_alloc& )
                 {
                     return( false );
                 }

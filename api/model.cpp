@@ -469,7 +469,7 @@ void Model::markUndefinedValuesInResultParams()
             {
                 // TODO: when result params are suported check modl/modl021.txt doesn't break here
                 if( !i_term->first->IsExpectedResultParam()
-                &&  i_row->at( i_term->first->GetSequence() ) != i_term->second )
+                &&  static_cast<int>(i_row->at( i_term->first->GetSequence() )) != i_term->second )
                 {
                     matches = false;
                     break;
@@ -520,7 +520,7 @@ void Model::markUndefinedValuesInResultParams()
         for( size_t row = 0; row < ip->second.size(); ++row )
         {
             // all values have to be excluded except for 1
-            if( ip->second[ row ].size() != ip->first->GetValueCount() - 1 )
+            if( static_cast<int>(ip->second[ row ].size()) != ip->first->GetValueCount() - 1 )
             {
                 m_results[ row ][ col ] = Parameter::UndefinedValue;
             }
@@ -1061,7 +1061,7 @@ bool Model::mapExclusionsToPseudoParameters()
                                 break;
                             }
                             int nParam = static_cast<int>( distance( comps->begin(), ip ) );
-                            size_t nRealVal = param->GetModel()->GetResults()[ vidx ][ nParam ];
+                            int nRealVal = static_cast<int>(param->GetModel()->GetResults()[ vidx ][ nParam ]);
                             if( nRealVal != irel->second )
                             {
                                 break;
@@ -1227,7 +1227,7 @@ bool Model::rowViolatesExclusion( ResultRow& row )
         bool matches = true;
         for( Exclusion::iterator it = ie->begin(); it != ie->end(); ++it )
         {
-            if( row[ it->first->GetSequence() ] != it->second )
+            if( static_cast<int>(row[ it->first->GetSequence() ]) != it->second )
             {
                 matches = false;
                 break;
@@ -1302,7 +1302,7 @@ void Model::mapRowSeedsToPseudoParameters()
                                 break;
                             }
                             int nParam = static_cast<int>( distance( comps->begin(), ip ) );
-                            size_t nRealVal = param->GetModel()->GetResults()[ vidx ][ nParam ];
+                            int nRealVal = static_cast<int>(param->GetModel()->GetResults()[ vidx ][ nParam ]);
                             if( nRealVal != irel->second )
                             {
                                 break;

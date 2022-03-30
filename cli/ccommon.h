@@ -153,15 +153,15 @@ public:
         IN std::wstring rawText    // raw text of the term, useful for warnings
         ) :
             Parameter    ( parameter ),
-            RelationType ( relationType ),
             DataType     ( dataType ),
-            Data         ( data ),
-            RawText      ( rawText ) {}
+            RelationType ( relationType ),
+            RawText      ( rawText ),
+            Data         ( data ) {}
 
     CTerm( CTerm& Term ) :
         Parameter   ( Term.Parameter ),
-        RelationType( Term.RelationType ),
         DataType    ( Term.DataType ),
+        RelationType( Term.RelationType ),
         RawText     ( Term.RawText )
     {
         assert( RelationType < RelationType::Unknown );
@@ -215,8 +215,8 @@ public:
     CParameter*                       Parameter;
     TermDataType                      DataType;
     pictcli_constraints::RelationType RelationType;
-    void*                             Data;
     std::wstring                      RawText;
+    void*                             Data;
 };
 
 //

@@ -112,7 +112,8 @@ ComboStatus Combination::Feasible( int value )
     ComboStatus retval = ( COVERED == m_bitvec[ value ] ) ? ComboStatus::CoveredMatch : ComboStatus::Open;
     for( ParamCollection::reverse_iterator iter = m_params.rbegin(); iter != m_params.rend(); ++iter )
     {
-        if( ( *iter )->GetBoundCount() && ( *iter )->GetLast() != value % ( *iter )->GetValueCount() )
+        if( ( *iter )->GetBoundCount() && 
+            static_cast<int>(( *iter )->GetLast()) != value % ( *iter )->GetValueCount() )
         {
             return ComboStatus::Excluded;
         }
@@ -143,7 +144,7 @@ int Combination::Weight( int value )
 //
 int Combination::AddBinding()
 {
-    if( ++m_boundCount == m_params.size() )
+    if( ++m_boundCount == static_cast<int>(m_params.size()) )
     {
         // compute which zero we're setting
         size_t value = 0;
@@ -261,7 +262,7 @@ void Combination::SetOpen( int index )
 //
 //
 Combination::Combination( Model *M ) :
-    m_bitvec( nullptr ), m_openCount( 0 ), m_boundCount( 0 ), m_range( 0 ), m_model( M )
+    m_bitvec( nullptr ), m_range( 0 ), m_openCount( 0 ), m_boundCount( 0 ), m_model( M )
 {
     m_id = ++m_lastUsedId;
     DOUT( L"Combination created: " << m_id << endl );
