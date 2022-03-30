@@ -61,7 +61,7 @@ public:
     CModelParameter() :
         Name(L""),
         IsResultParameter(false),
-        Order(UNDEFINED_ORDER),
+        Order(static_cast<unsigned int>(UNDEFINED_ORDER)),
         GcdPointer(nullptr){}
 
     int GetValueOrdinal( IN std::wstring& name, IN bool caseSensitive );

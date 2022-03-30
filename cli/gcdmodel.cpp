@@ -162,7 +162,8 @@ ErrorCode CGcdData::TranslateToGCD()
     {
         CModelParameter& param = _modelData.Parameters[ index ];
 
-        Parameter* gcdParam = new Parameter( UNDEFINED_ORDER, index, static_cast<int>( param.Values.size() ),
+        Parameter* gcdParam = new Parameter( UNDEFINED_ORDER, static_cast<int>(index),
+                                             static_cast<int>( param.Values.size() ),
                                              param.Name, param.IsResultParameter );
 
         // find out and assign weights to values

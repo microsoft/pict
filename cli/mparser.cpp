@@ -134,7 +134,7 @@ bool CModelData::readParameter( wstring& line )
 
     wstring name = trim( line.substr( 0, paramSep ));
     
-    unsigned int order = UNDEFINED_ORDER;
+    unsigned int order = static_cast<unsigned int>(UNDEFINED_ORDER);
     
     //check if this param has custom-order defined
     wstrings nameAndOrder;
