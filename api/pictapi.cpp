@@ -21,7 +21,7 @@ PictCreateTask()
 {
     Task* taskObj = new Task();
     return( static_cast<PICT_HANDLE>( taskObj ) );
-};
+}
 
 //
 //
@@ -229,7 +229,7 @@ PictDeleteTask
 {
     Task* taskObj = static_cast<Task*>( NO_CONST_HANDLE( task ));
     delete( taskObj );
-};
+}
 
 //
 //
@@ -247,7 +247,7 @@ PictCreateModel
                                  randomSeed );
     
     return( static_cast<PICT_HANDLE>( modelObj ));   
-};
+}
 
 //
 //
@@ -335,7 +335,7 @@ PictAttachChildModel
     {
         return( PICT_OUT_OF_MEMORY );
     }
-};
+}
 
 //
 //
