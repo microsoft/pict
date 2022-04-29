@@ -1,0 +1,24 @@
+Consider a web shop that should operate with different types of customers:
+
+individuals
+companies
+partners
+
+their locations:
+European Union
+the USA
+China
+India
+Australia
+
+payment systems:
+VISA
+MasterCard
+PayPal
+bank transfer
+
+different browsers:
+Google Chrome
+Mozilla Firefox
+Safari
+Opera
