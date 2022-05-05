@@ -366,9 +366,10 @@ bool CModelData::readParamSet( wstring& line )
             ++index;
         }
         // at this point we should always match the name
+        //
         // N.B. putting a condition around an assert is superfluous but it is done here
         //      because some compilers complain that 'found' variable is never used and
-        //      this is a cross-platform friendly way to supress such warnings
+        //      this is a cross-platform friendly way to suppress such warnings
         if( !found )
         {
             assert( found );
