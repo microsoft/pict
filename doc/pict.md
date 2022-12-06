@@ -72,6 +72,8 @@ All errors, warning messages, and the randomization seed are printed to the erro
 
 If a model and options given to the tool do not change, every run will result in the same output. However, the output can be randomized if **/r** option is used. A randomized generation prints out the seed used for that particular execution to the error output stream. Consequently, that seed can be fed into the tool with **/r:seed** option to replay a particular generation.
 
+Different random seed values will often produce a different number of total test cases.  This is because packing n-way combinations is a “hard problem” for which PICT and other tools use heuristics.  These heuristics are deterministic, but they are dependent on initial conditions. Sometimes the algorithm is lucky and packs all of your desired combinations into fewer test cases.  Variations of 5% - 10% are common.
+
 # Constraints
 
 Constraints allow you to specify limitations on the domain. In the example with partitions, one of the pairs that will occur in at least one test case is **{FAT, 5000}**. In reality, the FAT file system cannot be applied on volumes larger than 4,096 MB. Note that you cannot simply remove those violating test cases from the result because an offending test case may cover other, possibly valid, pairs that would not otherwise be tested. Instead of losing valid pairs, it is better to eliminate disallowed combinations during the generation process. In PICT, this can be done by specifying constraints, for example:
@@ -187,11 +189,11 @@ Less typing and better maintainability.
     
 ## Sub-Models
 
-Sub-models allow the bundling of certain parameters into groups that get their own combinatory orders. This can be useful if combinations of certain parameters need to be tested more thoroughly or must be combined in separation from the other parameters in the model. The sub-model definition has the following format:
+Sub-models allow the bundling of certain parameters into groups that get their own combinatory orders. This can be useful if combinations of certain parameters need to be tested more thoroughly, or less thoroughly, or in separation from the other parameters in the model. The sub-model definition has the following format:
 
     { <ParamName1>, <ParamName2>, <ParamName3>, ... } @ <Order>
 
-For example, sub-modeling is useful when hardware and software parameters are combined together. Without sub-models, each test case would produce a new, unique hardware configuration. Placing all hardware parameters into one sub-model produces fewer distinct hardware configurations and potentially lowers the cost of testing. The order of combinations that can be assigned to each sub-model allows for additional flexibility.
+For example, sub-modeling is useful when hardware and software parameters are combined together. Without sub-models, each test case would produce a new, unique (and costly) hardware configuration. Placing all hardware parameters into one sub-model produces fewer unique hardware configurations and so potentially lowers the cost of testing.  The order of combinations that can be assigned to each sub-model allows for additional flexibility.
 
     PLATFORM:  x86, x64, arm
     CPUS:      1, 2, 4
@@ -201,20 +203,21 @@ For example, sub-modeling is useful when hardware and software parameters are co
     Browser:   Edge, Opera, Chrome, Firefox
     APP:       Word, Excel, Powerpoint
     
-    { PLATFORM, CPUS, RAM, HDD } @ 3
-    { OS, Browser } @ 2
+    { PLATFORM, CPUS, RAM, HDD } @ 2
 
 The test generation for the above model would proceed as follows:
 
-                                               $
-                                               |
-                                               | order = 2 (defined by /o) 
-                                               |
-                +------------------------------+-----------------------------+
-                |                              |                             |
-                | order = 3                    | order = 2                   |
-                |                              |                             |
-    { PLATFORM, CPUS, RAM, HDD }        { OS, Browser }                     APP 
+                                     $
+                                     |
+                                     | order = 3 (defined by /o:3) 
+                                     |
+                +--------------------+-------------------+
+                |                                        |
+                | order = 2                              | order = 3 
+                |                                        |
+    { PLATFORM, CPUS, RAM, HDD }                  OS, Browser, APP 
+		
+For the above model with sub-model, PICT invoked with an /o:3 argument will generate roughly 10 hardware configurations, compared to roughly 40 hardware configurations without the sub-model.  This reduced number of hardware configurations comes at the cost of a greater number of total test cases: roughly 140 test cases with the sub-model, compared to roughly 60 test cases without the sub-model (again, all with /o:3).
 
 Notes:
  1. You can define as many sub-models as you want; any parameter can belong to any number of sub-models. Model hierarchy can be just one level deep. 
