@@ -148,7 +148,7 @@ An invariant declares an always valid limitation of a domain:
 
 ## Types
 
-PICT has a simple type system. There are two types of parameters: a string and a numeric type. Types do not have to be expicitely declared. A parameter is considered numeric when all of its values can be converted to a number (an integer or a float).
+PICT has a simple type system. There are two types of parameters: a string and a numeric type. Types do not have to be explicitly declared. A parameter is considered numeric when all of its values can be converted to a number (an integer or a float).
 
  Types are only important when evaluating constraints. A numeric parameter is only comparable to a number, and a string parameter is only comparable to another string. For example:
 
