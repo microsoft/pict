@@ -14,4 +14,4 @@
 #define VER_PRODUCTVERSION_STR  VER_MAKESTR(VER_PRODBUILD_MAJOR) "." VER_MAKESTR(VER_PRODBUILD_MINOR) "." VER_MAKESTR(VER_PRODBUILD_BUILD) "." VER_MAKESTR(VER_PRODBUILD_REVISION)
 #define VER_COMPANYNAME_STR     "Microsoft Corporation\0"
 #define VER_PRODUCTNAME_STR     "Pairwise Independent Combinatorial Testing\0"
-#define VER_LEGALCOPYRIGHT_STR  "Copyright (C) 2000-2022 Microsoft Corp. All rights reserved.\0"
+#define VER_LEGALCOPYRIGHT_STR  "Copyright (C) 2000-2023 Microsoft Corp. All rights reserved.\0"
