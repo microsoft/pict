@@ -457,11 +457,11 @@ protected:
     std::wstring m_name;
 
 private:
-    int    m_order;          // how many ways must this parameter combine?
-    int    m_sequence;       // input sequence number, so we can reorder but output in original order
-    size_t m_currentValue;   // current iteration's value cache
-    int    m_valueCount;     // how many values parameter has
-    bool   m_expResultParam; // is this a special, result inducing param
+    int    m_order;             // how many ways must this parameter combine?
+    int    m_sequence;          // input sequence number, so we can reorder but output in original order
+    size_t m_currentValue{0};   // current iteration's value cache
+    int    m_valueCount;        // how many values parameter has
+    bool   m_expResultParam;    // is this a special, result inducing param
 
     bool m_bound;         // variable to use in iteration - is this bound yet?
     bool m_pending;       // have we put it on work list yet this iteration?
@@ -474,7 +474,7 @@ private:
 
     std::vector<int>      m_valueWeights;
 
-    Task*  m_task;
+    Task*  m_task{nullptr};
 
     float  m_avgExclusionSize;
 };
