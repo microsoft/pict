@@ -459,7 +459,7 @@ protected:
 private:
     int    m_order;             // how many ways must this parameter combine?
     int    m_sequence;          // input sequence number, so we can reorder but output in original order
-    size_t m_currentValue{0};   // current iteration's value cache
+    size_t m_currentValue = 0;  // current iteration's value cache
     int    m_valueCount;        // how many values parameter has
     bool   m_expResultParam;    // is this a special, result inducing param
 
@@ -474,7 +474,7 @@ private:
 
     std::vector<int>      m_valueWeights;
 
-    Task*  m_task{nullptr};
+    Task*  m_task = nullptr;
 
     float  m_avgExclusionSize;
 };

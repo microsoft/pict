@@ -25,7 +25,7 @@ class CParameter
 public:
     std::wstring Name;
     DataType     Type;
-    bool         ResultParam{false};
+    bool         ResultParam = false;
 };
 
 typedef std::vector< CParameter > CParameters;
@@ -216,7 +216,7 @@ public:
     TermDataType                      DataType;
     pictcli_constraints::RelationType RelationType;
     std::wstring                      RawText;
-    void*                             Data{nullptr};
+    void*                             Data = nullptr;
 };
 
 //
