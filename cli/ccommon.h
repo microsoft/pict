@@ -24,7 +24,7 @@ class CParameter
 {
 public:
     std::wstring Name;
-    DataType     Type;
+    DataType     Type = DataType::String;
     bool         ResultParam = false;
 };
 
