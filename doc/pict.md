@@ -288,11 +288,11 @@ Notes:
  1. The ```~``` prefix is not a part of a value when it comes to type detection or constraint evaluation. A valid constraint for the above example would look like this: ```if [A] = -1 then [B] = 0;```. The ```~``` prefix however will show up in the output.
  2. If a value has multiple names, only prefixing the first name will make the value out-of-range. 
  
-## Excluding Entire Parameters
+## Excluding Entire Parameters - The "Dummy Value Technique"
 
-Some test suites may require that under centrain conditions entire parameters should be ignored. Negative testing could be such a scenario. There, an error or a failure may stop the application under test and make any other parameter choices meaningless. By design, PICT will try to pack as many combinations into fewest test cases possible, including those that contain values that will trigger failures.  In these cases, we will see testable pairs esentially wasted.
+Some test suites may require that under certain conditions entire parameters should be ignored. Negative testing (as described above) could be such a scenario. There, an error or a failure may stop the application under test and make any other parameter choices meaningless. By design, PICT will try to pack as many combinations into the fewest test cases possible, including those that contain values that will trigger failures.  In these cases, we will see testable pairs essentially wasted.  In some scenarios the ```~``` prefix can be used to prevent this, but for scenarios where it doesn't apply, we can use the "dummy value technique" instead.
 
-PICT does not have any special handling for this scenario however one technique that could be useful is to add a dummy value to the parameters should be ignored. 
+PICT does not have any special handling for the dummy value technique.  To use it, you need to manually modify your model as described below.
 
 Consider the following example where a ```P1: -1``` is a value that triggers an application error. 
 
@@ -343,6 +343,52 @@ Two additional tests will be added (not all output shown):
     P1      P2      P3
     0       Null    NA
     1       Null    NA
+		
+A more concrete example: 
+
+    OS: Windows, Ubuntu
+    CPU: Intel, AMD
+    DBMS: PostgreSQL, MySQL
+    JavaVersion: 18, 19, 20
+    DotNetVersion: 4.8, 4.8.1
+
+The above model will generate these tests:
+    
+    OS          CPU     DBMS        JavaVersion     DotNetVersion
+    Windows     AMD     PostgreSQL  18              4.8
+    Windows     Intel   MySQL       20              4.8.1
+    Ubuntu      Intel   PostgreSQL  19              4.8.1
+    Ubuntu      AMD     MySQL       20              4.8
+    Windows     AMD     MySQL       19              4.8
+    Ubuntu      AMD     MySQL       18              4.8.1
+    Windows     Intel   MySQL       18              4.8
+    Ubuntu      Intel   PostgreSQL  20              4.8
+
+The problem is that there is no .NET on Ubuntu, so the DotNetVersion parameter doesn't make any sense for those tests.  If we add "NA" and a constraint to the model, like this:
+
+    OS: Windows, Ubuntu
+    CPU: Intel, AMD
+    DBMS: PostgreSQL, MySQL
+    JavaVersion: 18, 19, 20
+    DotNetVersion: 4.8, 4.8.1, NA
+    
+    IF [OS] = "Ubuntu"
+      THEN [DotNetVersion] = "NA"
+      ELSE [DotNetVersion] <> "NA";
+
+... then the generated tests will be these:
+
+    OS          CPU     DBMS        JavaVersion     DotNetVersion
+    Windows     AMD     PostgreSQL  20              4.8
+    Ubuntu      Intel   MySQL       18              NA
+    Windows     Intel   PostgreSQL  18              4.8
+    Windows     AMD     MySQL       18              4.8.1
+    Windows     AMD     MySQL       19              4.8
+    Ubuntu      AMD     PostgreSQL  19              NA
+    Windows     Intel   PostgreSQL  19              4.8.1
+    Windows     Intel   MySQL       20              4.8.1
+    Ubuntu      AMD     PostgreSQL  20              NA
+
 
 ## Weighting
 
