@@ -38,13 +38,13 @@ private:
 
     ParamCollection                    m_parameters;
     ExclusionCollection                m_exclusions;
-    Parameter*                         m_currentParam;
+    Parameter*                         m_currentParam = nullptr;
     Task*                              m_task;
     std::vector<ExclPtrList>::iterator m_end;
     std::deque<Parameter* >            m_worklist;
     trie<Exclusion::_ExclusionVec>     m_lookup;
 
-    bool m_deletedAtLeastOne;
+    bool m_deletedAtLeastOne = false;
 };
 
 }
