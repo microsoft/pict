@@ -19,3 +19,4 @@
 *.VC.*db*
 pict
 *.o
+.DS_Store
