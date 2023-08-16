@@ -106,6 +106,7 @@ public:
     size_t                    MaxApproxTries;  // for Approximate mode
 
     std::wstring                   RowSeedsFile;
+    std::wstring                   Format;
 
     std::vector< CModelParameter > Parameters;
     std::vector< CModelSubmodel >  Submodels;

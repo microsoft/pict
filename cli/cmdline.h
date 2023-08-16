@@ -21,6 +21,7 @@ const wchar_t SWITCH_STATISTICS      = L's';
 const wchar_t SWITCH_VERBOSE         = L'v';
 const wchar_t SWITCH_PREVIEW         = L'p';
 const wchar_t SWITCH_APPROXIMATE     = L'x';
+const wchar_t SWITCH_FORMAT          = L'f';
 
 //
 //

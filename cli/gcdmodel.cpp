@@ -375,6 +375,43 @@ void CResult::PrintOutput( CModelData& modelData, wostream& wout )
 //
 //
 //
+void CResult::PrintOutputJson( CModelData& modelData, wostream& wout )
+{
+    wstring encodingPrefix;
+    setEncodingType( modelData.GetEncoding(), encodingPrefix );
+    wout << encodingPrefix;
+
+    wout << "[" << endl;
+    unsigned int testCasesSize = TestCases.size();
+    for( unsigned int i = 0; i < testCasesSize; i++ )
+    {
+        wout << "  [" << endl;
+        unsigned int valuesSize = TestCases[i].Values.size();
+        for( unsigned j = 0; j < valuesSize; j++ )
+        {
+            wout << "    {" << endl;
+            wout << "    " << "  \"key\": \"" << modelData.Parameters[j].Name << "\"," << endl;
+            wout << "    " << "  \"value\": \"" << TestCases[i].Values[j] << "\"" << endl;
+            wout << "    }";
+            if( j < valuesSize - 1 )
+            {
+                wout << ",";
+            }
+            wout << endl;
+        }
+        wout << "  ]";
+        if( i < testCasesSize - 1 )
+        {
+            wout << ",";
+        }
+        wout << endl;
+    }
+    wout << "]" << endl;
+}
+
+//
+//
+//
 void CResult::PrintConstraintWarnings()
 {
     if( SingleItemExclusions.size() > 0 )

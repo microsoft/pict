@@ -51,6 +51,7 @@ public:
     wstrings            SolverWarnings;
 
     void PrintOutput( CModelData& modelData, std::wostream& wout );
+    void PrintOutputJson( CModelData& modelData, std::wostream& wout );
     void PrintConstraintWarnings();
     void PrintStatistics();
 };
