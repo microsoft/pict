@@ -382,12 +382,12 @@ void CResult::PrintOutputJson( CModelData& modelData, wostream& wout )
     wout << encodingPrefix;
 
     wout << "[" << endl;
-    unsigned int testCasesSize = TestCases.size();
-    for( unsigned int i = 0; i < testCasesSize; i++ )
+    size_t testCasesSize = TestCases.size();
+    for( size_t i = 0; i < testCasesSize; i++ )
     {
         wout << "  [" << endl;
-        unsigned int valuesSize = TestCases[i].Values.size();
-        for( unsigned j = 0; j < valuesSize; j++ )
+        size_t valuesSize = TestCases[i].Values.size();
+        for( size_t j = 0; j < valuesSize; j++ )
         {
             wout << "    {" << endl;
             wout << "    " << "  \"key\": \"" << modelData.Parameters[j].Name << "\"," << endl;
