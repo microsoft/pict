@@ -96,7 +96,14 @@ int __cdecl execute
         result.PrintConstraintWarnings();
 
         wostringstream outputStream;
-        result.PrintOutput( modelData, outputStream );
+        if( modelData.Format == L"json" )
+        {
+            result.PrintOutputJson( modelData, outputStream );
+        }
+        else
+        {
+            result.PrintOutput( modelData, outputStream );
+        }
         output.append( outputStream.str() );
     }
 
