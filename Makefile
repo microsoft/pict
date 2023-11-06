@@ -16,6 +16,7 @@ OBJS_CLI = cli/ccommon.o cli/cmdline.o
 OBJS_CLI += cli/common.o cli/cparser.o cli/ctokenizer.o cli/gcd.o
 OBJS_CLI += cli/gcdexcl.o cli/gcdmodel.o cli/model.o cli/mparser.o
 OBJS_CLI += cli/pict.o cli/strings.o
+IMAGE := pict:latest
 
 pict: $(OBJS)
 	$(CXX) $(OBJS) -o $(TARGET)
@@ -35,3 +36,9 @@ source: clean
 	git archive --prefix="pict-$(COMMIT)/" -o "pict-$(SHORT_COMMIT).tar.gz" $(COMMIT)
 
 .PHONY: all test clean source
+
+image-build:
+	@podman build --layers=true -t $(IMAGE) .
+
+image-run:
+	@podman run -it --rm -v ./doc/sample-models:/var/pict:Z $(IMAGE) create_volume.txt

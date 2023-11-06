@@ -54,3 +54,18 @@ Assuming installation of CMake and C++ toolchain, following set of commands will
 ## Debugging
 
 Most commonly, you will want to debug the command-line tool. Start in the **pictcli** project, **cli/pict.cpp** file. You'll find **wmain** routine there which would be a convenient place to put the very first breakpoint.
+
+## PICT as a container
+
+To build a container image with PICT, just execute
+
+    make image-build
+
+Once built, you can run it with a sample model as follows
+
+    make image-run
+
+To use your own models, please execute
+
+    podman run -it --rm -v ./<local-dir>:/var/pict:Z pict:latest <your-model-file> [<pict-options>]
+
