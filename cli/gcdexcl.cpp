@@ -544,7 +544,7 @@ bool ConstraintsInterpreter::ConvertToExclusions( OUT CGcdExclusions& gcdExclusi
                 PrintMessage( InputDataError, L"Constraint definition is incorrect:", failureContext );
                 break;
             case SyntaxErrorType::NoConstraintEnd:
-                PrintMessage( InputDataError, L"Constraint terminated incorectly:", failureContext );
+                PrintMessage( InputDataError, L"Constraint terminated incorrectly:", failureContext );
                 break;
             case SyntaxErrorType::NoEndParenthesis:
                 PrintMessage( InputDataError, L"Missing closing parenthesis:", failureContext );
