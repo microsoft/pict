@@ -44997,7 +44997,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: if [G1] > "A" then [G2] > "f";
+Input Error: Constraint terminated incorrectly: if [G1] > "A" then [G2] > "f";
 
 
 
@@ -45261,7 +45261,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: if [G1] > "A" then [G2] > 1q;
+Input Error: Constraint terminated incorrectly: if [G1] > "A" then [G2] > 1q;
 
 
 
@@ -45283,7 +45283,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: if [G1] > "A" then [G2] > "f"
+Input Error: Constraint terminated incorrectly: if [G1] > "A" then [G2] > "f"
 
 
 
@@ -45327,7 +45327,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: [G1] = "A" then [G2] = "g";
+Input Error: Constraint terminated incorrectly: [G1] = "A" then [G2] = "g";
 
 
 
@@ -46815,7 +46815,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: if [e] not like "al*" then [a] > 1 els [c] > 1;
+Input Error: Constraint terminated incorrectly: if [e] not like "al*" then [a] > 1 els [c] > 1;
 
 
 
@@ -46859,7 +46859,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: if not [f] like "al*" then [b] > 1 else [b] <= 1;
+Input Error: Constraint terminated incorrectly: if not [f] like "al*" then [b] > 1 else [b] <= 1;
 
 
 
@@ -69834,7 +69834,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: if [A] = 2 then [B] = 3, [C] = 3;
+Input Error: Constraint terminated incorrectly: if [A] = 2 then [B] = 3, [C] = 3;
 
 
 
@@ -69856,7 +69856,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: if [A] = 2 then [B] = 3, [C] = 3,;
+Input Error: Constraint terminated incorrectly: if [A] = 2 then [B] = 3, [C] = 3,;
 
 
 
@@ -69878,7 +69878,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: if [A] = 2 then [B] = 3, ,[C]= 3;
+Input Error: Constraint terminated incorrectly: if [A] = 2 then [B] = 3, ,[C]= 3;
 
 
 
@@ -69900,7 +69900,7 @@ STDOUT:
 +++++++++++++++++++++++++++++++++++
 
 STDERR:
-Input Error: Constraint terminated incorectly: if ([A] = 2 or [A] = 1) and [F] = 1 then [B] = 3 ,[C] = 3, [C] = 2 , [D] = 1;
+Input Error: Constraint terminated incorrectly: if ([A] = 2 or [A] = 1) and [F] = 1 then [B] = 3 ,[C] = 3, [C] = 2 , [D] = 1;
 
 
 
