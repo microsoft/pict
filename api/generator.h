@@ -617,6 +617,9 @@ private:
 
     Task* m_task;
 
+    void trimResults();
+    void cleanResults();
+    
     void generateMixedOrder();           // generates mixed-order (the most generic)
     void generateFixedOrder();           // generates fixed, n-order
     void generateFull();                 // generates exhaustive
