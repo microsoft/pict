@@ -1,6 +1,6 @@
 #include "generator.h"
 #include "deriver.h"
-#include "strings.h"
+
 using namespace std;
 
 namespace pictcore
