@@ -1,0 +1,5 @@
+Cpus: ARMv7, ARM64, X86, X64
+GraphicsAPI: Vulkan, GLES3, OpenGl 
+Gpus: Adreno, Mali, PowerVR, Tegra, Intel
+EntryPoint: Activity, GameActivity
+Suites: Editor, PlayMode, StandaloneX86, StandaloneX64
