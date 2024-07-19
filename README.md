@@ -48,7 +48,7 @@ Assuming installation of CMake and C++ toolchain, following set of commands will
 ```
 > cmake -DCMAKE_BUILD_TYPE=Release -S . -B build
 > cmake --build build
-> pushd build && ctest -v && popd
+> pushd build && ctest -V && popd
 ```
 
 ## Debugging
