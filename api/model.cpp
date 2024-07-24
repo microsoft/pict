@@ -258,7 +258,7 @@ void Model::gcd( ComboCollection &vecCombo )
                             // if number of zeros ties up with some previous choice, pick randomly
                             else if( open == maxZeros
                                  &&  maxZeros > 0
-                                 &&  !( rand() % ++ties ) )
+                                 &&  !( m_randgenerator() % ++ties ) )
                             {
                                 choice = cidx;
                             }
@@ -274,7 +274,7 @@ void Model::gcd( ComboCollection &vecCombo )
                             else if( maxZeros == 0
                                  &&  match > 0
                                  &&  match == maxMatch
-                                 &&  !( rand() % ++ties ) )
+                                 &&  !( m_randgenerator() % ++ties ) )
                             {
                                 choice = cidx;
                             }
@@ -299,7 +299,7 @@ void Model::gcd( ComboCollection &vecCombo )
                                 // Pick a value using weighted random choice
                                 int weight = vecCombo[ choice ]->Weight( vidx );
                                 totalWeight += weight;
-                                if( rand() % totalWeight < weight )
+                                if( m_randgenerator() % totalWeight < weight )
                                 {
                                     bestValue = vidx;
                                 }
@@ -331,7 +331,7 @@ void Model::gcd( ComboCollection &vecCombo )
                         }
 #endif
                         assert( !candidates.empty() );
-                        int zeroVal = candidates[ rand() % candidates.size() ];
+                        int zeroVal = candidates[ m_randgenerator() % candidates.size() ];
                         DOUT( L"Chose value " << zeroVal << L", unbound count was " << unbound << L".\n" );
                         // Bind the values corresponding to the zero
                         unbound -= vecCombo[ choice ]->Bind( zeroVal, worklist );
@@ -984,7 +984,7 @@ Exclusion Model::generateRandomRow()
         {
             sum += ( *ip )->GetWeight( i );
         }
-        int idx = rand() % sum;
+        int idx = m_randgenerator() % sum;
 
         int n;
         int val = 0;
