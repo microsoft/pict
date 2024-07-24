@@ -117,7 +117,7 @@ int Parameter::PickValue()
                     bestValue = value;
                 }
             }
-            else if (totalZeros == maxTotal && !(m_randgenerator() % ++bestValueCount))
+            else if (totalZeros == maxTotal && !((m_randgenerator() + 1) % ++bestValueCount))
             {
                 bestValue = value;
                 maxTotal  = totalZeros;
