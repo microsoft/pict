@@ -1,5 +1,6 @@
 #include "generator.h"
 #include "deriver.h"
+
 using namespace std;
 
 namespace pictcore
@@ -669,6 +670,8 @@ void Model::Generate()
     for( ParamCollection::iterator ip = m_parameters.begin(); ip != m_parameters.end(); ++ip )
         DOUT( ( *ip )->GetName() << L", order: " << ( *ip )->GetOrder() << endl );
 
+    cleanResults();
+
     switch( m_generationType )
     {
     case GenerationType::MixedOrder:
@@ -759,6 +762,24 @@ void Model::GenerateVirtualRoot()
 
     gcd( vecCombo );
     DOUT( L"GenerateVirtualRoot: End << end " );
+}
+
+void Model::trimResults()
+{
+    if (m_maxRows > 0 && m_maxRows < static_cast<long>(m_results.size()))
+    {
+        m_results.erase(m_results.begin() + m_maxRows, m_results.end());
+    }
+}
+
+void Model::cleanResults()
+{
+    for (auto element : m_results)
+    {
+        element.clear();
+    }
+
+    m_results.clear();
 }
 
 //
@@ -919,10 +940,7 @@ void Model::generateRandom()
     Combination baseCombo( this );
     choose( m_parameters.begin(), m_parameters.end(), 1, 1, baseCombo, vecCombo );
     gcd( vecCombo );
-    if( m_maxRows > 0 && m_maxRows < static_cast<long>( m_results.size() ) )
-    {
-        m_results.erase( m_results.begin() + m_maxRows, m_results.end() );
-    }
+    trimResults();
 }
 
 //
@@ -963,12 +981,7 @@ void Model::generateFlat()
     // order is always 1 across all params
     m_order = 1;
     generateFixedOrder();
-
-    // trim the output if necessary
-    if( m_maxRows > 0 && m_maxRows < static_cast<long>( m_results.size() ) )
-    {
-        m_results.erase( m_results.begin() + m_maxRows, m_results.end() );
-    }
+    trimResults();
 }
 
 //
