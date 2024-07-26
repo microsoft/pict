@@ -127,6 +127,7 @@ int __cdecl wmain
 }
 
 #if !defined(_MSC_VER)
+#if !defined(TEST_PROJECT)
 //
 // Gcc doesn't understand wchar_t args
 // This entry point is a workaround for compiling with a non-MS compiler
@@ -176,4 +177,5 @@ int main
 
     return( ret );
 }
+#endif
 #endif

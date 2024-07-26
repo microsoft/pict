@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <functional>
 #include <cassert>
+#include <random>
 
 //
 // Logging facility
@@ -35,6 +36,8 @@ wofstream logfile;
 #else
 #define DOUT(arg)
 #endif
+
+#define PICT_DEFAULT_PARAMETER_RANDOM_SEED  0
 
 //
 // due to discrepancies between different implementations of STL, the following
@@ -379,6 +382,7 @@ public:
     {
          // result params must have order = 1
         if ( m_expResultParam ) m_order = 1;
+        m_randgenerator.seed(PICT_DEFAULT_PARAMETER_RANDOM_SEED);
     }
     virtual ~Parameter() {}
 
@@ -462,6 +466,7 @@ private:
     size_t m_currentValue = 0;  // current iteration's value cache
     int    m_valueCount;        // how many values parameter has
     bool   m_expResultParam;    // is this a special, result inducing param
+    std::mt19937    m_randgenerator;
 
     bool m_bound;         // variable to use in iteration - is this bound yet?
     bool m_pending;       // have we put it on work list yet this iteration?
@@ -542,7 +547,7 @@ public:
     void SetRandomSeed( long seed )
     {
         m_randomSeed = seed;
-        srand( m_randomSeed );
+        m_randgenerator.seed(m_randomSeed);
         for( auto & submodel : m_submodels ) submodel->SetRandomSeed( m_randomSeed );
     }
 
@@ -602,7 +607,7 @@ private:
     RowSeedCollection      m_rowSeeds;
     std::deque<Parameter*> m_worklist;
     ResultCollection       m_results;
-
+    std::mt19937           m_randgenerator;
     std::wstring m_id;
 
     int  m_order;
