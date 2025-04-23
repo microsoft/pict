@@ -37,7 +37,7 @@ jobs:
       run: nuget pack
 
     - name: Authenticate to GitHub packages
-      run: dotnet nuget add source --password ${{ secrets.NUGET_API_KEY }} --name pict "https://nuget.pkg.github.com/microsoft/index.json"
+      run: dotnet nuget add source --username jaccz --password ${{ secrets.NUGET_API_KEY }} --name pict "https://nuget.pkg.github.com/microsoft/index.json"
 
     - name: Publish the package
       run: dotnet nuget push "Microsoft.Test.Pict.*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source "pict" --skip-duplicate
