@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
     <metadata>
         <id>Microsoft.Test.Pict</id>
-        <version>3.7.0</version>
+        <version>3.7.5</version>
         <authors>Jacek Czerwonka</authors>
         <license type="file">contents/LICENSE.TXT</license>
         <projectUrl>http://github.com/microsoft/pict</projectUrl>
