@@ -621,8 +621,8 @@ wstring ConstraintsTokenizer::getString( IN const wstring& terminator )
             movePosition( -1 );
             break;
         }
-        // handle special characters
-        else if ( TEXT_SpecialCharMarker == readChar )
+        // handle special characters - ensure we only treat backslash as special
+        else if ( readChar == L'\\' )
         {
             wchar_t nextChar = peekNextChar();
 
