@@ -1,0 +1,5 @@
+予定日時:Scheduled,NotScheduled
+Foo:Bar,Baz
+
+# Testing Japanese Kanji characters in parameter names and constraints
+if [予定日時] = "Scheduled" then [Foo] = "Bar";
