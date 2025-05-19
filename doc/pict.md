@@ -213,15 +213,15 @@ The test generation for the above model would proceed as follows:
 
                                      $
                                      |
-                                     | order = 3 (defined by /o:3) 
+                                     | order = 2 (defined by /o:2) 
                                      |
                 +--------------------+-------------------+
                 |                                        |
-                | order = 2                              | order = 3 
+                | order = 2                              | order = 2 
                 |                                        |
     { PLATFORM, CPUS, RAM, HDD }                  OS, Browser, APP 
 
-For the above model with sub-model, PICT invoked with an /o:3 argument will generate roughly 10 hardware configurations, compared to roughly 40 hardware configurations without the sub-model.  This reduced number of hardware configurations comes at the cost of a greater number of total test cases: roughly 140 test cases with the sub-model, compared to roughly 60 test cases without the sub-model (again, all with /o:3).
+For the above model with sub-model, PICT invoked with an /o:2 argument will generate roughly 10 hardware configurations, compared to roughly 40 hardware configurations without the sub-model.  This reduced number of hardware configurations comes at the cost of a greater number of total test cases: roughly 40 test cases with the sub-model, compared to roughly 17 test cases without the sub-model (again, all with /o:2).
 
 Notes:
  1. You can define as many sub-models as you want; any parameter can belong to any number of sub-models. However, the model hierarchy can be just one level deep. 
