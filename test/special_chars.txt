@@ -1,0 +1,5 @@
+Param:Value1,Value2
+Param2:Val\"1,Val2
+
+# Testing quotes and backslashes in strings
+if [Param] = "Value1" then [Param2] = "Val\"1";
