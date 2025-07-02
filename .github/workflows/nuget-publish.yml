@@ -17,8 +17,6 @@ env:
 jobs:
   build:
     runs-on: windows-latest
-    permissions:
-      packages: write
     strategy:
       matrix:
         # Add additional configurations if needed.
@@ -33,13 +31,64 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} ${{env.SOLUTION_FILE_PATH}}
 
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts-${{ matrix.configuration }}-${{ matrix.platform }}
+        path: |
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/api/pict.lib
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/cli/*.exe
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/cli/*.pdb
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/clidll/*.dll
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/clidll/*.pdb
+        retention-days: 1
+
+  package:
+    runs-on: windows-latest
+    needs: build
+    permissions:
+      packages: write
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Download all build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
+
+    - name: Restore build structure
+      run: |
+        # Copy artifacts back to original build structure
+        Get-ChildItem -Path "artifacts" -Directory | ForEach-Object {
+          $artifactName = $_.Name
+          if ($artifactName -match "build-artifacts-(.+)-(.+)") {
+            $config = $matches[1]
+            $platform = $matches[2]
+            
+            # Map platform names to match directory structure
+            $platformDir = $platform
+            if ($platform -eq "x86") {
+              $platformDir = "Win32"
+            }
+            
+            # Create the target directory structure (platform/configuration)
+            $targetDir = "$platformDir/$config"
+            if (!(Test-Path $targetDir)) {
+              New-Item -ItemType Directory -Path $targetDir -Force
+            }
+            
+            # Copy contents preserving structure
+            Copy-Item -Path "$($_.FullName)/*" -Destination $targetDir -Recurse -Force
+          }
+        }
+
     - name: Add NUGET to PATH
-      uses: NuGet/setup-nuget@v1.0.5
+      uses: NuGet/setup-nuget@v2
 
     - name: Create a package
       run: nuget pack
