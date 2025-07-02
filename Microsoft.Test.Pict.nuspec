@@ -37,8 +37,11 @@
 		<!-- Common header file - shared across architectures -->
 		<file src="api/pictapi.h" target="contents/api" />
 
+		<!-- MSBuild targets file for native C++ projects -->
+		<file src="Microsoft.Test.Pict.targets" target="build/Microsoft.Test.Pict.targets" />
+
 		<!-- Documentation and license - common for all architectures -->
 		<file src="doc/pict.md" target="contents" />
-		<file src="LICENSE.txt" target="contents" />
+		<file src="LICENSE.TXT" target="contents" />
 	</files>
 </package>

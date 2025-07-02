@@ -61,6 +61,16 @@ jobs:
       with:
         path: artifacts/
 
+    - name: Verify source files exist
+      run: |
+        # Verify all required source files exist
+        Write-Host "Checking for required files..."
+        if (Test-Path "api/pictapi.h") { Write-Host "✓ api/pictapi.h found" } else { Write-Host "✗ api/pictapi.h missing"; exit 1 }
+        if (Test-Path "doc/pict.md") { Write-Host "✓ doc/pict.md found" } else { Write-Host "✗ doc/pict.md missing"; exit 1 }
+        if (Test-Path "LICENSE.TXT") { Write-Host "✓ LICENSE.TXT found" } else { Write-Host "✗ LICENSE.TXT missing"; exit 1 }
+        if (Test-Path "Microsoft.Test.Pict.targets") { Write-Host "✓ Microsoft.Test.Pict.targets found" } else { Write-Host "✗ Microsoft.Test.Pict.targets missing"; exit 1 }
+        if (Test-Path "Microsoft.Test.Pict.nuspec") { Write-Host "✓ Microsoft.Test.Pict.nuspec found" } else { Write-Host "✗ Microsoft.Test.Pict.nuspec missing"; exit 1 }
+
     - name: Restore build structure
       run: |
         # Copy artifacts back to original build structure
