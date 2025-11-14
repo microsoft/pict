@@ -648,6 +648,7 @@ bool CModelData::ReadRowSeedFile(const wstring& filePath)
         }
         if (!rowSeed.empty())
         {
+
             RowSeeds.push_back(rowSeed);
         }
     }
