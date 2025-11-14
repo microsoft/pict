@@ -4,6 +4,9 @@
 #include <string>
 #include <limits>
 #include <fstream>
+#include <list>
+#include <set>
+#include <utility>
 #include "generator.h"
 #include "strings.h"
 using namespace pictcore;
@@ -18,17 +21,18 @@ class CModelValue
 {
 public:
     CModelValue
-        (
-        wstrings&    names,
+    (
+        wstrings& names,
         unsigned int weight,
         bool         positive
-        ) : _names           ( names ),
-            _positive        ( positive ),
-            _weight          ( weight ),
-            _currentNameIndex( 0 ) {}
+    ) : _names(names),
+        _positive(positive),
+        _weight(weight),
+        _currentNameIndex(0) {
+    }
 
-    wstrings& GetAllNames()       { return( _names ); }
-    std::wstring GetPrimaryName() { return( _names[ 0 ] ); }
+    wstrings& GetAllNames() { return(_names); }
+    std::wstring GetPrimaryName() { return(_names[0]); }
 
     // type of the value and any other attribute is currently decided based on the primary name
     wstrings GetNamesForComparisons();
@@ -36,8 +40,8 @@ public:
     // round-robin through names
     std::wstring GetNextName();
 
-    bool IsPositive() { return( _positive ); }
-    unsigned int GetWeight() { return( _weight ); }
+    bool IsPositive() { return(_positive); }
+    unsigned int GetWeight() { return(_weight); }
 
 private:
     wstrings            _names;
@@ -56,16 +60,17 @@ public:
     std::vector< CModelValue > Values;
     unsigned int               Order;             // default order assigned when parameter is defined
     bool                       IsResultParameter; // special parameter for results
-    Parameter*                 GcdPointer;
+    Parameter* GcdPointer;
 
     CModelParameter() :
         Name(L""),
         Order(static_cast<unsigned int>(UNDEFINED_ORDER)),
         IsResultParameter(false),
-        GcdPointer(nullptr){}
+        GcdPointer(nullptr) {
+    }
 
-    int GetValueOrdinal( IN std::wstring& name, IN bool caseSensitive );
-    bool ValueNamesUnique( IN bool CaseSensitive );
+    int GetValueOrdinal(IN std::wstring& name, IN bool caseSensitive);
+    bool ValueNamesUnique(IN bool CaseSensitive);
 };
 
 //
@@ -114,8 +119,8 @@ public:
     std::vector< CModelRowSeed >   RowSeeds;
 
     std::set< wchar_t >            ProvidedArguments; // arguments defined by a user   
-                                                      // helpful to catch redefinitions
-    // ctor
+    // helpful to catch redefinitions
+// ctor
     CModelData() : Order(2),
         ValuesDelim(L','),
         NamesDelim(L'|'),
@@ -131,40 +136,42 @@ public:
         m_hasNegativeValues(false),
         m_encoding(EncodingType::ANSI),
         m_totalCombinations(0),
-        m_remainingCombinations(0) {}
+        m_remainingCombinations(0) {
+    }
 
-    bool ReadModel      ( const std::wstring& filePath );
-    bool ReadRowSeedFile( const std::wstring& filePath );
+    bool ReadModel(const std::wstring& filePath);
+    bool ReadRowSeedFile(const std::wstring& filePath);
 
     size_t TotalParameterCount() { return(Parameters.size()); }
     size_t ResultParameterCount();
 
-    std::vector< CModelParameter >::iterator FindParameterByName( const std::wstring& Name );
-    std::vector< CModelParameter >::iterator FindParameterByGcdPointer( Parameter* Pointer );
+    std::vector< CModelParameter >::iterator FindParameterByName(const std::wstring& Name);
+    std::vector< CModelParameter >::iterator FindParameterByGcdPointer(Parameter* Pointer);
 
-    std::wstring GetConstraintText( unsigned int index );
-    bool HasNegativeValues()   { return( m_hasNegativeValues ); }
-    EncodingType GetEncoding() { return( m_encoding ); }
-    void AddToTotalCombinationsCount    ( size_t n ) { m_totalCombinations += n; }
-    void AddToRemainingCombinationsCount( size_t n ) { m_remainingCombinations += n; }
+    std::wstring GetConstraintText(unsigned int index);
+    bool HasNegativeValues() { return(m_hasNegativeValues); }
+    EncodingType GetEncoding() { return(m_encoding); }
+    void AddToTotalCombinationsCount(size_t n) { m_totalCombinations += n; }
+    void AddToRemainingCombinationsCount(size_t n) { m_remainingCombinations += n; }
 
     void RemoveNegativeValues();
 
     bool ValidateParams();
     bool ValidateRowSeeds();
 
-    void PrintModelContents( std::wstring title );
+    void PrintModelContents(std::wstring title);
     void PrintStatistics();
-    
+    bool ReadModelCore(std::wistream& in);
+
 private:
     bool            m_hasNegativeValues;
     EncodingType    m_encoding;              // io encoding determined based on input file
     size_t          m_totalCombinations;     // number of combinations PICT dealt with in this run
     size_t          m_remainingCombinations; // number of uncovered combinations (Preview and Approximate)
 
-    void readFile                  ( const std::wstring& filePath );
-    bool readModel                 ( const std::wstring& filePath );
-    bool readParameter             ( std::wstring& line );
-    bool readParamSet              ( std::wstring& line );
-    void getUnmatchedParameterNames( wstrings& paramsOfSubmodel, wstrings& unmatchedParams );
+    void readFile(const std::wstring& filePath);
+    bool readModel(const std::wstring& filePath);
+    bool readParameter(std::wstring& line);
+    bool readParamSet(std::wstring& line);
+    void getUnmatchedParameterNames(wstrings& paramsOfSubmodel, wstrings& unmatchedParams);
 };

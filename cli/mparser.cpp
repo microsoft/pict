@@ -3,17 +3,17 @@
 #include "model.h"
 using namespace std;
 
-const wchar_t COMMENT_CHAR    = L'#';
-const wchar_t PARAMNAME_SEP   = L':';
-const wchar_t PARAM_ORDER     = L'@';
+const wchar_t COMMENT_CHAR = L'#';
+const wchar_t PARAMNAME_SEP = L':';
+const wchar_t PARAM_ORDER = L'@';
 const wchar_t PARAM_REF_BEGIN = L'<';
-const wchar_t PARAM_REF_END   = L'>';
-const wchar_t WEIGHT_BEGIN    = L'(';
-const wchar_t WEIGHT_END      = L')';
-const wchar_t SET_BEGIN       = L'{';
-const wchar_t SET_END         = L'}';
-const wchar_t SET_ORDER       = L'@';
-const wchar_t SET_SEP         = L','; // default separator of param names in submodel/cluster definition
+const wchar_t PARAM_REF_END = L'>';
+const wchar_t WEIGHT_BEGIN = L'(';
+const wchar_t WEIGHT_END = L')';
+const wchar_t SET_BEGIN = L'{';
+const wchar_t SET_END = L'}';
+const wchar_t SET_ORDER = L'@';
+const wchar_t SET_SEP = L','; // default separator of param names in submodel/cluster definition
 
 const wchar_t RESULT_PARAM_PREFIX = L'$';
 
@@ -31,155 +31,155 @@ wstring CONSTRAINT_PATTERN8 = L"IF*ISPOSITIVE*(*";
 //
 //
 //
-bool lineIsComment( wstring& line )
+bool lineIsComment(wstring& line)
 {
-    wstring trimmedLine = trim( line );
-    if ( trimmedLine.empty() ) return( false );
-    return( trimmedLine.at( 0 ) == COMMENT_CHAR );
+    wstring trimmedLine = trim(line);
+    if (trimmedLine.empty()) return(false);
+    return(trimmedLine.at(0) == COMMENT_CHAR);
 }
 
 //
 // detects whether a line is a constraint
 // TODO: have better detection here
 //
-bool lineIsConstraint( wstring& line )
+bool lineIsConstraint(wstring& line)
 {
     wstring trimmed = line;
-    toUpper( trimmed );
-    trimmed = trim( trimmed );
+    toUpper(trimmed);
+    trimmed = trim(trimmed);
 
     // if the line contains just "IF", it is a constraint
-    if( 0 == stringCompare( trimmed, CONSTRAINT_PATTERN1, false ) )
+    if (0 == stringCompare(trimmed, CONSTRAINT_PATTERN1, false))
     {
-        return( true );
+        return(true);
     }
 
     // if the line matches any of the other patterns, it's a constraint
-    return ( patternMatch( CONSTRAINT_PATTERN2, trimmed )
-          || patternMatch( CONSTRAINT_PATTERN3, trimmed )
-          || patternMatch( CONSTRAINT_PATTERN4, trimmed )
-          || patternMatch( CONSTRAINT_PATTERN5, trimmed )
-          || patternMatch( CONSTRAINT_PATTERN6, trimmed )
-          || patternMatch( CONSTRAINT_PATTERN7, trimmed )
-          || patternMatch( CONSTRAINT_PATTERN8, trimmed ) );
+    return (patternMatch(CONSTRAINT_PATTERN2, trimmed)
+        || patternMatch(CONSTRAINT_PATTERN3, trimmed)
+        || patternMatch(CONSTRAINT_PATTERN4, trimmed)
+        || patternMatch(CONSTRAINT_PATTERN5, trimmed)
+        || patternMatch(CONSTRAINT_PATTERN6, trimmed)
+        || patternMatch(CONSTRAINT_PATTERN7, trimmed)
+        || patternMatch(CONSTRAINT_PATTERN8, trimmed));
 }
 
 //
 // detects whether a line is a submodel or a cluster definition
 // must begin with { and must have } somewhere
 //
-bool lineIsParamSet( wstring& line )
+bool lineIsParamSet(wstring& line)
 {
-    wstring trimmed = trim( line );
+    wstring trimmed = trim(line);
 
-    if( trimmed.empty() )
+    if (trimmed.empty())
     {
-        return( false );
+        return(false);
     }
 
-    if( trimmed[ 0 ] != SET_BEGIN )
+    if (trimmed[0] != SET_BEGIN)
     {
-        return( false );
+        return(false);
     }
-    
-    size_t setend = trimmed.find( SET_END );
-    if( wstring::npos == setend )
+
+    size_t setend = trimmed.find(SET_END);
+    if (wstring::npos == setend)
     {
-        return( false );
+        return(false);
     }
-    
-    return( true );
+
+    return(true);
 }
 
 //
 // reads one line from a file
 //
-bool readLineFromFile( wifstream& file, wstring& line )
+bool readLineFromFile(wistream& file, wstring& line)
 {
     line = L"";
-    if( file.eof() )
-        return( false );
+    if (file.eof())
+        return(false);
 
     wchar_t c;
-    while( true )
+    while (true)
     {
-        file.get( c );
-        if( file.eof()
-         || c == L'\n'
-         || c == L'\0' ) return( true );
+        file.get(c);
+        if (file.eof()
+            || c == L'\n'
+            || c == L'\0') return(true);
         line += c;
     }
-    return( true );
+    return(true);
 }
 
 //
 // read one parameter, these are in the following format:
 // param [@ N] : val1, ~val2, val3a | val3b, val4
 //
-bool CModelData::readParameter( wstring& line )
+bool CModelData::readParameter(wstring& line)
 {
     CModelParameter parameter;
 
     // param name can be separated by : or ,
-    wstring::size_type paramSep = line.find( PARAMNAME_SEP );
-    if( paramSep == wstring::npos )
+    wstring::size_type paramSep = line.find(PARAMNAME_SEP);
+    if (paramSep == wstring::npos)
     {
-        paramSep = line.find( ValuesDelim );
-        if( paramSep == wstring::npos )
+        paramSep = line.find(ValuesDelim);
+        if (paramSep == wstring::npos)
         {
-            PrintMessage( InputDataError, L"Parameter", line.c_str(), L"should have at least one value defined" );
-            return( false );
+            PrintMessage(InputDataError, L"Parameter", line.c_str(), L"should have at least one value defined");
+            return(false);
         }
     }
 
-    wstring name = trim( line.substr( 0, paramSep ));
-    
+    wstring name = trim(line.substr(0, paramSep));
+
     unsigned int order = static_cast<unsigned int>(UNDEFINED_ORDER);
-    
+
     //check if this param has custom-order defined
     wstrings nameAndOrder;
-    split( name, PARAM_ORDER, nameAndOrder );
+    split(name, PARAM_ORDER, nameAndOrder);
 
     double d;
-    if( nameAndOrder.size() == 2 && stringToNumber( nameAndOrder[ 1 ], d ))
+    if (nameAndOrder.size() == 2 && stringToNumber(nameAndOrder[1], d))
     {
-        name  = trim( nameAndOrder[ 0 ]);
-        if( d > 0 )
+        name = trim(nameAndOrder[0]);
+        if (d > 0)
         {
-            order = static_cast< unsigned int >( d );
+            order = static_cast<unsigned int>(d);
         }
     }
 
-    parameter.Name  = name;
+    parameter.Name = name;
     parameter.Order = order;
 
-    if ( ! parameter.Name.empty() && parameter.Name[ 0 ] == RESULT_PARAM_PREFIX )
+    if (!parameter.Name.empty() && parameter.Name[0] == RESULT_PARAM_PREFIX)
     {
         parameter.IsResultParameter = true;
     }
 
     // now get the values
-    wstring rawValues = line.substr( paramSep + 1, line.length() - paramSep - 1 );
+    wstring rawValues = line.substr(paramSep + 1, line.length() - paramSep - 1);
 
     wstrings values;
-    split( rawValues, ValuesDelim, values );
+    split(rawValues, ValuesDelim, values);
 
-    for( wstrings::iterator i_val = values.begin(); i_val != values.end(); i_val++ )
+    for (wstrings::iterator i_val = values.begin(); i_val != values.end(); i_val++)
     {
-        *i_val = trim( *i_val );
+        *i_val = trim(*i_val);
 
         //
         // if it is in a form <text> it is a reference to another parameter
         // find an existing parameter and add all its values here instead
         //
         vector< CModelParameter >::iterator refParam;
-        if ( ! i_val->empty() 
-          && *(i_val->begin())  == PARAM_REF_BEGIN
-          && *(i_val->rbegin()) == PARAM_REF_END
-          &&( refParam = FindParameterByName( i_val->substr( 1, i_val->length() - 2 ))) !=
-                         Parameters.end() )
+        if (!i_val->empty()
+            && *(i_val->begin()) == PARAM_REF_BEGIN
+            && *(i_val->rbegin()) == PARAM_REF_END
+            && (refParam = FindParameterByName(i_val->substr(1, i_val->length() - 2))) !=
+            Parameters.end())
         {
-            __push_back( parameter.Values, refParam->Values.begin(), refParam->Values.end() );
+            __push_back(parameter.Values, refParam->Values.begin(), refParam->Values.end());
         }
         else
         {
@@ -188,24 +188,24 @@ bool CModelData::readParameter( wstring& line )
             // Param: Val1 (3), Val21|Val22 (2), Val3
             //
             int weight = 1;
-            
-            size_t weightBegin = i_val->find_last_of( WEIGHT_BEGIN );
-            size_t weightEnd   = i_val->find_last_of( WEIGHT_END );
-            
+
+            size_t weightBegin = i_val->find_last_of(WEIGHT_BEGIN);
+            size_t weightEnd = i_val->find_last_of(WEIGHT_END);
+
             // '(' must exist, ')' must be the last character
-            if ( weightBegin != wstring::npos && weightEnd == i_val->length() - 1 )
+            if (weightBegin != wstring::npos && weightEnd == i_val->length() - 1)
             {
-                wstring weightStr = trim( i_val->substr( weightBegin + 1, weightEnd - weightBegin - 1 ));
+                wstring weightStr = trim(i_val->substr(weightBegin + 1, weightEnd - weightBegin - 1));
                 double weightDbl = 0;
 
                 // anything after @ must be a positive integer
-                if ( stringToNumber( weightStr, weightDbl ) && ( static_cast< unsigned int > (weightDbl) ) > 0 )
+                if (stringToNumber(weightStr, weightDbl) && (static_cast<unsigned int> (weightDbl)) > 0)
                 {
-                    weight = static_cast< unsigned int > (weightDbl);
+                    weight = static_cast<unsigned int> (weightDbl);
 
                     // trim the weight off the value
-                    i_val->erase( weightBegin, wstring::npos );
-                    *i_val = trim( *i_val );
+                    i_val->erase(weightBegin, wstring::npos);
+                    *i_val = trim(*i_val);
                 }
             }
 
@@ -213,55 +213,55 @@ bool CModelData::readParameter( wstring& line )
             // names
             //
             wstrings names;
-            split( *i_val, NamesDelim, names );
+            split(*i_val, NamesDelim, names);
 
             bool positive = true;
-            for ( wstrings::iterator i_name = names.begin(); i_name != names.end(); i_name++ )
+            for (wstrings::iterator i_name = names.begin(); i_name != names.end(); i_name++)
             {
-                *i_name = trim( *i_name );
-                
+                *i_name = trim(*i_name);
+
                 // only the first name determines the negativity of a value
-                if ( i_name->length() > 0
-                 &&  i_name == names.begin()
-                 &&(*i_name)[ 0 ] == InvalidPrefix )
+                if (i_name->length() > 0
+                    && i_name == names.begin()
+                    && (*i_name)[0] == InvalidPrefix)
                 {
                     positive = false;
-                    *i_name = trim( i_name->substr( 1, i_name->length() - 1 ));
+                    *i_name = trim(i_name->substr(1, i_name->length() - 1));
                 }
             }
 
-            if ( ! positive ) 
+            if (!positive)
             {
                 m_hasNegativeValues = true;
             }
-            CModelValue value( names, weight, positive );
-            parameter.Values.push_back( value );
+            CModelValue value(names, weight, positive);
+            parameter.Values.push_back(value);
         }
     }
 
-    Parameters.push_back( parameter );
-    return( true );
+    Parameters.push_back(parameter);
+    return(true);
 }
 
 //
 //
 //
-void CModelData::getUnmatchedParameterNames( wstrings& paramsOfSubmodel, wstrings& unmatchedParams )
+void CModelData::getUnmatchedParameterNames(wstrings& paramsOfSubmodel, wstrings& unmatchedParams)
 {
-    for( auto & cparam : paramsOfSubmodel )
+    for (auto& cparam : paramsOfSubmodel)
     {
         bool found = false;
-        for( auto & param : Parameters )
+        for (auto& param : Parameters)
         {
-            if ( 0 == stringCompare( cparam, param.Name, CaseSensitive ))
+            if (0 == stringCompare(cparam, param.Name, CaseSensitive))
             {
                 found = true;
                 break;
             }
         }
-        if ( ! found )
+        if (!found)
         {
-            unmatchedParams.push_back( cparam );
+            unmatchedParams.push_back(cparam);
         }
     }
 }
@@ -269,11 +269,11 @@ void CModelData::getUnmatchedParameterNames( wstrings& paramsOfSubmodel, wstring
 //
 //
 //
-bool CModelData::readParamSet( wstring& line )
+bool CModelData::readParamSet(wstring& line)
 {
     const wstring STD_MSG = L"Submodel definition is incorrect: " + line;
 
-    wstringstream ist( line );
+    wstringstream ist(line);
 
     // it's always in a form of { paramName1 @ N, paramName2 @ N, ... } @ N but "@ N" is optional
 
@@ -283,31 +283,31 @@ bool CModelData::readParamSet( wstring& line )
     wstring::iterator next = line.begin();
 
     // {
-    wstring::iterator begin = findFirstNonWhitespace( next, line.end() );
-    if( begin == line.end() || *begin != SET_BEGIN )
+    wstring::iterator begin = findFirstNonWhitespace(next, line.end());
+    if (begin == line.end() || *begin != SET_BEGIN)
     {
-        PrintMessage( InputDataError, STD_MSG.data() );
-        return( false );
+        PrintMessage(InputDataError, STD_MSG.data());
+        return(false);
     }
     ++begin;
 
     // find }
     wstring::iterator end;
-    end = find( begin, line.end(), SET_END );
-    if ( end == line.end() )
+    end = find(begin, line.end(), SET_END);
+    if (end == line.end())
     {
-        PrintMessage( InputDataError, STD_MSG.data() );
-        return( false );
+        PrintMessage(InputDataError, STD_MSG.data());
+        return(false);
     }
 
     // params in the middle
     wstring setp;
-    setp.assign( begin, end );
-    setp = trim( setp );
-    if ( setp.empty() )
+    setp.assign(begin, end);
+    setp = trim(setp);
+    if (setp.empty())
     {
-        PrintMessage( InputDataError, STD_MSG.data() );
-        return( false );
+        PrintMessage(InputDataError, STD_MSG.data());
+        return(false);
     }
 
     //
@@ -318,47 +318,47 @@ bool CModelData::readParamSet( wstring& line )
 
     // first figure out whether "," or a delimiter specified by /d option applies
     wstrings setParams;
-    
-    split( setp, SET_SEP, setParams );
-    transform( setParams.begin(), setParams.end(), setParams.begin(), trim );
+
+    split(setp, SET_SEP, setParams);
+    transform(setParams.begin(), setParams.end(), setParams.begin(), trim);
 
     wstrings unmatched;
-    getUnmatchedParameterNames( setParams, unmatched );
+    getUnmatchedParameterNames(setParams, unmatched);
 
-    if( !unmatched.empty() )
+    if (!unmatched.empty())
     {
         setParams.clear();
         unmatched.clear();
-        split( setp, ValuesDelim, setParams );
-        transform( setParams.begin(), setParams.end(), setParams.begin(), trim );
+        split(setp, ValuesDelim, setParams);
+        transform(setParams.begin(), setParams.end(), setParams.begin(), trim);
 
-        getUnmatchedParameterNames( setParams, unmatched );
-        if( !unmatched.empty() )
+        getUnmatchedParameterNames(setParams, unmatched);
+        if (!unmatched.empty())
         {
-            PrintMessage( InputDataWarning, L"Submodel defintion", trim( line ).data(), L"contains unknown parameter. Skipping..." );
-            return( true ); // just a warning so don't exit
+            PrintMessage(InputDataWarning, L"Submodel defintion", trim(line).data(), L"contains unknown parameter. Skipping...");
+            return(true); // just a warning so don't exit
         }
     }
 
     // remove duplicates
-    sort( setParams.begin(), setParams.end(), stringCaseInsensitiveLess );
-    wstrings::iterator newEnd = unique( setParams.begin(), setParams.end(), stringCaseInsensitiveEquals );
-    if( setParams.end() != newEnd )
+    sort(setParams.begin(), setParams.end(), stringCaseInsensitiveLess);
+    wstrings::iterator newEnd = unique(setParams.begin(), setParams.end(), stringCaseInsensitiveEquals);
+    if (setParams.end() != newEnd)
     {
-        PrintMessage( InputDataWarning, L"Submodel defintion", trim( line ).data(), L"contains duplicate parameters. Removing duplicates..." );
-        setParams.erase( newEnd, setParams.end() );
+        PrintMessage(InputDataWarning, L"Submodel defintion", trim(line).data(), L"contains duplicate parameters. Removing duplicates...");
+        setParams.erase(newEnd, setParams.end());
     }
 
     CModelSubmodel submodel;
 
     // match to names, set up the structure
-    for( auto & cparam : setParams )
+    for (auto& cparam : setParams)
     {
         bool found = false;
         unsigned int index = 0;
-        for( auto & param : Parameters )
+        for (auto& param : Parameters)
         {
-            if ( 0 == stringCompare( cparam, param.Name, CaseSensitive ))
+            if (0 == stringCompare(cparam, param.Name, CaseSensitive))
             {
                 found = true;
                 break;
@@ -370,26 +370,26 @@ bool CModelData::readParamSet( wstring& line )
         // N.B. putting a condition around an assert is superfluous but it is done here
         //      because some compilers complain that 'found' variable is never used and
         //      this is a cross-platform friendly way to suppress such warnings
-        if( !found )
+        if (!found)
         {
-            assert( found );
+            assert(found);
         }
 
-        submodel.Parameters.push_back( index );
+        submodel.Parameters.push_back(index);
     }
 
     // @
     ++end;
-    wstring::iterator at = findFirstNonWhitespace( end, line.end() );
-    
+    wstring::iterator at = findFirstNonWhitespace(end, line.end());
+
     // anything other than @, quit
-    if ( at != line.end() && *at != SET_ORDER )
+    if (at != line.end() && *at != SET_ORDER)
     {
-        PrintMessage( InputDataError, STD_MSG.data() );
-        return( false );
+        PrintMessage(InputDataError, STD_MSG.data());
+        return(false);
     }
 
-    if (  at == line.end() )
+    if (at == line.end())
     {
         // if this is the end then order will be assigned later
         NOOP
@@ -400,256 +400,262 @@ bool CModelData::readParamSet( wstring& line )
 
         // number
         wstring numberText;
-        numberText.assign( at, line.end() );
+        numberText.assign(at, line.end());
 
         double number;
-        bool ret = stringToNumber( numberText, number );
-        
+        bool ret = stringToNumber(numberText, number);
+
         int order = 0;
-        if( ret )
+        if (ret)
         {
             order = static_cast<int> (number);
-            if( order <= 0 )
+            if (order <= 0)
             {
                 order = 0;
                 ret = false;
             }
         }
-        if ( !ret )
+        if (!ret)
         {
-            PrintMessage( InputDataError, STD_MSG.data() );
-            return( false );
+            PrintMessage(InputDataError, STD_MSG.data());
+            return(false);
         }
 
         submodel.Order = order;
     }
 
-    Submodels.push_back( submodel );
-    return ( true );
+    Submodels.push_back(submodel);
+    return (true);
 }
 
 
 //
 //
 //
-bool CModelData::readModel( const wstring& filePath )
+bool CModelData::readModel(const wstring& filePath)
 {
     // Some implementations of wifstream only allow ANSI strings as file names so converting before using
-    string ansiFilePath = wideCharToAnsi( filePath );
-    wifstream file( ansiFilePath );
-    if ( !file )
+    string ansiFilePath = wideCharToAnsi(filePath);
+    wifstream file(ansiFilePath);
+    if (!file)
     {
-        PrintMessage( InputDataError, L"Couldn't open file:", filePath.data() );
-        return( false );
+        PrintMessage(InputDataError, L"Couldn't open file:", filePath.data());
+        return(false);
     }
+
+    return ReadModelCore(file);
+
+}
+
+bool CModelData::ReadModelCore(std::wistream& in) {
 
     wstring line;
 
     // read definition of parameters
     bool firstLine = true;
-    while( true )
+    while (true)
     {
         // skip not important stuff
-        if ( lineIsEmpty( line ) || lineIsComment( line ))
+        if (lineIsEmpty(line) || lineIsComment(line))
         {
-            if ( ! readLineFromFile( file, line )) return( true );
+            if (!readLineFromFile(in, line)) return(true);
             continue;
         }
 
-        if ( firstLine )
+        if (firstLine)
         {
-            m_encoding = getEncodingType( line );
-            if ( m_encoding != EncodingType::ANSI
-              && m_encoding != EncodingType::UTF8 )
+            m_encoding = getEncodingType(line);
+            if (m_encoding != EncodingType::ANSI
+                && m_encoding != EncodingType::UTF8)
             {
-                PrintMessage( InputDataError, L"Only ANSI and UTF-8 are supported" );
-                return( false );
+                PrintMessage(InputDataError, L"Only ANSI and UTF-8 are supported");
+                return(false);
             }
             firstLine = false;
         }
 
         // continue reading until a submodel/cluster or a constraint
-        if ( lineIsParamSet( line ) || lineIsConstraint( line )) break;
+        if (lineIsParamSet(line) || lineIsConstraint(line)) break;
 
-        if ( ! readParameter( line ))          return( false );
-        if ( ! readLineFromFile( file, line )) return( true );
+        if (!readParameter(line))          return(false);
+        if (!readLineFromFile(in, line)) return(true);
     }
 
     // read submodels
-    if ( lineIsParamSet( line ))
+    if (lineIsParamSet(line))
     {
-        while( true )
+        while (true)
         {
             // skip not important stuff
-            if ( lineIsEmpty( line ) || lineIsComment( line ))
+            if (lineIsEmpty(line) || lineIsComment(line))
             {
-                if ( ! readLineFromFile( file, line )) return( true );
+                if (!readLineFromFile(in, line)) return(true);
                 continue;
             }
 
             // continue reading until a constraint
-            if ( lineIsConstraint( line )) break;
+            if (lineIsConstraint(line)) break;
 
-            if ( ! readParamSet( line ))           return( false );
-            if ( ! readLineFromFile( file, line )) return( true );
+            if (!readParamSet(line))           return(false);
+            if (!readLineFromFile(in, line)) return(true);
         }
     }
 
     // anything that's left is constraints
-    while( true )
+    while (true)
     {
         // if only a line is not empty or not a comment,
         //   it's got to be a part of constraints definition
-        if ( ! ( lineIsEmpty( line ) || lineIsComment( line )))
+        if (!(lineIsEmpty(line) || lineIsComment(line)))
         {
             ConstraintPredicates += line;
-        }  
-        if ( ! readLineFromFile( file, line )) return( true );
+        }
+        if (!readLineFromFile(in, line)) return(true);
     }
 
-    return( true );
+    return(true);
 }
 
 //
 // reads model file
 //
-bool CModelData::ReadModel( const wstring& filePath )
+bool CModelData::ReadModel(const wstring& filePath)
 {
-    if( !readModel( filePath ))
+    if (!readModel(filePath))
     {
-        return( false );
+        return(false);
     }
 
-    if( !ValidateParams() )
+    if (!ValidateParams())
     {
-        return( false );
+        return(false);
     }
 
-    return( true );
+    return(true);
 }
 
 //
 //
 //
-bool CModelData::ReadRowSeedFile( const wstring& filePath )
+bool CModelData::ReadRowSeedFile(const wstring& filePath)
 {
-    if( trim( filePath ).empty() ) return( true );
+    if (trim(filePath).empty()) return(true);
 
     // Some implementations of wifstream only allow ANSI strings as file names so converting before using
-    string ansiFilePath = wideCharToAnsi( filePath );
-    wifstream file( ansiFilePath );
-    if ( !file )
+    string ansiFilePath = wideCharToAnsi(filePath);
+    wifstream file(ansiFilePath);
+    if (!file)
     {
-        PrintMessage( InputDataError, L"Couldn't open file:", filePath.data() );
-        return( false );
+        PrintMessage(InputDataError, L"Couldn't open file:", filePath.data());
+        return(false);
     }
     wstring line;
 
     // parameter names
 
     bool fileEmpty = false;
-    if ( readLineFromFile( file, line ))
+    if (readLineFromFile(file, line))
     {
-        if ( trim( line ).empty() ) fileEmpty = true;
+        if (trim(line).empty()) fileEmpty = true;
     }
     else
     {
         fileEmpty = true;
     }
 
-    if ( fileEmpty )
+    if (fileEmpty)
     {
-        PrintMessage( RowSeedsWarning, L"Seeding file is empty" ); 
-        return( true );
+        PrintMessage(RowSeedsWarning, L"Seeding file is empty");
+        return(true);
     }
 
-    EncodingType encoding = getEncodingType( line );
-    if ( encoding != EncodingType::ANSI
-      && encoding != EncodingType::UTF8 )
+    EncodingType encoding = getEncodingType(line);
+    if (encoding != EncodingType::ANSI
+        && encoding != EncodingType::UTF8)
     {
-        PrintMessage( RowSeedsError, L"Only ANSI and UTF-8 are supported" );
-        return( false );
+        PrintMessage(RowSeedsError, L"Only ANSI and UTF-8 are supported");
+        return(false);
     }
 
     vector< vector<CModelParameter>::iterator > parameters;
 
     wstrings params;
-    split( line, RESULT_DELIMITER, params );
-    for( auto & param : params )
+    split(line, RESULT_DELIMITER, params);
+    for (auto& param : params)
     {
-        vector<CModelParameter>::iterator found = FindParameterByName( param );
-        if ( found == Parameters.end())
+        vector<CModelParameter>::iterator found = FindParameterByName(param);
+        if (found == Parameters.end())
         {
-            PrintMessage( RowSeedsWarning, L"Parameter", 
-                                           param.data(),
-                                           L"not found in the model. Skipping..." );
+            PrintMessage(RowSeedsWarning, L"Parameter",
+                param.data(),
+                L"not found in the model. Skipping...");
         }
-        parameters.push_back( found );
+        parameters.push_back(found);
     }
 
     // if any parameter equals to ModelData.Parameters.end()
     // this parameter could not be found in the model
 
-    while( readLineFromFile( file, line ))
+    while (readLineFromFile(file, line))
     {
-        if ( trim(line).empty() ) break;
+        if (trim(line).empty()) break;
 
         wstrings values;
-        split( line, RESULT_DELIMITER, values );
+        split(line, RESULT_DELIMITER, values);
 
         unsigned int n_param = 0;
         CModelRowSeed rowSeed;
-        for ( wstrings::iterator i_value  = values.begin(); 
-                                 i_value != values.end(); 
-                               ++i_value, ++n_param )
+        for (wstrings::iterator i_value = values.begin();
+            i_value != values.end();
+            ++i_value, ++n_param)
         {
             // There could be fewer parameter names (in the first line)
             // than there is values in the following lines. This has
             // to be detected and a warning issued
-            if ( n_param < (unsigned int) parameters.size() && parameters[ n_param ] != Parameters.end() )
+            if (n_param < (unsigned int)parameters.size() && parameters[n_param] != Parameters.end())
             {
-                CModelParameter &param = *(parameters[ n_param ]);
-                
+                CModelParameter& param = *(parameters[n_param]);
+
                 // remove the negative marker and match up the raw name
-                if ( i_value->length() > 0  && (*i_value)[ 0 ] == InvalidPrefix )
+                if (i_value->length() > 0 && (*i_value)[0] == InvalidPrefix)
                 {
-                    *i_value = trim( i_value->substr( 1, i_value->length() - 1 ));
+                    *i_value = trim(i_value->substr(1, i_value->length() - 1));
                 }
 
                 // if any value could not be found, the whole seed row is not invalid
                 // we just remove that one offending value and the rest of the row can
                 // stay intact; we cannot really warn about this as in a model with
                 // submodels this is very normal
-                int found = param.GetValueOrdinal( *i_value, CaseSensitive );
-                if ( found == -1 )
+                int found = param.GetValueOrdinal(*i_value, CaseSensitive);
+                if (found == -1)
                 {
-                    if ( ! i_value->empty() )
+                    if (!i_value->empty())
                     {
-                        PrintMessage( RowSeedsWarning, L"Value", 
-                                                    i_value->data(),
-                                                    L"not found in the model. Skipping this value..." );
+                        PrintMessage(RowSeedsWarning, L"Value",
+                            i_value->data(),
+                            L"not found in the model. Skipping this value...");
                     }
                 }
                 else
                 {
                     // we don't care about result parameters as we should not seed we expected results
-                    if ( ! param.IsResultParameter )
+                    if (!param.IsResultParameter)
                     {
-                        rowSeed.push_back( make_pair( param.Name, *i_value ));
+                        rowSeed.push_back(make_pair(param.Name, *i_value));
                     }
                 }
             }
         }
-        if ( ! rowSeed.empty() )
+        if (!rowSeed.empty())
         {
-            RowSeeds.push_back( rowSeed );
+            RowSeeds.push_back(rowSeed);
         }
     }
 
-    if( ! ValidateRowSeeds())
+    if (!ValidateRowSeeds())
     {
-        return( false );
+        return(false);
     }
 
-    return( true );
+    return(true);
 }
