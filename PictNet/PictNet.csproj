@@ -9,6 +9,7 @@
     <Authors>Nigel Bess</Authors>
     <Description>A minimalist .NET Wrapper for the Microsoft PICT API</Description>
     <PackageProjectUrl>https://github.com/NigelBess/PictNet</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE.TXT</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,13 @@
     <EmbeddedResource Include="pictApiDll.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.TXT">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
