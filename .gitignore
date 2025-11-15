@@ -1,23 +1,38 @@
-*.sdf
-*.opensdf
-*.user
-/*/Debug
-/*/Release
-/Debug
-/Release
-/bin
-/test/.stderr*
-/test/.stdout*
+# Build outputs
+[Bb]in/
+[Oo]bj/
+Debug*/
+Release*/
+x64/
+x86/
+[Aa][Rr][Mm]*/
+[Aa][Rr][Mm]64*/
+
+# Visual Studio
+.vs/
 *.suo
-/test/rel.log*
-/test/dbg.log*
-/pict.VC.db
-/pict.VC.VC.opendb
 *.user
-*.aps
-*.ipch
-*.VC.*db*
-pict
-*.o
-.DS_Store
-build
+*.userosscache
+*.sln.docstates
+
+# C++ / IntelliSense
+ipch/
+*.opendb
+*.VC.db
+
+# NuGet
+packages/
+*.nupkg
+!packages/build/
+
+# Logs / test results / profiling
+TestResult*/
+*.VisualState.xml
+*.vsp
+*.vspx
+*.psess
+
+# Common IDE extras
+.vscode/
+.idea/
+*.DotSettings.user

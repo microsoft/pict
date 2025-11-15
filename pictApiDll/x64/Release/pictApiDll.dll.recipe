@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Dev\pict\x64\Release\pictApiDll.dll</FullPath>
+      <FullPath>C:\Dev\pict\pictApiDll\Release\pictApiDll.dll</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

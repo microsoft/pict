@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="api/pictapi.vcxproj" Id="348f928a-b4a7-41fc-a312-76559047bdaf" />
+  <Project Path="pictApiDll/pictApiDll.vcxproj" Id="62e7244b-fdd4-4984-9d51-42724095eba4" />
+  <Project Path="PictNet/PictNet.csproj" />
+  <Project Path="PictTests/PictTests.csproj" />
+</Solution>
