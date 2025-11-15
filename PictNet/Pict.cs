@@ -4,6 +4,14 @@ namespace PictNet;
 
 public static class Pict
 {
+    /// <summary>
+    /// Given some count of values per index (<paramref name="valueCounts"/>), this generates the minimum full-dimensional combinations to capture all possible combinations of size <paramref name="order"/>.
+    /// </summary>
+    /// <param name="valueCounts">Each element in this list represents the number of options available for the given dimension</param>
+    /// <param name="order">The size of the sub-combinations to be exhausted in the returned combinations. If <paramref name="order"/> = 2, this function will return combinations such that all pairs are present.</param>
+    /// <param name="seed">Random seed for reproducibility</param>
+    /// <returns>A list of lists. Each sublist represents a specified combination of values. Each element in the sublist represents the index of the parameter at the given dimension.</returns>
+    /// <remarks>This is all hard to explain in a short docstring. Please read https://github.com/microsoft/pict</remarks>
     public static List<List<int>> GenerateIndices(
         IReadOnlyCollection<int> valueCounts,
         uint order = 2,
