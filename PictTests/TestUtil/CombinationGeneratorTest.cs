@@ -12,7 +12,7 @@ public class CombinationGeneratorTest
         Assert.HasCount(expectedNumberOfCombos, allCombosOfGivenOrder);
 
         var distinctCount = allCombosOfGivenOrder
-            .Select(c => string.Join("|", c.OrderBy(c => c).Select(di => $"{di.Dimension}:{di.Index}")))
+            .Select(c => string.Join("|", c.OrderBy(di => di.Dimension).ThenBy(di => di.Index).Select(di => $"{di.Dimension}:{di.Index}")))
             .Distinct()
             .Count();
 
