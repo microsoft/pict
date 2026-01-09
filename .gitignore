@@ -21,5 +21,3 @@ pict
 *.o
 .DS_Store
 build
-*.so
-/tmp/test-*
