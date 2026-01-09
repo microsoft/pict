@@ -11,6 +11,7 @@
 *.suo
 /test/rel.log*
 /test/dbg.log*
+/test/*.log
 /pict.VC.db
 /pict.VC.VC.opendb
 *.user

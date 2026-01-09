@@ -37,6 +37,8 @@ bug020.txt /d:*     -> SUCCESS
 bug021.txt          -> SUCCESS
 bug022.txt          -> SUCCESS
 bug023.txt /o:1     -> SUCCESS
+bug024.txt          -> SUCCESS
+bug025.txt          -> SUCCESS
 
 bug002.txt          -> BAD_MODEL
 bug003.txt          -> BAD_MODEL
