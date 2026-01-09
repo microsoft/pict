@@ -21,3 +21,6 @@ pict
 *.o
 .DS_Store
 build
+/*/ARM64/*
+/*/Win32/*
+/*/x64/*

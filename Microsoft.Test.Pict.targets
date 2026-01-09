@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\contents\api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <!-- Win32 Debug -->
+      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'Win32' And '$(Configuration)' == 'Debug'">$(MSBuildThisFileDirectory)..\contents\win-x86\api\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <!-- Win32 Release -->
+      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'Win32' And '$(Configuration)' == 'Release'">$(MSBuildThisFileDirectory)..\contents\win-x86\api\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <!-- x64 Debug -->
+      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'x64' And '$(Configuration)' == 'Debug'">$(MSBuildThisFileDirectory)..\contents\win-x64\api\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <!-- x64 Release -->
+      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'x64' And '$(Configuration)' == 'Release'">$(MSBuildThisFileDirectory)..\contents\win-x64\api\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <!-- ARM64 Debug -->
+      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'ARM64' And '$(Configuration)' == 'Debug'">$(MSBuildThisFileDirectory)..\contents\win-arm64\api\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <!-- ARM64 Release -->
+      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'ARM64' And '$(Configuration)' == 'Release'">$(MSBuildThisFileDirectory)..\contents\win-arm64\api\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      
+      <!-- Link the PICT API library -->
+      <AdditionalDependencies>pict.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <!-- Copy DLLs to output directory -->
+  <ItemGroup Condition="'$(Platform)' == 'Win32'">
+    <Content Include="$(MSBuildThisFileDirectory)contents\win-x86\dll\*.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'x64'">
+    <Content Include="$(MSBuildThisFileDirectory)contents\win-x64\dll\*.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'ARM64'">
+    <Content Include="$(MSBuildThisFileDirectory)contents\win-arm64\dll\*.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
