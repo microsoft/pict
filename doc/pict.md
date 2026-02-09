@@ -456,6 +456,7 @@ These are best to avoid in any case. When seeding is used, you will be warned if
 
     Constraint    :: =
       IF Predicate THEN Predicate ELSE Predicate;
+    | IF Predicate THEN Predicate;
     | Predicate;
 
     Predicate     :: =
@@ -470,7 +471,9 @@ These are best to avoid in any case. When seeding is used, you will be warned if
     Term          :: =
       ParameterName Relation Value
     | ParameterName LIKE PatternString
+    | ParameterName NOT LIKE PatternString
     | ParameterName IN { ValueSet }
+    | ParameterName NOT IN { ValueSet }
     | ParameterName Relation ParameterName
 
     ValueSet       :: =
