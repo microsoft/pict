@@ -4,6 +4,24 @@ Pairwise Independent Combinatorial Testing tool
 ------------------------------------------------
 jacekcz@microsoft.com
 
+- [Usage](#usage)
+  - [Model File](#model-file)
+  - [Output Format](#output-format)
+- [Constraints](#constraints)
+  - [Conditional Constraints](#conditional-constraints)
+  - [Unconditional Constraints (Invariants)](#unconditional-constraints-invariants)
+  - [Types](#types)
+  - [Case Sensitiveness](#case-sensitiveness)
+- [Advanced Modelling Features](#advanced-modelling-features)
+  - [Re-using Parameter Definitions](#re-using-parameter-definitions)
+  - [Sub-Models](#sub-models)
+  - [Aliasing](#aliasing)
+  - [Negative Testing](#negative-testing)
+  - [Excluding Entire Parameters - The "Dummy Value Technique"](#excluding-entire-parameters---the-dummy-value-technique)
+  - [Weighting](#weighting)
+  - [Seeding](#seeding)
+- [Constraints Grammar](#constraints-grammar)
+
 PICT generates test cases and test configurations. With PICT, you can generate tests that are more effective than manually generated tests and in a fraction of the time required by hands-on test case design.
 
 PICT runs as a command line tool. Prepare a model file detailing the parameters of the interface (or a set of configurations, or data) you want to test and PICT generates a compact set of parameter value choices that represent the test cases you should use to get comprehensive combinatorial coverage of your parameters.

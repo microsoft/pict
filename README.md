@@ -1,6 +1,13 @@
 Pairwise Independent Combinatorial Testing
 ==========================================
 
+- [More information](#more-information)
+- [Contributing](#contributing)
+  - [Building and testing on Windows with MsBuild](#building-and-testing-on-windows-with-msbuild)
+  - [Building on Linux, OS/X, \*BSD, etc.](#building-on-linux-osx-bsd-etc)
+  - [Debugging](#debugging)
+  - [PICT as a container](#pict-as-a-container)
+
 PICT generates test cases and test configurations. With PICT, you can generate tests that are more effective than manually generated tests and in a fraction of the time required by hands-on test case design.
 
 PICT runs as a command line tool. Prepare a model file detailing the parameters of the interface (or set of configurations, or data) you want to test. PICT generates a compact set of parameter value choices that represent the test cases you should use to get comprehensive combinatorial coverage of your parameters.
