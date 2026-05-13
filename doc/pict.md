@@ -105,13 +105,13 @@ Operator IN allows specifying a set of values:
 
 The constraint language also supports two functions for working with negative values:
 
-    ISNEGATIVE([ParameterName])  # true when the selected value uses the negative prefix (for example, ~)
+    ISNEGATIVE([ParameterName])  # true when the selected value uses the current negative prefix (default: ~, configurable via /n)
     ISPOSITIVE([ParameterName])  # true when the selected value does not use the negative prefix
 
 Both functions can also be called without arguments:
 
-    ISNEGATIVE()   # expands to ISNEGATIVE([P1]) OR  ISNEGATIVE([P2]) OR  ...
-    ISPOSITIVE()   # expands to ISPOSITIVE([P1]) AND ISPOSITIVE([P2]) AND ...
+    ISNEGATIVE()   # expands to ISNEGATIVE([P1]) OR  ISNEGATIVE([P2]) OR  ... for all non-result parameters
+    ISPOSITIVE()   # expands to ISPOSITIVE([P1]) AND ISPOSITIVE([P2]) AND ... for all non-result parameters
 
 The ```IF```, ```THEN```, and ```ELSE``` parts of an expression may contain multiple terms joined by logical operators: ```NOT```, ```AND```, and ```OR```. Parentheses are allowed in order to change the default operator priority:
 
