@@ -1,19 +1,19 @@
 This folder contains helper scripts for analyzing PICT output.
 
-## `count-uniques.py`
+## `count-uniques.pl`
 
-`count-uniques.py` reads PICT output and reports how many **new** value-pairs each test row contributes. It only counts pairs, not higher-order combinations.
+`count-uniques.pl` reads PICT output and reports how many **new** value-pairs each test row contributes. It only counts pairs, not higher-order combinations.
 
 Use:
 
 ```bash
-python3 count-uniques.py output.txt
+perl count-uniques.pl output.txt
 ```
 
 Or directly from PICT:
 
 ```bash
-pict input.txt | python3 count-uniques.py
+pict input.txt | perl count-uniques.pl
 ```
 
 Options:
@@ -21,14 +21,14 @@ Options:
 - `--no-header` treats the first non-empty row as data instead of skipping it as a header.
 - `--reorder` prints the rows reordered by first-seen pair contribution, highest first.
 
-## `compare-uniques.py`
+## `compare-uniques.pl`
 
-`compare-uniques.py` compares two PICT output files and verifies that they contain the same rows, including duplicate row counts.
+`compare-uniques.pl` compares two PICT output files and verifies that they contain the same rows, including duplicate row counts.
 
 Use:
 
 ```bash
-python3 compare-uniques.py output-a.txt output-b.txt
+perl compare-uniques.pl output-a.txt output-b.txt
 ```
 
 Options:
