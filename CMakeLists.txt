@@ -88,6 +88,7 @@ target_compile_definitions(${PICT_BUILD_OPTIONS}
 
 add_subdirectory (api)
 add_subdirectory (cli)
+add_subdirectory (benchmark)
 add_subdirectory (clidll)
 
 if(PICT_RUN_TESTS_ENABLED)

@@ -22,6 +22,23 @@ See **[doc/pict.md](https://github.com/Microsoft/pict/blob/main/doc/pict.md)** f
 
 The most recent **pict.exe** is available at https://github.com/microsoft/pict/releases/.
 
+# Benchmark harness
+
+The repository also includes **pict-benchmark**, a native harness for running PICT repeatedly with different random seeds and reporting the smallest generated suite for each benchmark.
+
+By default it runs the six standard pairwise.org scenarios referenced by the SigmaZone benchmark page:
+
+    ./pict-benchmark --runs 1000
+
+You can target specific built-in or custom benchmark notations:
+
+    ./pict-benchmark --runs 250 --benchmark 3^13 --benchmark "4^15 3^17 2^29"
+    ./pict-benchmark --runs 500 --benchmark "6^20"
+
+Use `--seed` to make the randomized trial sequence reproducible and `--list` to print the built-in benchmark set.
+
+Each trial also emits debug spew to stderr with the benchmark/model shape, seed, and generated row count.
+
 # Contributing
 
 PICT consists of the following projects:
@@ -68,4 +85,3 @@ Once built, you can run it with a sample model as follows
 To use your own models, please execute
 
     podman run -it --rm -v ./<local-dir>:/var/pict:Z pict:latest <your-model-file> [<pict-options>]
-
