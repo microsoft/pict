@@ -103,16 +103,6 @@ Operator IN allows specifying a set of values:
     IF [Cluster size] IN {512, 1024, 2048} THEN [Compression] = "Off";
     IF [File system] IN {"FAT", "FAT32"}   THEN [Compression] = "Off";
 
-The constraint language also supports two functions for working with negative values:
-
-    ISNEGATIVE([ParameterName])  # true when the selected value uses the current negative prefix (default: ~, configurable via /n)
-    ISPOSITIVE([ParameterName])  # true when the selected value does not use the negative prefix
-
-Both functions can also be called without arguments:
-
-    ISNEGATIVE()   # expands to ISNEGATIVE([P1]) OR  ISNEGATIVE([P2]) OR  ... for all non-result parameters
-    ISPOSITIVE()   # expands to ISPOSITIVE([P1]) AND ISPOSITIVE([P2]) AND ... for all non-result parameters
-
 The ```IF```, ```THEN```, and ```ELSE``` parts of an expression may contain multiple terms joined by logical operators: ```NOT```, ```AND```, and ```OR```. Parentheses are allowed in order to change the default operator priority:
 
     IF [File system] <> "NTFS" OR
@@ -141,6 +131,16 @@ Parameters can be compared to other parameters, like in this example:
 
     IF [LANG_1] = [LANG_2]
     THEN [OS_1] <> [OS_2] AND [SKU_1] <> [SKU_2];
+
+The constraint language also supports two functions for working with negative values:
+
+    ISNEGATIVE([ParameterName])  # true when the selected value uses the current negative prefix (default: ~, configurable via /n)
+    ISPOSITIVE([ParameterName])  # true when the selected value does not use the negative prefix
+
+Both functions can also be called without arguments:
+
+    ISNEGATIVE()   # expands to ISNEGATIVE([P1]) OR  ISNEGATIVE([P2]) OR  ... for all non-result parameters
+    ISPOSITIVE()   # expands to ISPOSITIVE([P1]) AND ISPOSITIVE([P2]) AND ... for all non-result parameters
 
 ## Unconditional Constraints (Invariants)
 
