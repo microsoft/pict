@@ -137,6 +137,8 @@ The constraint language also supports two functions for working with negative va
     ISNEGATIVE([ParameterName])  # true when the selected value uses the current negative prefix (default: ~, configurable via /n)
     ISPOSITIVE([ParameterName])  # true when the selected value does not use the negative prefix
 
+Details about negative values are described later in the Negative Testing section.
+
 Both functions can also be called without arguments:
 
     ISNEGATIVE()   # expands to ISNEGATIVE([P1]) OR  ISNEGATIVE([P2]) OR  ... for all non-result parameters
