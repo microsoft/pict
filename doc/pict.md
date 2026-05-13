@@ -103,6 +103,16 @@ Operator IN allows specifying a set of values:
     IF [Cluster size] IN {512, 1024, 2048} THEN [Compression] = "Off";
     IF [File system] IN {"FAT", "FAT32"}   THEN [Compression] = "Off";
 
+The constraint language also supports two functions for working with negative values:
+
+    ISNEGATIVE([ParameterName])  # true when the selected value uses the negative prefix (for example, ~)
+    ISPOSITIVE([ParameterName])  # true when the selected value does not use the negative prefix
+
+Both functions can also be called without arguments:
+
+    ISNEGATIVE()   # expands to ISNEGATIVE([P1]) OR  ISNEGATIVE([P2]) OR  ...
+    ISPOSITIVE()   # expands to ISPOSITIVE([P1]) AND ISPOSITIVE([P2]) AND ...
+
 The ```IF```, ```THEN```, and ```ELSE``` parts of an expression may contain multiple terms joined by logical operators: ```NOT```, ```AND```, and ```OR```. Parentheses are allowed in order to change the default operator priority:
 
     IF [File system] <> "NTFS" OR
@@ -475,6 +485,10 @@ These are best to avoid in any case. When seeding is used, you will be warned if
     | ParameterName IN { ValueSet }
     | ParameterName NOT IN { ValueSet }
     | ParameterName Relation ParameterName
+    | ISNEGATIVE ( ParameterName )
+    | ISPOSITIVE ( ParameterName )
+    | ISNEGATIVE ( )
+    | ISPOSITIVE ( )
 
     ValueSet       :: =
       Value
