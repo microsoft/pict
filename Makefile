@@ -5,10 +5,12 @@ COMMIT=$(shell git log --pretty=format:'%H' -n 1)
 SHORT_COMMIT=$(shell git log --pretty=format:'%h' -n 1)
 CXXFLAGS=-fPIC -pipe -std=c++11 -O2 -Iapi
 TARGET=pict
+TARGET_BENCH=pict-benchmark
 TARGET_LIB_SO=libpict.so
 TEST_OUTPUT = test/rel.log test/rel.log.failures test/dbg.log
 TEST_OUTPUT += test/.stdout test/.stderr
 OBJS = $(OBJS_API) $(OBJS_CLI)
+OBJS_BENCH = benchmark/pict_benchmark.o $(OBJS_API)
 OBJS_API = api/combination.o api/deriver.o api/exclusion.o
 OBJS_API += api/model.o api/parameter.o api/pictapi.o
 OBJS_API += api/task.o api/worklist.o
@@ -21,6 +23,9 @@ IMAGE := pict:latest
 pict: $(OBJS)
 	$(CXX) $(OBJS) -o $(TARGET)
 
+$(TARGET_BENCH): $(OBJS_BENCH)
+	$(CXX) $(OBJS_BENCH) -o $(TARGET_BENCH)
+
 $(TARGET_LIB_SO): $(OBJS)
 	$(CXX) -fPIC -shared $(OBJS) -o $(TARGET_LIB_SO)
 
@@ -28,9 +33,9 @@ test: $(TARGET)
 	cd test; perl test.pl ../$(TARGET) rel.log
 
 clean:
-	rm -f $(TARGET) $(TARGET_LIB_SO) $(TEST_OUTPUT) $(OBJS)
+	rm -f $(TARGET) $(TARGET_BENCH) $(TARGET_LIB_SO) $(TEST_OUTPUT) $(OBJS) $(OBJS_BENCH)
 
-all: pict $(TARGET_LIB_SO)
+all: pict $(TARGET_BENCH) $(TARGET_LIB_SO)
 
 source: clean
 	git archive --prefix="pict-$(COMMIT)/" -o "pict-$(SHORT_COMMIT).tar.gz" $(COMMIT)
