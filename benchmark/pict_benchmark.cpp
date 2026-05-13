@@ -338,13 +338,6 @@ string ToText( int value )
     return stream.str();
 }
 
-string ToText( size_t value )
-{
-    ostringstream stream;
-    stream << value;
-    return stream.str();
-}
-
 void PrintUsage( const char* programName )
 {
     cerr << "Usage: " << programName << " [--runs N] [--seed N] [--benchmark SPEC]..." << endl;
