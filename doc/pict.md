@@ -72,7 +72,9 @@ The test cases are printed to the standard output stream. The first line of the 
 
 If a model and options given to the tool do not change, every run will result in the same output. However, the output can be randomized if ```/r``` option is used. A randomized generation prints out the seed used for that particular execution to the error output stream. Consequently, that seed can be fed into the tool with ```/r:seed``` option to replay a particular generation.
 
-Different random seed values will often produce a different number of total test cases.  This is because packing n-way combinations is a “hard problem” for which PICT and other tools use heuristics.  These heuristics are deterministic, but they are dependent on initial conditions. Sometimes the algorithm is lucky and packs all of your desired combinations into fewer test cases.  Variations of 5% - 10% are common.
+Different random seed values will often produce a different number of total test cases. This is because packing n-way combinations is a “hard problem” for which PICT and other tools use heuristics. These heuristics are deterministic, but they are dependent on initial conditions. Sometimes the algorithm is lucky and packs all of your desired combinations into fewer test cases. Variations of 5% - 10% are common.
+
+The seed only changes how efficiently combinations are packed into rows; it does not relax the requested coverage target. Two valid seeded runs may therefore have different row counts while still covering the same required combinations.
 
 All errors, warning messages, and other auxiliary information is printed to the error stream.
 
