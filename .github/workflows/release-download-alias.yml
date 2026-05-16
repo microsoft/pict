@@ -1,0 +1,37 @@
+name: Maintain release download alias
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      source_tag:
+        description: Tag to mirror into the rolling "release" download URL
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  update-release-alias:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: ${{ github.repository }}
+      SOURCE_TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || github.event.inputs.source_tag }}
+    steps:
+      - name: Download pict.exe from source release
+        run: gh release download "$SOURCE_TAG" --repo "$REPOSITORY" --pattern pict.exe --clobber
+
+      - name: Recreate rolling release alias
+        run: |
+          if gh release view release --repo "$REPOSITORY" >/dev/null 2>&1; then
+            gh release delete release --repo "$REPOSITORY" --yes --cleanup-tag
+          fi
+
+          gh release create release pict.exe \
+            --repo "$REPOSITORY" \
+            --target "$SOURCE_TAG" \
+            --title "Latest release" \
+            --notes "Rolling release that keeps https://github.com/$REPOSITORY/releases/download/release/pict.exe pointed at the newest published binary."
