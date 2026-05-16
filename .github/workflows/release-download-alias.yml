@@ -23,11 +23,13 @@ jobs:
     steps:
       - name: Download release assets from source release
         run: |
+          set -euo pipefail
           mkdir -p release-assets
           gh release download "$SOURCE_TAG" --repo "$REPOSITORY" --pattern "*" --dir release-assets --clobber
 
       - name: Recreate rolling release alias
         run: |
+          set -euo pipefail
           shopt -s nullglob
           assets=(release-assets/*)
           if [ ${#assets[@]} -eq 0 ]; then
@@ -35,12 +37,74 @@ jobs:
             exit 1
           fi
 
+          find_asset() {
+            local platform="$1"
+            local f name
+            for f in release-assets/*; do
+              name=$(basename "$f")
+              name=${name,,}
+              case "$platform" in
+                windows-x64)
+                  [[ "$name" == *win* && "$name" != *arm* && ( "$name" == *x64* || "$name" == *amd64* || "$name" == *x86_64* ) ]] && { echo "$f"; return 0; }
+                  ;;
+                windows-arm)
+                  [[ "$name" == *win* && ( "$name" == *arm* || "$name" == *aarch64* ) ]] && { echo "$f"; return 0; }
+                  ;;
+                macos)
+                  [[ ( "$name" == *macos* || "$name" == *darwin* || "$name" == *osx* ) && ( "$name" == *arm* || "$name" == *aarch64* || "$name" == *apple* ) ]] && { echo "$f"; return 0; }
+                  ;;
+                linux-x64)
+                  [[ "$name" == *linux* && "$name" != *arm* && ( "$name" == *x64* || "$name" == *amd64* || "$name" == *x86_64* ) ]] && { echo "$f"; return 0; }
+                  ;;
+                linux-arm)
+                  [[ "$name" == *linux* && ( "$name" == *arm* || "$name" == *aarch64* ) ]] && { echo "$f"; return 0; }
+                  ;;
+              esac
+            done
+            return 1
+          }
+
+          win_x64_asset="$(find_asset windows-x64 || true)"
+          win_arm_asset="$(find_asset windows-arm || true)"
+          macos_asset="$(find_asset macos || true)"
+          linux_x64_asset="$(find_asset linux-x64 || true)"
+          linux_arm_asset="$(find_asset linux-arm || true)"
+
+          if [ -z "$win_x64_asset" ] || [ -z "$win_arm_asset" ] || [ -z "$macos_asset" ] || [ -z "$linux_x64_asset" ] || [ -z "$linux_arm_asset" ]; then
+            echo "Unable to map all required platform assets from release $SOURCE_TAG."
+            echo "Found files:"
+            printf ' - %s\n' "${assets[@]}"
+            exit 1
+          fi
+
           if gh release view release --repo "$REPOSITORY" >/dev/null 2>&1; then
             gh release delete release --repo "$REPOSITORY" --yes --cleanup-tag
           fi
 
-          gh release create release "${assets[@]}" \
+          gh release create release \
             --repo "$REPOSITORY" \
             --target "$SOURCE_TAG" \
             --title "Latest release" \
-            --notes "Rolling release that keeps https://github.com/$REPOSITORY/releases/download/release/pict.exe pointed at the newest published binary."
+            --notes "Rolling release that keeps platform-scoped download aliases in sync with the newest published binaries."
+
+          upload_url="$(gh api "repos/$REPOSITORY/releases/tags/release" --jq .upload_url)"
+          upload_url="${upload_url%\{*}"
+
+          upload_asset() {
+            local src="$1"
+            local alias_name="$2"
+            local encoded_name
+            encoded_name="$(jq -rn --arg v "$alias_name" '$v|@uri')"
+            curl --fail-with-body --silent --show-error \
+              -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Content-Type: application/octet-stream" \
+              --data-binary @"$src" \
+              "$upload_url?name=$encoded_name" >/dev/null
+          }
+
+          upload_asset "$win_x64_asset" "windows-x64/pict.exe"
+          upload_asset "$win_arm_asset" "windows-arm/pict.exe"
+          upload_asset "$macos_asset" "macos/pict.exe"
+          upload_asset "$linux_x64_asset" "linux-x64/pict.exe"
+          upload_asset "$linux_arm_asset" "linux-arm/pict.exe"
