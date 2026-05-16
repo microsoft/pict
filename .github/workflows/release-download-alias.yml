@@ -21,16 +21,25 @@ jobs:
       REPOSITORY: ${{ github.repository }}
       SOURCE_TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || github.event.inputs.source_tag }}
     steps:
-      - name: Download pict.exe from source release
-        run: gh release download "$SOURCE_TAG" --repo "$REPOSITORY" --pattern pict.exe --clobber
+      - name: Download release assets from source release
+        run: |
+          mkdir -p release-assets
+          gh release download "$SOURCE_TAG" --repo "$REPOSITORY" --pattern "*" --dir release-assets --clobber
 
       - name: Recreate rolling release alias
         run: |
+          shopt -s nullglob
+          assets=(release-assets/*)
+          if [ ${#assets[@]} -eq 0 ]; then
+            echo "No assets were found on release $SOURCE_TAG."
+            exit 1
+          fi
+
           if gh release view release --repo "$REPOSITORY" >/dev/null 2>&1; then
             gh release delete release --repo "$REPOSITORY" --yes --cleanup-tag
           fi
 
-          gh release create release pict.exe \
+          gh release create release "${assets[@]}" \
             --repo "$REPOSITORY" \
             --target "$SOURCE_TAG" \
             --title "Latest release" \
