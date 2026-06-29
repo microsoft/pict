@@ -14,6 +14,7 @@
   <!-- Map the build platform to the packaged architecture folder. -->
   <PropertyGroup>
     <PictApiPlatformDir Condition="'$(Platform)' == 'Win32'">win-x86</PictApiPlatformDir>
+    <PictApiPlatformDir Condition="'$(Platform)' == 'x86'">win-x86</PictApiPlatformDir>
     <PictApiPlatformDir Condition="'$(Platform)' == 'x64'">win-x64</PictApiPlatformDir>
     <PictApiPlatformDir Condition="'$(Platform)' == 'ARM64'">win-arm64</PictApiPlatformDir>
     <!-- A Debug consumer links the Debug lib, otherwise the Release lib. -->
