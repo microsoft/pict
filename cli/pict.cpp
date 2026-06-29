@@ -5,12 +5,14 @@
 
 #include <ctime>
 #include <cstring>
+#include <iostream>
 #include <locale>
 #include <stdexcept>
 using namespace std;
 
 #include "cmdline.h"
 #include "gcd.h"
+#include "strings.h"
 using namespace pictcli_gcd;
 
 //
@@ -119,9 +121,24 @@ int __cdecl wmain
     IN wchar_t* args[]
     )
 {
+    // Align all wide I/O with the current environment locale (UTF-8 on modern systems)
+    try
+    {
+        std::locale loc( "" );
+        std::locale::global( loc );
+        std::wcout.imbue( loc );
+        std::wcerr.imbue( loc );
+    }
+    catch( const std::runtime_error& )
+    {
+        // Fall back to the classic locale if the environment locale is unavailable
+        std::locale::global( std::locale::classic() );
+    }
+
     wstring output;
     int ret = execute( argc, args, output );
-    wcout << output;
+
+    std::wcout << output;
 
     return ret;
 }

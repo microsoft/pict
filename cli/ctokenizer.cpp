@@ -574,27 +574,27 @@ wstring ConstraintsTokenizer::getParameterName()
 //
 double ConstraintsTokenizer::getNumber()
 {
-    // declare new stream from text we'd like to parse
-    //  then try to get numeric value preserving old and new
-    //  position within a stream to properly update cursor
     wstring substring( _currentPosition, _constraintsText.end() );
-    wistringstream ist( substring );
-
-    unsigned int positionBefore = (unsigned int) ist.tellg();
-
+    
+    size_t charsConsumed = 0;
     double number;
-    ist>>number;
-
-    if (ist.rdstate() & ios::failbit)
+    
+    try
+    {
+        number = stod( substring, &charsConsumed );
+    }
+    catch( ... )
+    {
+        throw CSyntaxError( SyntaxErrorType::NotNumericValue, _currentPosition );
+    }
+    
+    if( charsConsumed == 0 )
     {
         throw CSyntaxError( SyntaxErrorType::NotNumericValue, _currentPosition );
     }
 
-    // success, update current cursor position
-    unsigned int difference  =  (unsigned int) ist.tellg() - positionBefore;
-    _currentPosition += difference;
-    
-    return ( number );
+    _currentPosition += charsConsumed;
+    return( number );
 }
 
 //

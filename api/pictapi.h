@@ -294,7 +294,9 @@ PictDeleteTask
 // Allocates a new model. Models need to be deleted with DeleteModel
 // 
 // Parameters:
-//   randomSeed  A seed used to randomize the engine
+//   randomSeed  A seed used to randomize the engine heuristic. Different seeds
+//               can legitimately produce different row counts while still
+//               satisfying the requested coverage.
 //   
 // Returns:
 //   Non-nullptr    Allocation succeeded (a handle is returned)

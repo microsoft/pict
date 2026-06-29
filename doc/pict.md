@@ -72,7 +72,9 @@ The test cases are printed to the standard output stream. The first line of the 
 
 If a model and options given to the tool do not change, every run will result in the same output. However, the output can be randomized if ```/r``` option is used. A randomized generation prints out the seed used for that particular execution to the error output stream. Consequently, that seed can be fed into the tool with ```/r:seed``` option to replay a particular generation.
 
-Different random seed values will often produce a different number of total test cases.  This is because packing n-way combinations is a “hard problem” for which PICT and other tools use heuristics.  These heuristics are deterministic, but they are dependent on initial conditions. Sometimes the algorithm is lucky and packs all of your desired combinations into fewer test cases.  Variations of 5% - 10% are common.
+Different random seed values will often produce a different number of total test cases. This is because packing n-way combinations is a “hard problem” for which PICT and other tools use heuristics. These heuristics are deterministic, but they are dependent on initial conditions. Sometimes the algorithm is lucky and packs all of your desired combinations into fewer test cases. Variations of 5% - 10% are common.
+
+The seed only changes how efficiently combinations are packed into rows; it does not relax the requested coverage target. Two valid seeded runs may therefore have different row counts while still covering the same required combinations.
 
 All errors, warning messages, and other auxiliary information is printed to the error stream.
 
@@ -131,6 +133,18 @@ Parameters can be compared to other parameters, like in this example:
 
     IF [LANG_1] = [LANG_2]
     THEN [OS_1] <> [OS_2] AND [SKU_1] <> [SKU_2];
+
+The constraint language also supports two functions for working with negative values:
+
+    ISNEGATIVE([ParameterName])  # true when the selected value uses the current negative prefix (default: ~, configurable via /n)
+    ISPOSITIVE([ParameterName])  # true when the selected value does not use the negative prefix
+
+Details about negative values are described later in the Negative Testing section.
+
+Both functions can also be called without arguments:
+
+    ISNEGATIVE()   # expands to ISNEGATIVE([P1]) OR  ISNEGATIVE([P2]) OR  ... for all non-result parameters
+    ISPOSITIVE()   # expands to ISPOSITIVE([P1]) AND ISPOSITIVE([P2]) AND ... for all non-result parameters
 
 ## Unconditional Constraints (Invariants)
 
@@ -456,6 +470,7 @@ These are best to avoid in any case. When seeding is used, you will be warned if
 
     Constraint    :: =
       IF Predicate THEN Predicate ELSE Predicate;
+    | IF Predicate THEN Predicate;
     | Predicate;
 
     Predicate     :: =
@@ -470,8 +485,14 @@ These are best to avoid in any case. When seeding is used, you will be warned if
     Term          :: =
       ParameterName Relation Value
     | ParameterName LIKE PatternString
+    | ParameterName NOT LIKE PatternString
     | ParameterName IN { ValueSet }
+    | ParameterName NOT IN { ValueSet }
     | ParameterName Relation ParameterName
+    | ISNEGATIVE ( ParameterName )
+    | ISPOSITIVE ( ParameterName )
+    | ISNEGATIVE ( )
+    | ISPOSITIVE ( )
 
     ValueSet       :: =
       Value

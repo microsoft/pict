@@ -669,6 +669,9 @@ void Model::Generate()
     for( ParamCollection::iterator ip = m_parameters.begin(); ip != m_parameters.end(); ++ip )
         DOUT( ( *ip )->GetName() << L", order: " << ( *ip )->GetOrder() << endl );
 
+    // Clear previous results before generating new ones
+    m_results.clear();
+
     switch( m_generationType )
     {
     case GenerationType::MixedOrder:

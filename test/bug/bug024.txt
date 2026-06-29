@@ -1,0 +1,7 @@
+# Testing Japanese Kanji characters in parameter names and constraints
+予:Hoge,X,Y,Z
+予定日時:Scheduled,NotScheduled
+Foo:Bar,Baz,A,B
+
+if [予定日時] = "Scheduled" then [Foo] = "Bar";
+if [予] = "Hoge" then [Foo] <> "Bar";
