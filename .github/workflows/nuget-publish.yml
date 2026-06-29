@@ -7,7 +7,7 @@ on:
 
 env:
   # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: .
+  SOLUTION_FILE_PATH: pict.sln
 
   # Configuration type to build.
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
@@ -35,16 +35,33 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} ${{env.SOLUTION_FILE_PATH}}
 
+    - name: Build static-CRT API lib variant
+      # The solution build above produces the default (dynamic /MD CRT) pict.lib.
+      # Build the api project again with the statically linked CRT (/MT) so the package
+      # can also ship a static variant for consumers that link the static runtime.
+      shell: pwsh
+      run: |
+        $platformDir = '${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}'
+        $runtime = '${{ matrix.configuration == 'Debug' && 'MultiThreadedDebug' || 'MultiThreaded' }}'
+        $out = "$PWD\$platformDir\${{ matrix.configuration }}\api-static\"
+        msbuild api\pictapi.vcxproj /m `
+          /p:Configuration=${{ matrix.configuration }} `
+          /p:Platform=$platformDir `
+          /p:ApiRuntimeLibrary=$runtime `
+          /p:OutDir=$out `
+          /p:IntDir=${out}obj\
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts-${{ matrix.configuration }}-${{ matrix.platform }}
         path: |
           ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/api/pict.lib
-          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/cli/*.exe
-          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/cli/*.pdb
-          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/clidll/*.dll
-          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/clidll/*.pdb
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/api-static/pict.lib
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/cli/pict.exe
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/cli/pict.pdb
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/clidll/pict.dll
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/clidll/pict.pdb
         retention-days: 1
 
   package:

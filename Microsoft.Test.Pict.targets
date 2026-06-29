@@ -6,39 +6,58 @@
       <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)..\contents\api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <!-- Win32 Debug -->
-      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'Win32' And '$(Configuration)' == 'Debug'">$(MSBuildThisFileDirectory)..\contents\win-x86\api\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <!-- Win32 Release -->
-      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'Win32' And '$(Configuration)' == 'Release'">$(MSBuildThisFileDirectory)..\contents\win-x86\api\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <!-- x64 Debug -->
-      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'x64' And '$(Configuration)' == 'Debug'">$(MSBuildThisFileDirectory)..\contents\win-x64\api\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <!-- x64 Release -->
-      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'x64' And '$(Configuration)' == 'Release'">$(MSBuildThisFileDirectory)..\contents\win-x64\api\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <!-- ARM64 Debug -->
-      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'ARM64' And '$(Configuration)' == 'Debug'">$(MSBuildThisFileDirectory)..\contents\win-arm64\api\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <!-- ARM64 Release -->
-      <AdditionalLibraryDirectories Condition="'$(Platform)' == 'ARM64' And '$(Configuration)' == 'Release'">$(MSBuildThisFileDirectory)..\contents\win-arm64\api\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      
       <!-- Link the PICT API library -->
       <AdditionalDependencies>pict.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 
+  <!-- Map the build platform to the packaged architecture folder. -->
+  <PropertyGroup>
+    <PictApiPlatformDir Condition="'$(Platform)' == 'Win32'">win-x86</PictApiPlatformDir>
+    <PictApiPlatformDir Condition="'$(Platform)' == 'x64'">win-x64</PictApiPlatformDir>
+    <PictApiPlatformDir Condition="'$(Platform)' == 'ARM64'">win-arm64</PictApiPlatformDir>
+    <!-- A Debug consumer links the Debug lib, otherwise the Release lib. -->
+    <PictApiConfiguration Condition="'$(PictApiConfiguration)' == '' and '$(Configuration)' == 'Debug'">Debug</PictApiConfiguration>
+    <PictApiConfiguration Condition="'$(PictApiConfiguration)' == ''">Release</PictApiConfiguration>
+  </PropertyGroup>
+
+  <!--
+    Select the pict.lib variant whose CRT linkage matches the consumer, and add its
+    directory to the linker search path. Detection is based on the consumer's
+    RuntimeLibrary; it can be forced by setting PictApiRuntime to 'static' or 'dynamic'.
+    Defaults to 'dynamic' (the /MD Visual Studio default). The dynamic variant lives at
+    api\<Config>; the static (/MT) variant lives at api\static\<Config>.
+  -->
+  <Target Name="PictResolveApiLibrary" BeforeTargets="Link">
+    <PropertyGroup>
+      <_PictConsumerRuntimeLibrary>@(ClCompile->'%(RuntimeLibrary)')</_PictConsumerRuntimeLibrary>
+      <PictApiRuntime Condition="'$(PictApiRuntime)' == '' and $(_PictConsumerRuntimeLibrary.Contains('MultiThreaded')) and !$(_PictConsumerRuntimeLibrary.Contains('DLL'))">static</PictApiRuntime>
+      <PictApiRuntime Condition="'$(PictApiRuntime)' == ''">dynamic</PictApiRuntime>
+      <_PictApiRuntimeSubDir Condition="'$(PictApiRuntime)' == 'static'">static\</_PictApiRuntimeSubDir>
+      <PictApiLibraryDir>$(MSBuildThisFileDirectory)..\contents\$(PictApiPlatformDir)\api\$(_PictApiRuntimeSubDir)$(PictApiConfiguration)</PictApiLibraryDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <Link>
+        <AdditionalLibraryDirectories>$(PictApiLibraryDir);%(Link.AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      </Link>
+    </ItemGroup>
+  </Target>
+
   <!-- Copy DLLs to output directory -->
   <ItemGroup Condition="'$(Platform)' == 'Win32'">
-    <Content Include="$(MSBuildThisFileDirectory)contents\win-x86\dll\*.dll">
+    <Content Include="$(MSBuildThisFileDirectory)..\contents\win-x86\dll\*.dll">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup Condition="'$(Platform)' == 'x64'">
-    <Content Include="$(MSBuildThisFileDirectory)contents\win-x64\dll\*.dll">
+    <Content Include="$(MSBuildThisFileDirectory)..\contents\win-x64\dll\*.dll">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup Condition="'$(Platform)' == 'ARM64'">
-    <Content Include="$(MSBuildThisFileDirectory)contents\win-arm64\dll\*.dll">
+    <Content Include="$(MSBuildThisFileDirectory)..\contents\win-arm64\dll\*.dll">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

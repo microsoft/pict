@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
 	<metadata>
 		<id>Microsoft.Test.Pict</id>
-		<version>4.0.0</version>
+		<version>3.8.0</version>
 		<authors>Jacek Czerwonka</authors>
 		<license type="file">contents/LICENSE.TXT</license>
 		<projectUrl>http://github.com/microsoft/pict</projectUrl>
@@ -15,6 +15,8 @@
 		<file src="x64/Release/cli/pict.pdb" target="contents/win-x64/exe" />
 		<file src="x64/Debug/api/pict.lib" target="contents/win-x64/api/Debug" />
 		<file src="x64/Release/api/pict.lib" target="contents/win-x64/api/Release" />
+		<file src="x64/Debug/api-static/pict.lib" target="contents/win-x64/api/static/Debug" />
+		<file src="x64/Release/api-static/pict.lib" target="contents/win-x64/api/static/Release" />
 		<file src="x64/Release/clidll/pict.dll" target="contents/win-x64/dll" />
 		<file src="x64/Release/clidll/pict.pdb" target="contents/win-x64/dll" />
 
@@ -23,6 +25,8 @@
 		<file src="Win32/Release/cli/pict.pdb" target="contents/win-x86/exe" />
 		<file src="Win32/Debug/api/pict.lib" target="contents/win-x86/api/Debug" />
 		<file src="Win32/Release/api/pict.lib" target="contents/win-x86/api/Release" />
+		<file src="Win32/Debug/api-static/pict.lib" target="contents/win-x86/api/static/Debug" />
+		<file src="Win32/Release/api-static/pict.lib" target="contents/win-x86/api/static/Release" />
 		<file src="Win32/Release/clidll/pict.dll" target="contents/win-x86/dll" />
 		<file src="Win32/Release/clidll/pict.pdb" target="contents/win-x86/dll" />
 
@@ -31,6 +35,8 @@
 		<file src="ARM64/Release/cli/pict.pdb" target="contents/win-arm64/exe" />
 		<file src="ARM64/Debug/api/pict.lib" target="contents/win-arm64/api/Debug" />
 		<file src="ARM64/Release/api/pict.lib" target="contents/win-arm64/api/Release" />
+		<file src="ARM64/Debug/api-static/pict.lib" target="contents/win-arm64/api/static/Debug" />
+		<file src="ARM64/Release/api-static/pict.lib" target="contents/win-arm64/api/static/Release" />
 		<file src="ARM64/Release/clidll/pict.dll" target="contents/win-arm64/dll" />
 		<file src="ARM64/Release/clidll/pict.pdb" target="contents/win-arm64/dll" />
 
