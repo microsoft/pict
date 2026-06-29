@@ -45,7 +45,7 @@
   </Target>
 
   <!-- Copy DLLs to output directory -->
-  <ItemGroup Condition="'$(Platform)' == 'Win32'">
+  <ItemGroup Condition="'$(Platform)' == 'Win32' or '$(Platform)' == 'x86'">
     <Content Include="$(MSBuildThisFileDirectory)..\contents\win-x86\dll\*.dll">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
