@@ -109,8 +109,9 @@ jobs:
               New-Item -ItemType Directory -Path $targetDir -Force
             }
             
-            # Copy contents preserving structure
-            Copy-Item -Path "$($_.FullName)/*" -Destination $targetDir -Recurse -Force
+            # Copy contents (artifact already contains $platformDir/$config in its paths)
+            $sourceDir = "$($_.FullName)/$platformDir/$config"
+            Copy-Item -Path "$sourceDir/*" -Destination $targetDir -Recurse -Force
           }
         }
 
