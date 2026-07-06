@@ -27,14 +27,10 @@ jobs:
         platform: [x64, x86, ARM64]
       
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
-      with:
-        # windows-latest currently provides the VS 18 preview image needed
-        # for the ARM64 build configuration in this workflow.
-        vs-version: '[18.0,19.0)'
+      uses: microsoft/setup-msbuild@v2
 
     - name: Build
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
@@ -78,7 +74,7 @@ jobs:
       packages: write
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Download all build artifacts
       uses: actions/download-artifact@v4
@@ -86,6 +82,7 @@ jobs:
         path: artifacts/
 
     - name: Verify source files exist
+      shell: pwsh
       run: |
         # Verify all required source files exist
         Write-Host "Checking for required files..."
@@ -96,6 +93,7 @@ jobs:
         if (Test-Path "Microsoft.Test.Pict.nuspec") { Write-Host "✓ Microsoft.Test.Pict.nuspec found" } else { Write-Host "✗ Microsoft.Test.Pict.nuspec missing"; exit 1 }
 
     - name: Restore build structure
+      shell: pwsh
       run: |
         # Copy artifacts back to original build structure
         Get-ChildItem -Path "artifacts" -Directory | ForEach-Object {
@@ -126,7 +124,9 @@ jobs:
       uses: NuGet/setup-nuget@v2
 
     - name: Create a package
+      shell: pwsh
       run: nuget pack
 
     - name: Publish NuGet package
+      shell: pwsh
       run: dotnet nuget push "Microsoft.Test.Pict.*.nupkg" -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/microsoft/index.json --skip-duplicate
