@@ -16,7 +16,7 @@ env:
 
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-latest
     permissions:
       contents: read
     strategy:
@@ -32,9 +32,9 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
       with:
-        # windows-latest now includes newer VS previews that may not carry
-        # the v143 toolset required by the checked-in vcxproj files.
-        vs-version: '[17.0,18.0)'
+        # windows-latest currently provides the VS 18 preview image needed
+        # for the ARM64 build configuration in this workflow.
+        vs-version: '[18.0,19.0)'
 
     - name: Build
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
