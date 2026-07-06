@@ -114,8 +114,10 @@ jobs:
               New-Item -ItemType Directory -Path $targetDir -Force
             }
             
-            # Copy contents (artifact already contains $platformDir/$config in its paths)
-            $sourceDir = "$($_.FullName)/$platformDir/$config"
+            # upload-artifact@v4 strips the common path prefix (e.g. ARM64/Debug) from
+            # the artifact using the least common ancestor, so files are stored at the
+            # artifact root level (api/, cli/, clidll/, api-static/).
+            $sourceDir = "$($_.FullName)"
             Copy-Item -Path "$sourceDir/*" -Destination $targetDir -Recurse -Force
           }
         }
