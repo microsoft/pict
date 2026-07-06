@@ -114,9 +114,8 @@ jobs:
               New-Item -ItemType Directory -Path $targetDir -Force
             }
             
-            # Copy contents (artifact already contains $platformDir/$config in its paths)
-            $sourceDir = "$($_.FullName)/$platformDir/$config"
-            Copy-Item -Path "$sourceDir/*" -Destination $targetDir -Recurse -Force
+            # Copy contents from artifact root (upload-artifact strips the common ancestor path)
+            Copy-Item -Path "$($_.FullName)/*" -Destination $targetDir -Recurse -Force
           }
         }
 
