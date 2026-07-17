@@ -165,6 +165,21 @@ void __cdecl wmain()
     checkRetCode( ret );
 
     //
+    // Optionally let the engine use multiple worker threads to speed up a single
+    // generation. This is purely a performance knob: the generated test suite is
+    // bit-for-bit identical regardless of the thread count (same seed always yields
+    // the same output), so it is safe to enable for any model.
+    //
+    //   0 = auto (use the machine's hardware concurrency)
+    //   1 = serial (the default if this is never called)
+    //   N = use N worker threads
+    //
+    // It must be called before PictGenerate. Larger, higher-order models benefit
+    // the most. Tiny models automatically fall back to serial.
+    //
+    PictSetThreadCount( task, 0 );
+
+    //
     // The main event: generation.
     //
 

@@ -247,20 +247,16 @@ inline void ExclusionDeriver::buildExclusion( Exclusion& exclImplied, vector<Exc
 //
 // Given an exclusion, the function returns true if m_exclusions already has 
 //    this or a more general exclusion
-// This function makes a use of buckets to check only against those exclusions
-//    in m_exclusions which have at least one element of the given one
+// A stored exclusion is "more general" when its term set is a subset of excl's.
+//    Because both the stored keys and excl are sorted with the same ordering,
+//    this subset test is a polynomial-time trie walk (find_subset). It replaces
+//    an earlier approach that probed every permutation of excl (O(k!)), which
+//    made derivation intractable for models with large derived exclusions.
 //
 inline bool ExclusionDeriver::alreadyInCollection( Exclusion &excl )
 {
-    // for all permutations
     sort( excl.lbegin(), excl.lend() );
-    bool more = true;
-    while( more )
-    {
-        if( m_lookup.find_prefix( excl.GetList() ) ) return true;
-        more = next_permutation( excl.lbegin(), excl.lend() );
-    }
-    return false;
+    return m_lookup.find_subset( excl.GetList() );
 }
 
 //

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <thread>
 using namespace std;
 
 #include "pictapi.h"
@@ -36,6 +37,36 @@ PictSetRootModel
 {
     Task* taskObj = static_cast<Task*>( NO_CONST_HANDLE( task ));
     taskObj->SetRootModel( static_cast<Model*>( NO_CONST_HANDLE( model )));
+}
+
+//
+// Sets how many worker threads the engine may use to parallelize a single
+// generation. This is purely a performance knob: the produced test suite is
+// bit-for-bit identical regardless of the thread count (same seed -> same output).
+//
+//   threadCount == 0  -> auto (std::thread::hardware_concurrency)
+//   threadCount == 1  -> serial (default; unchanged behavior)
+//   threadCount  > 1  -> use that many threads
+//
+// Must be called before PictGenerate.
+//
+void
+API_SPEC
+PictSetThreadCount
+    (
+    IN const PICT_HANDLE task,
+    IN       size_t      threadCount
+    )
+{
+    Task* taskObj = static_cast<Task*>( NO_CONST_HANDLE( task ));
+
+    if( threadCount == 0 )
+    {
+        unsigned int detected = std::thread::hardware_concurrency();
+        threadCount = ( detected == 0 ) ? 1 : static_cast<size_t>( detected );
+    }
+
+    taskObj->SetMaxThreads( threadCount );
 }
 
 //
@@ -125,6 +156,7 @@ PictGenerate
     }
     
     Model* root = taskObj->GetRootModel();
+    taskObj->SeedRandom( static_cast<unsigned int>( root->GetRandomSeed() ) );
     try
     {
         generate( root );

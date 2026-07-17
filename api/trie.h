@@ -113,8 +113,69 @@ public:
         return( pfind_prefix( t ) != nullptr );
     }
 
+    //
+    // Returns true if the trie contains at least one stored key whose elements
+    // form a subset of t. Both the stored keys and t are sorted with the same
+    // ordering (operator< on Col::value_type), so a stored key is a subset of t
+    // exactly when it is a subsequence of t. This is the polynomial-time
+    // equivalent of asking "is any stored key a prefix of some permutation of t"
+    // without enumerating t's permutations.
+    //
+    // Empty-key semantics deliberately match the prior find_prefix()+permutation
+    // approach: an empty stored key is reported only when t itself is empty (the
+    // old code never tested the root for a non-empty query), so behavior stays
+    // bit-for-bit identical.
+    //
+    bool find_subset( Col &t )
+    {
+        if( t.begin() == t.end() ) return( m_root->valid );
+        return psubset( m_root, t.begin(), t.end(), false );
+    }
+
 private:
     trienode<typename Col::value_type>* m_root;
+
+    //
+    // Recursive subset search. A stored key is found when we reach a valid node
+    // by matching a subsequence of [qbegin, qend). checkValid is false only for
+    // the initial (root) call with a non-empty query, so the empty key is not
+    // treated as a match there - preserving the original find_prefix semantics.
+    // Children are visited in ascending key order (std::map) and the query is
+    // sorted ascending, so once a child's label exceeds every remaining query
+    // element we can stop.
+    //
+    bool psubset( trienode<typename Col::value_type>* node,
+                  typename Col::iterator qbegin,
+                  typename Col::iterator qend,
+                  bool checkValid )
+    {
+        if( checkValid && node->valid ) return( true );
+
+        for( typename TNodeCol::iterator ci = node->children.begin();
+             ci != node->children.end(); ++ci )
+        {
+            const typename Col::value_type& label = ci->first;
+
+            // find label at or after qbegin (both query and children ascending)
+            typename Col::iterator q = qbegin;
+            while( q != qend && *q < label ) ++q;
+
+            // label is larger than every remaining query element: no later
+            // (even larger) child can match either
+            if( q == qend ) break;
+
+            // *q is equivalent to label -> descend, consuming this query element
+            if( !( label < *q ) )
+            {
+                typename Col::iterator next = q;
+                ++next;
+                if( psubset( ci->second, next, qend, true ) ) return( true );
+            }
+        }
+
+        return( false );
+    }
+
 
     //
     //

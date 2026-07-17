@@ -16,8 +16,6 @@ Task::Task() :
       m_maxRandomTries(DefaultMaxRandomTries),
       m_workbuf       (nullptr)
 {
-    Combination::ResetId();
-
 #if ( defined(_DOUT) || defined(_FILE) )
     wcerr << L"WARNING: _DOUT or _FILE are defined\n";
 #endif

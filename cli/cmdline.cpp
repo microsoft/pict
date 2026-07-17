@@ -284,6 +284,30 @@ bool parseArg( wchar_t* text, CModelData& modelData )
         }
         break;
     }
+    case SWITCH_BEST:
+    {
+        // /b:N - run N independent generations and keep the smallest suite
+        unsigned int i = getUIntFromArg( text );
+        if( i == 0 )
+        {
+            unknownOption = true;
+            break;
+        }
+        modelData.BestOf = i;
+        break;
+    }
+    case SWITCH_THREADS:
+    {
+        // /t:N - number of worker threads for generation (and best-of-N trials)
+        unsigned int i = getUIntFromArg( text );
+        if( i == 0 )
+        {
+            unknownOption = true;
+            break;
+        }
+        modelData.ThreadCount = i;
+        break;
+    }
     default:
     {
         unknownOption = true;
@@ -318,6 +342,8 @@ void showUsage()
     wcout << L" /" << charToStr( SWITCH_NEGATIVE_VALUES )   << L":C             - Negative value prefix (default: ~)" << endl;
     wcout << L" /" << charToStr( SWITCH_SEED_FILE )         << L":file          - File with seeding rows"             << endl;
     wcout << L" /" << charToStr( SWITCH_RANDOMIZE )         << L"[:N]           - Randomize generation, N - seed"     << endl;
+    wcout << L" /" << charToStr( SWITCH_BEST )              << L":N             - Try N seeds, keep the smallest suite" << endl;
+    wcout << L" /" << charToStr( SWITCH_THREADS )           << L":N             - Number of worker threads (default: auto)" << endl;
     wcout << L" /" << charToStr( SWITCH_FORMAT )            << L"[:text|json]   - Output format (default: text)"      << endl;
     wcout << L" /" << charToStr( SWITCH_CASE_SENSITIVE )    << L"               - Case-sensitive model evaluation"    << endl;
     wcout << L" /" << charToStr( SWITCH_STATISTICS )        << L"               - Show model statistics"              << endl;

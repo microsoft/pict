@@ -32,8 +32,29 @@ PICT is a command-line tool that accepts a plain-text model file as an input and
       /n:C     - Negative value prefix (default: ~)
       /e:file  - File with seeding rows
       /r[:N]   - Randomize generation, N - seed
+      /b:N     - Try N seeds, keep the smallest suite
+      /t:N     - Number of worker threads (default: auto)
       /c       - Case-sensitive model evaluation
       /s       - Show model statistics
+
+### Best-of-N generation
+
+The size of a generated suite depends on the random seed (see `/r`). The `/b:N` option
+runs generation for `N` different seeds and keeps the smallest resulting suite. The seeds
+are derived deterministically from the base seed, so the result is reproducible: the same
+`/b:N` (and `/r:N`, if given) always selects the same winning seed and produces the same
+suite.
+
+### Parallelism
+
+PICT can use multiple worker threads to speed up generation. `/t:N` sets the number of
+threads; the default (`auto`) uses all available logical processors, and `/t:1` forces
+single-threaded generation. When combined with `/b`, the threads also run the independent
+seed trials concurrently.
+
+Parallelism is purely a performance option: it never changes the produced test suite. For
+a given seed, PICT generates the exact same, bit-for-bit identical set of test cases
+regardless of the thread count.
 
 ## Model File 
 

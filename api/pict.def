@@ -10,6 +10,7 @@ EXPORTS
     PictResetResultFetching
     PictGetNextResultRow
     PictSetRootModel
+    PictSetThreadCount
     PictGetTotalParameterCount
     PictDeleteTask
     PictCreateModel

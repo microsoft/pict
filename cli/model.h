@@ -99,6 +99,9 @@ public:
     wchar_t                   NamesDelim;
     wchar_t                   InvalidPrefix;
     unsigned short            RandSeed;
+    size_t                    BestOf;          // /b:N - try N seeds, keep the smallest suite (1 = disabled)
+    size_t                    ThreadCount;     // /t:N - worker threads (0 = auto); applies to /b trials or engine
+    size_t                    EngineThreads;   // resolved worker count for a single in-engine generation (1 = serial)
     bool                      CaseSensitive;
     bool                      Verbose;         // prints out some additional info while generating
     bool                      Statistics;      // show the statistics only
@@ -121,6 +124,9 @@ public:
         NamesDelim(L'|'),
         InvalidPrefix(L'~'),
         RandSeed(0),
+        BestOf(1),
+        ThreadCount(0),
+        EngineThreads(1),
         CaseSensitive(false),
         Verbose(false),
         Statistics(false),

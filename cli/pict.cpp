@@ -3,17 +3,157 @@
 #define __cdecl
 #endif
 
+#include <atomic>
+#include <cstdlib>
 #include <ctime>
 #include <cstring>
 #include <iostream>
+#include <limits>
 #include <locale>
+#include <mutex>
 #include <stdexcept>
+#include <thread>
+#include <vector>
 using namespace std;
 
 #include "cmdline.h"
 #include "gcd.h"
 #include "strings.h"
 using namespace pictcli_gcd;
+
+//
+// Resolves the worker thread count for best-of-N search.
+// Precedence: explicit /t:N (requested != 0) > PICT_THREADS env var > hardware_concurrency().
+//
+static size_t resolveThreadCount( size_t requested )
+{
+    if( requested != 0 )
+    {
+        return requested;
+    }
+
+    size_t envThreads = 0;
+#if defined( _MSC_VER )
+    char*  buffer = nullptr;
+    size_t length = 0;
+    if( _dupenv_s( &buffer, &length, "PICT_THREADS" ) == 0 && buffer != nullptr )
+    {
+        envThreads = static_cast<size_t>( strtoul( buffer, nullptr, 10 ) );
+    }
+    if( buffer != nullptr )
+    {
+        free( buffer );
+    }
+#else
+    const char* raw = getenv( "PICT_THREADS" );
+    if( raw != nullptr )
+    {
+        envThreads = static_cast<size_t>( strtoul( raw, nullptr, 10 ) );
+    }
+#endif
+    if( envThreads != 0 )
+    {
+        return envThreads;
+    }
+
+    const unsigned int detected = thread::hardware_concurrency();
+    return ( detected == 0 ) ? static_cast<size_t>( 1 ) : static_cast<size_t>( detected );
+}
+
+//
+// Runs one full generation for a single seed and returns the resulting suite size.
+// Returns SIZE_MAX if generation fails (e.g. a seed-dependent generation failure),
+// so that successful seeds are always preferred during reduction.
+//
+static size_t trialSuiteSize( const CModelData& baseModelData, unsigned short seed )
+{
+    CModelData modelData = baseModelData; // deep copy; GcdPointers are null pre-generation
+    modelData.RandSeed      = seed;
+    modelData.Verbose       = false;      // keep per-trial runs quiet and deterministic
+    modelData.EngineThreads = 1;          // trials parallelize across seeds, not inside the engine
+
+    GcdRunner runner( modelData );
+    if( runner.Generate() != ErrorCode::ErrorCode_Success )
+    {
+        return numeric_limits<size_t>::max();
+    }
+    return runner.GetResult().TestCases.size();
+}
+
+//
+// Best-of-N seed search.
+// Tries 'bestOf' independent seeds derived deterministically from the base seed and
+// returns the seed that produced the smallest suite. Ties are broken by the earliest
+// seed in the sequence, so the winner is independent of how trials are scheduled.
+// Each trial is a fully independent generation (own model copy, task, and RNG), which
+// is what makes parallel execution safe and bit-for-bit reproducible.
+//
+static unsigned short findBestSeed
+    (
+    IN  const CModelData& modelData,
+    IN  size_t            bestOf,
+    IN  size_t            threadCount,
+    OUT size_t&           bestRows
+    )
+{
+    const unsigned short baseSeed = modelData.RandSeed;
+
+    // Pre-compute every trial seed up front so the sequence (and thus the chosen
+    // winner) is identical regardless of thread scheduling.
+    vector<unsigned short> seeds( bestOf );
+    for( size_t i = 0; i < bestOf; ++i )
+    {
+        seeds[ i ] = static_cast<unsigned short>( baseSeed + i );
+    }
+
+    vector<size_t> rows( bestOf, numeric_limits<size_t>::max() );
+
+    const size_t workers = ( threadCount <= 1 ) ? 1 : min( threadCount, bestOf );
+    if( workers <= 1 )
+    {
+        for( size_t i = 0; i < bestOf; ++i )
+        {
+            rows[ i ] = trialSuiteSize( modelData, seeds[ i ] );
+        }
+    }
+    else
+    {
+        atomic<size_t> nextIndex( 0 );
+        auto worker = [&]()
+        {
+            for( ;; )
+            {
+                const size_t i = nextIndex.fetch_add( 1 );
+                if( i >= bestOf ) break;
+                rows[ i ] = trialSuiteSize( modelData, seeds[ i ] );
+            }
+        };
+
+        vector<thread> pool;
+        pool.reserve( workers );
+        for( size_t t = 0; t < workers; ++t )
+        {
+            pool.emplace_back( worker );
+        }
+        for( size_t t = 0; t < pool.size(); ++t )
+        {
+            pool[ t ].join();
+        }
+    }
+
+    // Deterministic reduction: smallest suite wins, ties broken by earliest seed.
+    size_t bestIndex = 0;
+    for( size_t i = 1; i < bestOf; ++i )
+    {
+        if( rows[ i ] < rows[ bestIndex ] )
+        {
+            bestIndex = i;
+        }
+    }
+
+    bestRows = rows[ bestIndex ];
+    return seeds[ bestIndex ];
+}
 
 //
 //
@@ -66,6 +206,40 @@ int __cdecl execute
     {
         return( (int)ErrorCode::ErrorCode_BadRowSeedFile );
     }
+
+    // Resolve worker threads once. When best-of-N is active, the threads parallelize
+    // independent seed trials (engine stays serial per trial); otherwise they
+    // parallelize inside the single generation.
+    const size_t resolvedThreads = resolveThreadCount( modelData.ThreadCount );
+
+    // Best-of-N: try several seeds and keep the smallest suite. The search runs
+    // independent generations (optionally in parallel); the winning seed is then
+    // used for the single authoritative generation below, so output, statistics,
+    // verbose, and JSON formatting all follow the exact same path as a normal run.
+    if( modelData.BestOf > 1 )
+    {
+        size_t bestRows = 0;
+        unsigned short bestSeed = findBestSeed( modelData,
+                                                modelData.BestOf,
+                                                resolvedThreads,
+                                                bestRows );
+        modelData.RandSeed = bestSeed;
+
+        wcerr << L"Best of " << modelData.BestOf << L" seeds: seed "
+              << static_cast<int>( bestSeed ) << L" produced ";
+        if( bestRows == numeric_limits<size_t>::max() )
+        {
+            wcerr << L"no result";
+        }
+        else
+        {
+            wcerr << bestRows << L" rows";
+        }
+        wcerr << endl;
+    }
+
+    // The single authoritative generation may use the engine worker pool.
+    modelData.EngineThreads = resolvedThreads;
 
     GcdRunner gcdRunner( modelData );
 

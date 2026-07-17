@@ -105,6 +105,29 @@ PictSetRootModel
 
 // ////////////////////////////////////////////////////////////////////////////
 //
+// Sets how many worker threads the engine may use to parallelize a single
+// generation. Performance only: output is bit-for-bit identical regardless of the
+// thread count (same seed -> same test suite). Must be called before PictGenerate.
+//
+// Parameters:
+//   task         Valid handle of a task
+//   threadCount  0 = auto (hardware concurrency), 1 = serial (default), N = N threads
+//
+// Returns:
+//   Nothing
+//
+// ////////////////////////////////////////////////////////////////////////////
+
+void
+API_SPEC
+PictSetThreadCount
+    (
+    IN const PICT_HANDLE task,
+    IN       size_t      threadCount
+    );
+
+// ////////////////////////////////////////////////////////////////////////////
+//
 // Adds an exclusion to the task.  Exclusions define combinations  which should
 // not appear in the output. Such a combination has a variable number of items.
 // Each item is a pair consisting of a pointer to the involved parameter and a
