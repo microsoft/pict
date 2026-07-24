@@ -34,6 +34,7 @@ ErrorCode GcdRunner::generateResults( IN CModelData& modelData, IN bool justNega
     // run the generation from bottom up
     Model* model = gcdData.GetRootModel();
     model->SetRandomSeed( modelData.RandSeed );
+    model->GetTask()->SeedRandom( static_cast<unsigned int>( modelData.RandSeed ) );
     try
     {
         for( auto & submodel : model->GetSubmodels() )

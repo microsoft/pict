@@ -84,12 +84,34 @@ PictCreateTask();
 
 // ////////////////////////////////////////////////////////////////////////////
 //
+// Allocates a new task with a fixed engine thread count. Performance only: output
+// is bit-for-bit identical regardless of the thread count (same seed -> same test
+// suite). Worker threads are created lazily on first use.
+//
+// Parameters:
+//   threadCount  0 = auto (hardware concurrency), 1 = serial, N = N threads
+//
+// Returns:
+//   Non-nullptr   Allocation succeeded (a handle is returned)
+//   nullptr       Allocation failed
+//
+// ////////////////////////////////////////////////////////////////////////////
+
+PICT_HANDLE
+API_SPEC
+PictCreateTaskWithThreadCount
+    (
+    IN size_t threadCount
+    );
+
+// ////////////////////////////////////////////////////////////////////////////
+//
 // Associates a model tree with a task.
 //
 // Parameters:
 //   task      Valid handle of a task
 //   model     Valid handle of the root of the model hierarchy
-// 
+//
 // Returns:
 //   Nothing
 //

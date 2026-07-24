@@ -1,6 +1,7 @@
 LIBRARY    pict
 EXPORTS
     PictCreateTask
+    PictCreateTaskWithThreadCount
     PictAddExclusion
     PictAddSeed
     PictGenerate

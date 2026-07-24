@@ -9,15 +9,14 @@ const size_t DefaultMaxRandomTries = 1000;
 //
 //
 //
-Task::Task() :
+Task::Task( size_t maxThreads ) :
       m_rootModel     (nullptr),
       m_abortCallback (nullptr),
       m_generationMode(GenerationMode::Regular),
       m_maxRandomTries(DefaultMaxRandomTries),
-      m_workbuf       (nullptr)
+            m_workbuf       (nullptr),
+            m_pool          (maxThreads)
 {
-    Combination::ResetId();
-
 #if ( defined(_DOUT) || defined(_FILE) )
     wcerr << L"WARNING: _DOUT or _FILE are defined\n";
 #endif

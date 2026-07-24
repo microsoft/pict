@@ -4,8 +4,6 @@
 namespace pictcore
 {
 
-unsigned int Combination::m_lastUsedId = UNDEFINED_ID;
-
 //
 //
 //
@@ -264,7 +262,7 @@ void Combination::SetOpen( int index )
 Combination::Combination( Model *M ) :
     m_bitvec( nullptr ), m_range( 0 ), m_openCount( 0 ), m_boundCount( 0 ), m_model( M )
 {
-    m_id = ++m_lastUsedId;
+    m_id = m_model->GetTask()->NextCombinationId();
     DOUT( L"Combination created: " << m_id << endl );
 }
 

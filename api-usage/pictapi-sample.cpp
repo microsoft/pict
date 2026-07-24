@@ -33,7 +33,9 @@ void __cdecl wmain()
 {
     PICT_RET_CODE ret = PICT_SUCCESS;
 
-    PICT_HANDLE task = PictCreateTask();
+    // Use 0 to select the machine's hardware concurrency. PictCreateTask() remains
+    // available for callers that want the serial default.
+    PICT_HANDLE task = PictCreateTaskWithThreadCount( 0 );
 
     //
     // In a general case,  models might form a tree-like hierarchy

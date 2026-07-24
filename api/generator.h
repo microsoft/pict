@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <functional>
 #include <cassert>
+#include "threadpool.h"
 
 //
 // Logging facility
@@ -254,7 +255,8 @@ public:
     size_t size()  const         { return( col.size() ); }
     bool   empty() const         { return( col.empty() ); }
 
-    // exclusion represented as a list, for next_permutation to work
+    // exclusion also represented as a sortable list, used as a trie key for
+    // subset lookups (see trie::find_subset)
     _ExclusionVec::iterator lbegin() { return( vec.begin() ); }
     _ExclusionVec::iterator lend()   { return( vec.end() ); }
     _ExclusionVec &GetList()         { return( vec ); }
@@ -301,7 +303,6 @@ public:
     Combination( Model* model );
     ~Combination();
 
-    static void ResetId() { m_lastUsedId = UNDEFINED_ID; }
     unsigned int GetId()  { return m_id; }
 
     void WireModel( Model* model ) { m_model = model; }
@@ -342,7 +343,6 @@ public:
     }
 
 private:
-    static unsigned int m_lastUsedId; // static source of identifiers
     unsigned int        m_id;         // unique identifier of this instance
 
     ParamCollection m_params;
@@ -542,7 +542,6 @@ public:
     void SetRandomSeed( long seed )
     {
         m_randomSeed = seed;
-        srand( m_randomSeed );
         for( auto & submodel : m_submodels ) submodel->SetRandomSeed( m_randomSeed );
     }
 
@@ -651,7 +650,7 @@ private:
 class Task
 {
 public:
-    Task();
+    explicit Task( size_t maxThreads = 1 );
     ~Task();
 
     // this has to be called right before generation starts
@@ -662,6 +661,34 @@ public:
     int* GetWorkbuf() { return( m_workbuf ); }
 
     void DeallocWorkbuf();
+
+    //
+    // Per-Task pseudo-random source. Replaces the process-global C srand()/rand()
+    // so that independent Tasks are thread-safe and each Task deterministically
+    // reproduces its own seed's output. The algorithm intentionally mirrors the
+    // MSVC CRT rand() LCG so output stays bit-identical to the previous global rand().
+    //
+    void SeedRandom( unsigned int seed ) { m_randState = seed; }
+    int  Rand()
+    {
+        m_randState = m_randState * 214013u + 2531011u;
+        return static_cast<int>( ( m_randState >> 16 ) & 0x7fff );
+    }
+
+    //
+    // Per-Task source of Combination identifiers. Replaces the previous static
+    // counter so concurrent Tasks cannot corrupt each other's deterministic
+    // combination ordering.
+    //
+    unsigned int NextCombinationId() { return ++m_combinationId; }
+
+    //
+    // Worker threads are created lazily and reused across the whole generation.
+    // ParallelFor preserves determinism: callers serialize selection and RNG draws.
+    void ParallelFor( size_t begin, size_t end, size_t grain, std::function<void( size_t )> fn )
+    {
+        m_pool.ParallelFor( begin, end, grain, fn );
+    }
 
     void SetRootModel( Model* model )
     {
@@ -718,6 +745,13 @@ private:
 
     // a global workspace shared by multiple objects
     int* m_workbuf = nullptr;
+
+    // per-Task RNG state (MSVC rand()-compatible) and Combination id counter
+    unsigned int m_randState     = 1;
+    unsigned int m_combinationId = UNDEFINED_ID;
+
+    // engine-level worker pool (configured once when the Task is constructed)
+    ThreadPool m_pool;
 
     // result row pointer allows C-style API to implement GetNextResultRow function
     // i.e. get one result row at a time

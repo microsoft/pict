@@ -4,16 +4,20 @@
 #endif
 
 #include <algorithm>
+#include <atomic>
 #include <cctype>
 #include <cstdint>
 #include <cstdlib>
 #include <ctime>
+#include <exception>
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <mutex>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "pictapi.h"
@@ -163,6 +167,69 @@ bool TryParseUnsigned( const string& text, size_t& value )
     return true;
 }
 
+//
+// Reads an unsigned, non-zero value from an environment variable.
+// Uses _dupenv_s on MSVC to avoid the deprecated-getenv warning under /WX.
+//
+bool TryGetEnvUnsigned( const char* name, size_t& value )
+{
+    string text;
+#if defined( _MSC_VER )
+    char* buffer = nullptr;
+    size_t length = 0;
+    if( _dupenv_s( &buffer, &length, name ) != 0 || buffer == nullptr )
+    {
+        if( buffer != nullptr )
+        {
+            free( buffer );
+        }
+        return false;
+    }
+    text.assign( buffer );
+    free( buffer );
+#else
+    const char* raw = getenv( name );
+    if( raw == nullptr )
+    {
+        return false;
+    }
+    text.assign( raw );
+#endif
+
+    // tolerate surrounding whitespace
+    const string::size_type first = text.find_first_not_of( " \t\r\n" );
+    if( first == string::npos )
+    {
+        return false;
+    }
+    const string::size_type last = text.find_last_not_of( " \t\r\n" );
+    text = text.substr( first, last - first + 1 );
+
+    return TryParseUnsigned( text, value ) && value != 0;
+}
+
+//
+// Resolves the worker thread count using the precedence:
+//   explicit --threads flag  >  PICT_BENCHMARK_THREADS env var  >  hardware_concurrency()
+// commandLineThreads == 0 means the flag was not supplied.
+//
+size_t ResolveThreadCount( size_t commandLineThreads )
+{
+    if( commandLineThreads != 0 )
+    {
+        return commandLineThreads;
+    }
+
+    size_t envThreads = 0;
+    if( TryGetEnvUnsigned( "PICT_BENCHMARK_THREADS", envThreads ) )
+    {
+        return envThreads;
+    }
+
+    const unsigned int detected = thread::hardware_concurrency();
+    return ( detected == 0 ) ? size_t( 1 ) : static_cast<size_t>( detected );
+}
+
 bool TryParseBenchmarkSpec( const string& spec, BenchmarkDefinition& benchmark )
 {
     string rewritten = spec;
@@ -294,7 +361,7 @@ size_t RunSingleTrial( const BenchmarkDefinition& benchmark, unsigned int seed )
     return resultCount;
 }
 
-BenchmarkResult RunBenchmark( const BenchmarkDefinition& benchmark, size_t runs, unsigned int& seedState )
+BenchmarkResult RunBenchmark( const BenchmarkDefinition& benchmark, size_t runs, unsigned int& seedState, size_t threadCount )
 {
     BenchmarkResult result;
     result.Name = benchmark.Name;
@@ -304,22 +371,95 @@ BenchmarkResult RunBenchmark( const BenchmarkDefinition& benchmark, size_t runs,
     result.BestKnownRows = benchmark.BestKnownRows;
     result.PictReferenceRows = benchmark.PictReferenceRows;
 
+    // Pre-compute every trial seed in order so the exact LCG sequence (and thus
+    // the chosen seeds) is identical regardless of how trials are scheduled.
+    vector<unsigned int> seeds( runs );
     for( size_t run = 0; run < runs; ++run )
     {
         seedState = seedState * 1664525u + 1013904223u;
-        const unsigned int trialSeed = seedState;
-        const size_t rows = RunSingleTrial( benchmark, trialSeed );
+        seeds[ run ] = seedState;
+    }
+
+    // Each trial is fully independent (its own PICT task/model/RNG), so trials can
+    // run concurrently. Results are stored by index and reduced in index order,
+    // which reproduces the serial "first trial with the smallest suite" selection.
+    vector<size_t> trialRows( runs, 0 );
+    exception_ptr firstError = nullptr;
+    mutex errorMutex;
+
+    auto runRange = [&]( size_t first, size_t last )
+    {
+        for( size_t run = first; run < last; ++run )
+        {
+            try
+            {
+                trialRows[ run ] = RunSingleTrial( benchmark, seeds[ run ] );
+            }
+            catch( ... )
+            {
+                lock_guard<mutex> guard( errorMutex );
+                if( firstError == nullptr )
+                {
+                    firstError = current_exception();
+                }
+                trialRows[ run ] = numeric_limits<size_t>::max();
+            }
+        }
+    };
+
+    const size_t workers = ( threadCount <= 1 ) ? 1 : min( threadCount, runs == 0 ? size_t( 1 ) : runs );
+    if( workers <= 1 )
+    {
+        runRange( 0, runs );
+    }
+    else
+    {
+        atomic<size_t> nextIndex( 0 );
+        auto worker = [&]()
+        {
+            for( ;; )
+            {
+                const size_t run = nextIndex.fetch_add( 1 );
+                if( run >= runs )
+                {
+                    break;
+                }
+                runRange( run, run + 1 );
+            }
+        };
+
+        vector<thread> pool;
+        pool.reserve( workers );
+        for( size_t t = 0; t < workers; ++t )
+        {
+            pool.emplace_back( worker );
+        }
+        for( size_t t = 0; t < pool.size(); ++t )
+        {
+            pool[ t ].join();
+        }
+    }
+
+    if( firstError != nullptr )
+    {
+        rethrow_exception( firstError );
+    }
+
+    // Deterministic reduction and logging, in trial order.
+    for( size_t run = 0; run < runs; ++run )
+    {
+        const size_t rows = trialRows[ run ];
 
         cerr << "[trial " << ( run + 1 ) << "/" << runs << "] "
              << "benchmark=\"" << benchmark.Name << "\" "
              << "model=\"" << FormatModelShape( benchmark ) << "\" "
-             << "seed=" << trialSeed << ' '
+             << "seed=" << seeds[ run ] << ' '
              << "rows=" << rows << endl;
 
         if( rows < result.BestRows )
         {
             result.BestRows = rows;
-            result.BestSeed = trialSeed;
+            result.BestSeed = seeds[ run ];
         }
     }
 
@@ -340,14 +480,20 @@ string ToText( int value )
 
 void PrintUsage( const char* programName )
 {
-    cerr << "Usage: " << programName << " [--runs N] [--seed N] [--benchmark SPEC]..." << endl;
+    cerr << "Usage: " << programName << " [--runs N] [--seed N] [--threads N] [--benchmark SPEC]..." << endl;
     cerr << "       " << programName << " --list" << endl;
     cerr << endl;
     cerr << "Runs the standard pairwise benchmark scenarios repeatedly with different seeds" << endl;
     cerr << "and reports the smallest generated suite for each selected benchmark." << endl;
     cerr << endl;
+    cerr << "  --threads N  run independent trials across N worker threads." << endl;
+    cerr << "               Precedence: --threads > PICT_BENCHMARK_THREADS env var >" << endl;
+    cerr << "               hardware_concurrency() default. Best-suite selection is" << endl;
+    cerr << "               deterministic regardless of N." << endl;
+    cerr << endl;
     cerr << "Examples:" << endl;
     cerr << "  " << programName << " --runs 1000" << endl;
+    cerr << "  " << programName << " --runs 1000 --threads 8" << endl;
     cerr << "  " << programName << " --runs 250 --benchmark 3^13 --benchmark \"4^15 3^17 2^29\"" << endl;
     cerr << "  " << programName << " --runs 500 --benchmark \"6^20\"" << endl;
 }
@@ -414,6 +560,7 @@ int __cdecl main( int argc, char* argv[] )
     {
         size_t runs = 1000;
         unsigned int baseSeed = static_cast<unsigned int>( time( nullptr ));
+        size_t threadCount = 0; // 0 == not set on the command line
         vector<BenchmarkDefinition> selectedBenchmarks;
 
         for( int index = 1; index < argc; ++index )
@@ -438,6 +585,18 @@ int __cdecl main( int argc, char* argv[] )
                 {
                     throw runtime_error( "Expected a positive integer after --runs" );
                 }
+                continue;
+            }
+
+            if( argument == "--threads" || argument == "-t" )
+            {
+                size_t parsedThreads = 0;
+                if( index + 1 >= argc || !TryParseUnsigned( argv[ ++index ], parsedThreads ) || parsedThreads == 0 )
+                {
+                    throw runtime_error( "Expected a positive integer after --threads" );
+                }
+
+                threadCount = parsedThreads;
                 continue;
             }
 
@@ -482,9 +641,11 @@ int __cdecl main( int argc, char* argv[] )
         results.reserve( selectedBenchmarks.size() );
 
         unsigned int seedState = baseSeed;
+        const size_t resolvedThreads = ResolveThreadCount( threadCount );
+        cerr << "Worker threads: " << resolvedThreads << endl;
         for( size_t index = 0; index < selectedBenchmarks.size(); ++index )
         {
-            results.push_back( RunBenchmark( selectedBenchmarks[ index ], runs, seedState ));
+            results.push_back( RunBenchmark( selectedBenchmarks[ index ], runs, seedState, resolvedThreads ));
         }
 
         PrintResults( results, runs, baseSeed );

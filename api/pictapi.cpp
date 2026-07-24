@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <thread>
 using namespace std;
 
 #include "pictapi.h"
@@ -20,6 +21,27 @@ API_SPEC
 PictCreateTask()
 {
     Task* taskObj = new Task();
+    return( static_cast<PICT_HANDLE>( taskObj ) );
+}
+
+//
+// Allocates a task with a fixed engine thread count. Worker threads are created
+// lazily on first use and retained for the lifetime of the task.
+//
+PICT_HANDLE
+API_SPEC
+PictCreateTaskWithThreadCount
+    (
+    IN size_t threadCount
+    )
+{
+    if( threadCount == 0 )
+    {
+        unsigned int detected = std::thread::hardware_concurrency();
+        threadCount = ( detected == 0 ) ? 1 : static_cast<size_t>( detected );
+    }
+
+    Task* taskObj = new Task( threadCount );
     return( static_cast<PICT_HANDLE>( taskObj ) );
 }
 
@@ -125,6 +147,7 @@ PictGenerate
     }
     
     Model* root = taskObj->GetRootModel();
+    taskObj->SeedRandom( static_cast<unsigned int>( root->GetRandomSeed() ) );
     try
     {
         generate( root );

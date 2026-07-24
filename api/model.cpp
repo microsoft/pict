@@ -6,6 +6,13 @@ namespace pictcore
 {
 
 //
+// Engine parallelism tuning. Only parallelize a per-combination scan when
+// there are enough combinations to amortize synchronization.
+//
+static const size_t kGcdScanParallelThreshold = 64;
+static const size_t kGcdScanGrain             = 8;
+
+//
 // function object to sort parameters in decreasing combinatorial order
 //
 class GreaterThanByOrder {
@@ -223,61 +230,96 @@ void Model::gcd( ComboCollection &vecCombo )
                 {
                     DOUT( L"Empty worklist: finding a seed combination.\n" );
                     // pick a zero from feasible combination with the most zeros, bind corresponding values
+
+                    // Compute (open, match) for every not-fully-bound combination. 
+                    // Feasible(int) is read-only and uses no shared scratch buffer,
+                    // so this is safe to run concurrently.
+                    // Fully-bound combos keep the -1 sentinel and are skipped below.
+                    const size_t nCombos = vecCombo.size();
+                    std::vector<int> openA( nCombos, -1 );
+                    std::vector<int> matchA( nCombos, -1 );
+
+                    auto computeFeasibility = [&]( size_t cidx )
+                    {
+                        Combination* combo = vecCombo[ cidx ];
+                        if( combo->IsFullyBound() ) return;
+
+                        int open  = 0;
+                        int match = 0;
+                        for( int vidx = 0; vidx < combo->GetRange(); ++vidx )
+                        {
+                            ComboStatus status = combo->Feasible( vidx );
+                            if( ComboStatus::Open == status )
+                            {
+                                ++open;
+                            }
+                            else if( ComboStatus::CoveredMatch == status )
+                            {
+                                ++match;
+                            }
+                        }
+                        openA[ cidx ]  = open;
+                        matchA[ cidx ] = match;
+                    };
+
+                    if( nCombos >= kGcdScanParallelThreshold )
+                    {
+                        GetTask()->ParallelFor( 0, nCombos, kGcdScanGrain, computeFeasibility );
+                    }
+                    else
+                    {
+                        for( size_t cidx = 0; cidx < nCombos; ++cidx )
+                        {
+                            computeFeasibility( cidx );
+                        }
+                    }
+
+                    // Phase 2 (serial): selection. Iterates combos in original order
+                    // and draws the RNG under exactly the same conditions as before,
+                    // so the chosen combination is bit-for-bit identical to serial.
                     int maxZeros = 0;
                     int maxMatch = 0;
                     int ties     = 0;
                     int choice   = -1;
-                    for( int cidx = 0; cidx < static_cast<int>( vecCombo.size() ); ++cidx )
+                    for( int cidx = 0; cidx < static_cast<int>( nCombos ); ++cidx )
                     {
-                        if( !vecCombo[ cidx ]->IsFullyBound() )
+                        if( openA[ cidx ] == -1 )
                         {
-                            int open  = 0;
-                            int match = 0;
+                            continue; // fully bound; was skipped by the original guard
+                        }
 
-                            // Make sure there's a feasible value set
-                            for( int vidx = 0; vidx < vecCombo[ cidx ]->GetRange(); ++vidx )
-                            {
-                                ComboStatus status = vecCombo[ cidx ]->Feasible( vidx );
-                                if( ComboStatus::Open == status )
-                                {
-                                    ++open;
-                                }
-                                else if( ComboStatus::CoveredMatch == status )
-                                {
-                                    ++match;
-                                }
-                            }
+                        int open  = openA[ cidx ];
+                        int match = matchA[ cidx ];
 
-                            // if combo has the most zeros
-                            if( open > maxZeros )
-                            {
-                                choice   = cidx;
-                                ties     = 1;
-                                maxZeros = open;
-                            }
-                            // if number of zeros ties up with some previous choice, pick randomly
-                            else if( open == maxZeros
-                                 &&  maxZeros > 0
-                                 &&  !( rand() % ++ties ) )
-                            {
-                                choice = cidx;
-                            }
-                            // no zeros were found anywhere yet, pick the best matching one
-                            else if( maxZeros == 0
-                                 &&  match > maxMatch )
-                            {
-                                choice = cidx;
-                                ties = 1;
-                                maxMatch = match;
-                            }
-                            // if there's a tie in match, pick randomly
-                            else if( maxZeros == 0
-                                 &&  match > 0
-                                 &&  match == maxMatch
-                                 &&  !( rand() % ++ties ) )
-                            {
-                                choice = cidx;
-                            }
+                        // if combo has the most zeros
+                        if( open > maxZeros )
+                        {
+                            choice   = cidx;
+                            ties     = 1;
+                            maxZeros = open;
+                        }
+                        // if number of zeros ties up with some previous choice, pick randomly
+                        else if( open == maxZeros
+                             &&  maxZeros > 0
+                             &&  !( GetTask()->Rand() % ++ties ) )
+                        {
+                            choice = cidx;
+                        }
+                        // no zeros were found anywhere yet, pick the best matching one
+                        else if( maxZeros == 0
+                             &&  match > maxMatch )
+                        {
+                            choice = cidx;
+                            ties = 1;
+                            maxMatch = match;
+                        }
+                        // if there's a tie in match, pick randomly
+                        else if( maxZeros == 0
+                             &&  match > 0
+                             &&  match == maxMatch
+                             &&  !( GetTask()->Rand() % ++ties ) )
+                        {
+                            choice = cidx;
                         }
                     } // for cidx
                     assert( choice != -1 );
@@ -299,7 +341,7 @@ void Model::gcd( ComboCollection &vecCombo )
                                 // Pick a value using weighted random choice
                                 int weight = vecCombo[ choice ]->Weight( vidx );
                                 totalWeight += weight;
-                                if( rand() % totalWeight < weight )
+                                if( GetTask()->Rand() % totalWeight < weight )
                                 {
                                     bestValue = vidx;
                                 }
@@ -331,7 +373,7 @@ void Model::gcd( ComboCollection &vecCombo )
                         }
 #endif
                         assert( !candidates.empty() );
-                        int zeroVal = candidates[ rand() % candidates.size() ];
+                        int zeroVal = candidates[ GetTask()->Rand() % candidates.size() ];
                         DOUT( L"Chose value " << zeroVal << L", unbound count was " << unbound << L".\n" );
                         // Bind the values corresponding to the zero
                         unbound -= vecCombo[ choice ]->Bind( zeroVal, worklist );
@@ -987,7 +1029,7 @@ Exclusion Model::generateRandomRow()
         {
             sum += ( *ip )->GetWeight( i );
         }
-        int idx = rand() % sum;
+        int idx = GetTask()->Rand() % sum;
 
         int n;
         int val = 0;
