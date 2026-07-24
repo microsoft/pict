@@ -15,6 +15,7 @@
 #include <iostream>
 #include <algorithm>
 #include <functional>
+#include <utility>
 #include <cassert>
 #include "threadpool.h"
 
@@ -650,7 +651,7 @@ private:
 class Task
 {
 public:
-    Task();
+    explicit Task( size_t maxThreads = 1 );
     ~Task();
 
     // this has to be called right before generation starts
@@ -683,19 +684,12 @@ public:
     unsigned int NextCombinationId() { return ++m_combinationId; }
 
     //
-    // Engine-level parallelism. Worker threads are created lazily on first use
-    // and reused across the whole generation. ParallelFor preserves determinism:
-    // it only runs pure per-index work; callers serialize selection and RNG draws.
-    //
-    void   SetMaxThreads( size_t n ) { m_maxThreads = ( n < 1 ) ? 1 : n; }
-    size_t GetMaxThreads() const     { return m_maxThreads; }
-
-    // Returns the (lazily started) worker pool. Call pool.ParallelFor(...) from the
-    // generation thread; it runs serial automatically when m_maxThreads <= 1.
-    ThreadPool& Pool()
+    // Worker threads are created lazily and reused across the whole generation.
+    // ParallelFor preserves determinism: callers serialize selection and RNG draws.
+    template<class Fn>
+    void ParallelFor( size_t begin, size_t end, size_t grain, Fn&& fn )
     {
-        m_pool.EnsureStarted( m_maxThreads );
-        return m_pool;
+        m_pool.ParallelFor( begin, end, grain, std::forward<Fn>( fn ) );
     }
 
     void SetRootModel( Model* model )
@@ -758,9 +752,8 @@ private:
     unsigned int m_randState     = 1;
     unsigned int m_combinationId = UNDEFINED_ID;
 
-    // engine-level worker pool and the desired total thread count (1 = serial)
+    // engine-level worker pool (configured once when the Task is constructed)
     ThreadPool m_pool;
-    size_t     m_maxThreads = 1;
 
     // result row pointer allows C-style API to implement GetNextResultRow function
     // i.e. get one result row at a time

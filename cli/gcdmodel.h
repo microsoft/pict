@@ -66,7 +66,7 @@ public:
     std::vector< Parameter* > Parameters;
     CGcdExclusions            Exclusions;
 
-    CGcdData( CModelData& modelData ) : _modelData( modelData ) {}
+    CGcdData( CModelData& modelData ) : _modelData( modelData ), _task( modelData.EngineThreads ) {}
 
     ~CGcdData()
     {

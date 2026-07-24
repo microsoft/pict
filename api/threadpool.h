@@ -29,33 +29,12 @@ namespace pictcore
 class ThreadPool
 {
 public:
-    ThreadPool() = default;
+    explicit ThreadPool( size_t totalThreads = 1 ) :
+        m_totalThreads( ( totalThreads < 1 ) ? 1 : totalThreads ) {}
     ~ThreadPool() { Stop(); }
 
     ThreadPool( const ThreadPool& ) = delete;
     ThreadPool& operator=( const ThreadPool& ) = delete;
-
-    // Total number of participating threads (workers + the calling thread).
-    size_t Concurrency() const { return m_workers.size() + 1; }
-
-    // Lazily create (totalThreads - 1) persistent workers. totalThreads <= 1 keeps
-    // the pool empty (everything runs on the caller). Called only from the Task's
-    // generation thread.
-    void EnsureStarted( size_t totalThreads )
-    {
-        if( !m_workers.empty() || totalThreads <= 1 )
-        {
-            return;
-        }
-
-        m_stop = false;
-        const size_t workerCount = totalThreads - 1;
-        m_workers.reserve( workerCount );
-        for( size_t i = 0; i < workerCount; ++i )
-        {
-            m_workers.emplace_back( [this]() { workerLoop(); } );
-        }
-    }
 
     void Stop()
     {
@@ -85,6 +64,7 @@ public:
     void ParallelFor( size_t begin, size_t end, size_t grain, Fn&& fn )
     {
         grain = ( grain < 1 ) ? 1 : grain;
+        ensureStarted();
 
         if( m_workers.empty() || ( end - begin ) <= grain )
         {
@@ -133,6 +113,24 @@ public:
     }
 
 private:
+    // Lazily create the configured number of persistent workers. Called only from
+    // the owning Task's generation thread.
+    void ensureStarted()
+    {
+        if( !m_workers.empty() || m_totalThreads <= 1 )
+        {
+            return;
+        }
+
+        m_stop = false;
+        const size_t workerCount = m_totalThreads - 1;
+        m_workers.reserve( workerCount );
+        for( size_t i = 0; i < workerCount; ++i )
+        {
+            m_workers.emplace_back( [this]() { workerLoop(); } );
+        }
+    }
+
     void runChunks()
     {
         for( ;; )
@@ -191,6 +189,7 @@ private:
         }
     }
 
+    const size_t             m_totalThreads;
     std::vector<std::thread> m_workers;
     std::mutex               m_mutex;
     std::condition_variable  m_cvWork;

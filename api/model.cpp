@@ -262,9 +262,9 @@ void Model::gcd( ComboCollection &vecCombo )
                         matchA[ cidx ] = match;
                     };
 
-                    if( GetTask()->GetMaxThreads() > 1 && nCombos >= kGcdScanParallelThreshold )
+                    if( nCombos >= kGcdScanParallelThreshold )
                     {
-                        GetTask()->Pool().ParallelFor( 0, nCombos, kGcdScanGrain, computeFeasibility );
+                        GetTask()->ParallelFor( 0, nCombos, kGcdScanGrain, computeFeasibility );
                     }
                     else
                     {
@@ -283,7 +283,7 @@ void Model::gcd( ComboCollection &vecCombo )
                     int choice   = -1;
                     for( int cidx = 0; cidx < static_cast<int>( nCombos ); ++cidx )
                     {
-                        if( openA[ cidx ] < 0 )
+                        if( openA[ cidx ] == -1 )
                         {
                             continue; // fully bound; was skipped by the original guard
                         }
