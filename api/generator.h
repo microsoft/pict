@@ -15,7 +15,6 @@
 #include <iostream>
 #include <algorithm>
 #include <functional>
-#include <utility>
 #include <cassert>
 #include "threadpool.h"
 
@@ -686,10 +685,9 @@ public:
     //
     // Worker threads are created lazily and reused across the whole generation.
     // ParallelFor preserves determinism: callers serialize selection and RNG draws.
-    template<class Fn>
-    void ParallelFor( size_t begin, size_t end, size_t grain, Fn&& fn )
+    void ParallelFor( size_t begin, size_t end, size_t grain, std::function<void( size_t )> fn )
     {
-        m_pool.ParallelFor( begin, end, grain, std::forward<Fn>( fn ) );
+        m_pool.ParallelFor( begin, end, grain, fn );
     }
 
     void SetRootModel( Model* model )
