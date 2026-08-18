@@ -27,10 +27,10 @@ jobs:
         platform: [x64, x86, ARM64]
       
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2.0.0
 
     - name: Build
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
@@ -54,7 +54,7 @@ jobs:
           /p:IntDir=${out}obj\
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: build-artifacts-${{ matrix.configuration }}-${{ matrix.platform }}
         path: |
@@ -74,10 +74,10 @@ jobs:
       packages: write
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
     - name: Download all build artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
       with:
         path: artifacts/
 
@@ -120,7 +120,7 @@ jobs:
         }
 
     - name: Add NUGET to PATH
-      uses: NuGet/setup-nuget@v2
+      uses: NuGet/setup-nuget@d105a947828025cd7a980103c35ba2bfae586d0f # v2.0.2
 
     - name: Create a package
       shell: pwsh
